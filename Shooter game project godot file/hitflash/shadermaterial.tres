@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://148x6b7nyi2f"]
+
+[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash/hitflash.tres" id="1_0aj70"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_0aj70")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)

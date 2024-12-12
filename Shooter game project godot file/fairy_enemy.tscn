@@ -1,0 +1,174 @@
+[gd_scene load_steps=22 format=3 uid="uid://brr06le18oxho"]
+
+[ext_resource type="Script" path="res://path2d.gd" id="1_0whpa"]
+[ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="1_brf0a"]
+[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash/shadermaterial.tres" id="1_ughro"]
+[ext_resource type="Script" path="res://fairy_enemy.gd" id="1_xcsrf"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="2_rcxsq"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://explosion (1).wav" id="3_wi5ge"]
+
+[sub_resource type="Curve2D" id="Curve2D_ng13o"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 136)
+}
+point_count = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
+atlas = ExtResource("2_rcxsq")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
+atlas = ExtResource("2_rcxsq")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
+atlas = ExtResource("2_rcxsq")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
+atlas = ExtResource("2_rcxsq")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
+atlas = ExtResource("2_rcxsq")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
+atlas = ExtResource("2_rcxsq")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajjby"]
+atlas = ExtResource("1_brf0a")
+region = Rect2(0, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_puf11"]
+atlas = ExtResource("1_brf0a")
+region = Rect2(36, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oaqyv"]
+atlas = ExtResource("1_brf0a")
+region = Rect2(72, 0, 36, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_87myr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ap1v4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dab0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_om7ce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s5xor")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwnqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3mtu0")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajjby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_puf11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oaqyv")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_csg2p"]
+size = Vector2(18, 22)
+
+[sub_resource type="Animation" id="Animation_jemjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_iryfb"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
+_data = {
+"RESET": SubResource("Animation_jemjn"),
+"hit_flash": SubResource("Animation_iryfb")
+}
+
+[node name="FairyEnemyPath" type="Path2D"]
+curve = SubResource("Curve2D_ng13o")
+script = ExtResource("1_0whpa")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+rotates = false
+
+[node name="FairyEnemy" type="Area2D" parent="PathFollow2D" groups=["enemies"]]
+script = ExtResource("1_xcsrf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PathFollow2D/FairyEnemy"]
+material = ExtResource("1_ughro")
+sprite_frames = SubResource("SpriteFrames_87myr")
+animation = &"new_animation"
+autoplay = "new_animation"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/FairyEnemy"]
+shape = SubResource("RectangleShape2D_csg2p")
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="PathFollow2D/FairyEnemy"]
+root_node = NodePath("../AnimatedSprite2D")
+libraries = {
+"": SubResource("AnimationLibrary_ymajm")
+}
+
+[node name="MoveTimer" type="Timer" parent="PathFollow2D/FairyEnemy"]
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="PathFollow2D/FairyEnemy"]
+one_shot = true
+
+[node name="ExplodeSFX" type="AudioStreamPlayer" parent="PathFollow2D/FairyEnemy"]
+stream = ExtResource("3_wi5ge")
+volume_db = -12.329
+max_polyphony = 10
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="PathFollow2D/FairyEnemy"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[connection signal="timeout" from="PathFollow2D/FairyEnemy/MoveTimer" to="PathFollow2D/FairyEnemy" method="_on_timer_timeout"]
+[connection signal="timeout" from="PathFollow2D/FairyEnemy/ShootTimer" to="PathFollow2D/FairyEnemy" method="_on_shoot_timer_timeout"]
+[connection signal="screen_exited" from="PathFollow2D/FairyEnemy/VisibleOnScreenNotifier2D" to="PathFollow2D/FairyEnemy" method="_on_visible_on_screen_notifier_2d_screen_exited"]
