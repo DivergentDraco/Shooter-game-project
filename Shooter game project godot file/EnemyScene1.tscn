@@ -1,12 +1,12 @@
 [gd_scene load_steps=28 format=3 uid="uid://duqc75liklrf"]
 
-[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="1_o3l8c"]
-[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash/hitflash.tres" id="2_om0cd"]
-[ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="3_sngxl"]
-[ext_resource type="Script" path="res://fairy_enemy.gd" id="4_uysmt"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="5_rdsgg"]
-[ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="6_c0x7t"]
-[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://explosion (1).wav" id="7_7qt6r"]
+[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="1_ybym5"]
+[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_ndhw5"]
+[ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="3_oglmg"]
+[ext_resource type="Script" path="res://fairy_enemy.gd" id="4_ac6l7"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="5_hee8e"]
+[ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="6_or8kk"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="7_el8he"]
 
 [sub_resource type="Curve2D" id="Curve2D_k8rha"]
 _data = {
@@ -30,7 +30,7 @@ func _process(delta: float) -> void:
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_echkn"]
 resource_local_to_scene = true
-shader = ExtResource("2_om0cd")
+shader = ExtResource("2_ndhw5")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
@@ -59,39 +59,39 @@ _data = {
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
-atlas = ExtResource("5_rdsgg")
+atlas = ExtResource("5_hee8e")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
-atlas = ExtResource("5_rdsgg")
+atlas = ExtResource("5_hee8e")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
-atlas = ExtResource("5_rdsgg")
+atlas = ExtResource("5_hee8e")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
-atlas = ExtResource("5_rdsgg")
+atlas = ExtResource("5_hee8e")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
-atlas = ExtResource("5_rdsgg")
+atlas = ExtResource("5_hee8e")
 region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
-atlas = ExtResource("5_rdsgg")
+atlas = ExtResource("5_hee8e")
 region = Rect2(80, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ajjby"]
-atlas = ExtResource("6_c0x7t")
+atlas = ExtResource("6_or8kk")
 region = Rect2(0, 0, 36, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_puf11"]
-atlas = ExtResource("6_c0x7t")
+atlas = ExtResource("6_or8kk")
 region = Rect2(36, 0, 36, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oaqyv"]
-atlas = ExtResource("6_c0x7t")
+atlas = ExtResource("6_or8kk")
 region = Rect2(72, 0, 36, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_87myr"]
@@ -177,7 +177,7 @@ _data = {
 [node name="Node2D" type="Node2D"]
 position = Vector2(52, 0)
 
-[node name="FairyEnemyPath" parent="." instance=ExtResource("1_o3l8c")]
+[node name="FairyEnemyPath" parent="." instance=ExtResource("1_ybym5")]
 curve = SubResource("Curve2D_k8rha")
 script = SubResource("GDScript_oes2y")
 
@@ -189,7 +189,7 @@ loop = false
 [node name="AnimatedSprite2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy" index="0"]
 material = SubResource("ShaderMaterial_echkn")
 
-[node name="bullet_pattern1" parent="FairyEnemyPath/PathFollow2D/FairyEnemy" index="7" instance=ExtResource("3_sngxl")]
+[node name="bullet_pattern1" parent="FairyEnemyPath/PathFollow2D/FairyEnemy" index="7" instance=ExtResource("3_oglmg")]
 
 [node name="AnimationPlayer" parent="FairyEnemyPath" index="1"]
 libraries = {
@@ -209,7 +209,7 @@ rotates = false
 loop = false
 
 [node name="FairyEnemy" type="Area2D" parent="FairyEnemyPath2/PathFollow2D" groups=["enemies"]]
-script = ExtResource("4_uysmt")
+script = ExtResource("4_ac6l7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
 material = SubResource("ShaderMaterial_echkn")
@@ -233,13 +233,13 @@ one_shot = true
 one_shot = true
 
 [node name="ExplodeSFX" type="AudioStreamPlayer" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
-stream = ExtResource("7_7qt6r")
+stream = ExtResource("7_el8he")
 volume_db = -12.329
 max_polyphony = 10
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
 
-[node name="bullet_pattern1" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy" instance=ExtResource("3_sngxl")]
+[node name="bullet_pattern1" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy" instance=ExtResource("3_oglmg")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="FairyEnemyPath2"]
 libraries = {

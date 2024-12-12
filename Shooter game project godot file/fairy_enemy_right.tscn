@@ -1,11 +1,11 @@
 [gd_scene load_steps=22 format=3 uid="uid://c3demk7a4ol6"]
 
 [ext_resource type="Script" path="res://path2d.gd" id="1_dl6dk"]
-[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash/shadermaterial.tres" id="2_aq8sw"]
+[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="2_aq8sw"]
 [ext_resource type="Script" path="res://FairyEnemyRight.gd" id="2_hbsow"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_hddxl"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_hddxl"]
 [ext_resource type="Texture2D" uid="uid://cegbjppyb37gg" path="res://Sprites and Animations/fairy_right.png" id="4_fgoix"]
-[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://explosion (1).wav" id="5_f0sea"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_f0sea"]
 
 [sub_resource type="Curve2D" id="Curve2D_c8twk"]
 _data = {

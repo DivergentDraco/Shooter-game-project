@@ -1,9 +1,9 @@
 [gd_scene load_steps=14 format=3 uid="uid://dho30yobd33m8"]
 
-[ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://fairy_enemy_right.tscn" id="1_c0ihk"]
-[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash/hitflash.tres" id="2_iydqm"]
-[ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://bullet test.tscn" id="3_5sk6h"]
-[ext_resource type="PackedScene" uid="uid://bd4qvrtrmfs8n" path="res://fairy_enemy_left.tscn" id="4_tnik7"]
+[ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://fairy_enemy_right.tscn" id="1_hhrqr"]
+[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_maf4u"]
+[ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons bulletuphell/bulletuphell example/bullet test.tscn" id="3_7hqam"]
+[ext_resource type="PackedScene" uid="uid://bd4qvrtrmfs8n" path="res://fairy_enemy_left.tscn" id="4_xlwn1"]
 
 [sub_resource type="Curve2D" id="Curve2D_ycbdj"]
 _data = {
@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p1e6j"]
 resource_local_to_scene = true
-shader = ExtResource("2_iydqm")
+shader = ExtResource("2_maf4u")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
@@ -90,13 +90,13 @@ func _process(delta: float) -> void:
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3c8tv"]
 resource_local_to_scene = true
-shader = ExtResource("2_iydqm")
+shader = ExtResource("2_maf4u")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="FairyEnemyRightPath" parent="." instance=ExtResource("1_c0ihk")]
+[node name="FairyEnemyRightPath" parent="." instance=ExtResource("1_hhrqr")]
 position = Vector2(-266, -48)
 curve = SubResource("Curve2D_ycbdj")
 script = SubResource("GDScript_7oiqi")
@@ -105,21 +105,21 @@ script = SubResource("GDScript_7oiqi")
 material = SubResource("ShaderMaterial_p1e6j")
 animation = &"new_animation"
 
-[node name="Node2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="6" instance=ExtResource("3_5sk6h")]
+[node name="Node2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="6" instance=ExtResource("3_7hqam")]
 
 [node name="AnimationPlayer" parent="FairyEnemyRightPath" index="1"]
 libraries = {
 "": SubResource("AnimationLibrary_y4uyb")
 }
 
-[node name="FairyEnemyLeftPath" parent="." instance=ExtResource("4_tnik7")]
+[node name="FairyEnemyLeftPath" parent="." instance=ExtResource("4_xlwn1")]
 curve = SubResource("Curve2D_8j7sb")
 script = SubResource("GDScript_6i2vb")
 
 [node name="AnimatedSprite2D" parent="FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft" index="0"]
 material = SubResource("ShaderMaterial_3c8tv")
 
-[node name="Node2D" parent="FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft" index="6" instance=ExtResource("3_5sk6h")]
+[node name="Node2D" parent="FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft" index="6" instance=ExtResource("3_7hqam")]
 
 [editable path="FairyEnemyRightPath"]
 [editable path="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight/Node2D"]

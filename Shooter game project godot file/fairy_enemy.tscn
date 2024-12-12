@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://path2d.gd" id="1_0whpa"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="1_brf0a"]
-[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash/shadermaterial.tres" id="1_ughro"]
+[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="1_ughro"]
 [ext_resource type="Script" path="res://fairy_enemy.gd" id="1_xcsrf"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="2_rcxsq"]
-[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://explosion (1).wav" id="3_wi5ge"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="2_rcxsq"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="3_wi5ge"]
 
 [sub_resource type="Curve2D" id="Curve2D_ng13o"]
 _data = {

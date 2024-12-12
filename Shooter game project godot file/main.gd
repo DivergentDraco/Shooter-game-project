@@ -1,6 +1,5 @@
 extends Node2D
 
-var enemy = preload("res://enemy.tscn")
 var fairy_enemy = preload("res://fairy_enemy.tscn")
 var fairy_enemy_right = preload("res://fairy_enemy_right.tscn")
 var enemyscene1 = preload("res://EnemyScene1.tscn")

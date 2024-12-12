@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://player.gd" id="1_4pouc"]
 [ext_resource type="PackedScene" uid="uid://ce2sbgdju6rp7" path="res://bullet.tscn" id="2_6pkbm"]
-[ext_resource type="Texture2D" uid="uid://v3py8ibv6t5b" path="res://hitbox dot.png" id="3_pxxpu"]
-[ext_resource type="Texture2D" uid="uid://6endaft5f6sd" path="res://ship.png" id="4_wk375"]
-[ext_resource type="Texture2D" uid="uid://da7qkd04gabgm" path="res://thruster.png" id="5_kajnu"]
-[ext_resource type="AudioStream" uid="uid://dcv1ybqjnx2ph" path="res://laserShoot (1).wav" id="7_4v7vv"]
+[ext_resource type="Texture2D" uid="uid://v3py8ibv6t5b" path="res://Sprites and Animations/hitbox dot.png" id="3_pxxpu"]
+[ext_resource type="Texture2D" uid="uid://6endaft5f6sd" path="res://Sprites and Animations/ship.png" id="4_wk375"]
+[ext_resource type="Texture2D" uid="uid://da7qkd04gabgm" path="res://Sprites and Animations/thruster.png" id="5_kajnu"]
+[ext_resource type="AudioStream" uid="uid://dcv1ybqjnx2ph" path="res://SFX/laserShoot (1).wav" id="7_4v7vv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hokd4"]
 atlas = ExtResource("5_kajnu")
