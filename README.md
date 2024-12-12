@@ -13,3 +13,10 @@ Controls:\
 Mouse click the start button to start\
 Arrow keys to move\
 Z to shoot (You can just hold the button to continuously shoot it)
+
+TO DO LIST:
+- Fix and change the start button from clicking the start text to pressing Z button (priority)
+- Make more enemy scenes from the sprites and animations folder
+- Coming up with a better way to create the stage
+- Make a title screen / UI rework
+- Effect rework (Probably going with Balatro style)
