@@ -31,16 +31,6 @@ func _ready():
 #	spawn_enemies()	
 	
 	switch_wave = false
-
-func spawn_enemies0():
-	for x in range(9):
-		for y in range(3):
-			var e = fairy_enemy.instantiate()
-			var pos = Vector2(x * (16 + 8) + 24, 16 * 4 + y * 16)
-			add_child(e)
-			e.start(pos)
-			e.anchor = $EnemyAnchor
-			e.died.connect(_on_enemy_died)
 		
 func spawn_enemies1():
 	global.enemy_value = 6
