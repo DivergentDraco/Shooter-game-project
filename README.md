@@ -9,7 +9,7 @@ Now, with this discovery about the existence of Github. To any programmer who wa
 
 This game will be run by Godot, written in GDScript. It is a bullethell game that Nitirushh had an initial idea of, like a Touhou game but with some spices of Galaga.
 
-Controls:
-Mouse click the start button to start
-Arrow keys to move
+Controls:\
+Mouse click the start button to start\
+Arrow keys to move\
 Z to shoot (You can just hold the button to continuously shoot it)
