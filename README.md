@@ -9,6 +9,11 @@ Now, with this discovery about the existence of Github. To any programmer who wa
 
 This game will be run by Godot, written in GDScript. It is a bullethell game that Nitirushh had an initial idea of, like a Touhou game but with some spices of Galaga.
 
+How to import:
+- Open Godot and press "import"
+- Go to the "Shooter game project godot file" folder, select an obvious file called "project.godot"
+- Press "Import and edit" andddd should be good to go
+
 Controls:\
 Mouse click the start button to start\
 Arrow keys to move\
