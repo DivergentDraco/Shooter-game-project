@@ -1,0 +1,179 @@
+2a60927148abd1d33b818b535e306557
+::res://::1734113106
+bullet.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+bullet.tscn::PackedScene::5110429953173045114::1734108606::0::1::::<><>::res://bullet.gd<>uid://bgh2dexnxpy0x::::res://Outsourced asset/Mini Pixel Pack 3/Projectiles/Player_charged_beam (16 x 16).png
+bullet_pattern1.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
+bullet_pattern1.tscn::PackedScene::7698766748258639687::1734108606::0::1::::<><>::res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://bullet_pattern1.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Bullet/animStates.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd
+Camera2D.gd::GDScript::-1::1734108606::0::1::::<>Camera2D<>::
+enemy.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+enemy.tscn::PackedScene::3835174398594153721::1734108606::0::1::::<><>::res://enemy.gd<>uid://148x6b7nyi2f::::res://hitflash effect/shadermaterial.tres<>uid://bfvjqpdy1yspp::::res://Outsourced asset/Mini Pixel Pack 3/Enemies/Bon_Bon (16 x 16).png<>uid://dn1edfs6n7tjr::::res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png<>uid://bw06bb0c5676k::::res://SFX/explosion (1).wav
+EnemyScene1.tscn::PackedScene::252830857069589667::1734108606::0::1::::<><>::uid://brr06le18oxho::::res://fairy_enemy.tscn<>uid://bygrohdgh7s1c::::res://hitflash effect/hitflash.tres<>uid://dhxltfpmxiqep::::res://bullet_pattern1.tscn<>res://fairy_enemy.gd<>uid://dn1edfs6n7tjr::::res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png<>uid://dmcmw483kyqlv::::res://Sprites and Animations/fairy_idle.png<>uid://bw06bb0c5676k::::res://SFX/explosion (1).wav
+EnemyScene2.tscn::PackedScene::5726816418476217230::1734108606::0::1::::<><>::uid://c3demk7a4ol6::::res://fairy_enemy_right.tscn<>uid://bygrohdgh7s1c::::res://hitflash effect/hitflash.tres<>uid://cjwfaivji1uy2::::res://addons/bulletuphell example/bullet test.tscn<>uid://bd4qvrtrmfs8n::::res://fairy_enemy_left.tscn
+EnemyScene3.tscn::PackedScene::7681231247985693145::1734108606::0::1::::<><>::uid://c3demk7a4ol6::::res://fairy_enemy_right.tscn<>uid://bygrohdgh7s1c::::res://hitflash effect/hitflash.tres<>uid://cjwfaivji1uy2::::res://addons/bulletuphell example/bullet test.tscn<>uid://bd4qvrtrmfs8n::::res://fairy_enemy_left.tscn
+EnemyScene4.tscn::PackedScene::5692971995614267903::1734108606::0::1::::<><>::uid://c3demk7a4ol6::::res://fairy_enemy_right.tscn<>uid://bygrohdgh7s1c::::res://hitflash effect/hitflash.tres<>uid://cjwfaivji1uy2::::res://addons/bulletuphell example/bullet test.tscn<>uid://bd4qvrtrmfs8n::::res://fairy_enemy_left.tscn
+enemy_bullet.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+enemy_bullet.tscn::PackedScene::596031553461377279::1734108606::0::1::::<><>::res://enemy_bullet.gd<>uid://ctqixvff0dqtq::::res://Outsourced asset/Mini Pixel Pack 3/Projectiles/Enemy_projectile (16 x 16).png
+export_presets.cfg::TextFile::-1::1713372488::0::1::::<><>::
+FairyEnemyLeft.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+FairyEnemyRight.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+fairy_enemy.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+fairy_enemy.tscn::PackedScene::3616299316950947608::1734108606::0::1::::<><>::res://path2d.gd<>uid://dmcmw483kyqlv::::res://Sprites and Animations/fairy_idle.png<>uid://148x6b7nyi2f::::res://hitflash effect/shadermaterial.tres<>res://fairy_enemy.gd<>uid://dn1edfs6n7tjr::::res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png<>uid://bw06bb0c5676k::::res://SFX/explosion (1).wav
+fairy_enemy_left.tscn::PackedScene::2657864066068091007::1734108606::0::1::::<><>::res://path2d.gd<>res://FairyEnemyLeft.gd<>uid://148x6b7nyi2f::::res://hitflash effect/shadermaterial.tres<>uid://dn1edfs6n7tjr::::res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png<>uid://cdyc8xsgux0u1::::res://Sprites and Animations/fairy_left.png<>uid://bw06bb0c5676k::::res://SFX/explosion (1).wav
+fairy_enemy_right.tscn::PackedScene::198370205726993333::1734108606::0::1::::<><>::res://path2d.gd<>uid://148x6b7nyi2f::::res://hitflash effect/shadermaterial.tres<>res://FairyEnemyRight.gd<>uid://dn1edfs6n7tjr::::res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png<>uid://cegbjppyb37gg::::res://Sprites and Animations/fairy_right.png<>uid://bw06bb0c5676k::::res://SFX/explosion (1).wav
+global.gd::GDScript::-1::1734108606::0::1::::<>Node<>::
+main.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
+main.tscn::PackedScene::4712345680348375123::1734112991::0::1::::<><>::uid://b54c7ad6cogrm::::res://ui.tscn<>uid://cr7usmfo6apt8::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/GAME_OVER (72 x 8).png<>uid://o6gwbftsnc8c::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/START (48 x 8).png<>uid://cwuy4b17rh7ql::::res://Outsourced asset/Mini Pixel Pack 3/Space_BG (2 frames) (64 x 64).png<>uid://b32476hejmrnj::::res://player.tscn<>res://Camera2D.gd<>uid://s3pxeqbskeh::::res://SFX/Formless Onslaught.mp3
+nod.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
+path2d.gd::GDScript::-1::1734108606::0::1::::<>Path2D<>::
+player.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+player.tscn::PackedScene::4409266082344551735::1734108606::0::1::::<><>::res://player.gd<>uid://ce2sbgdju6rp7::::res://bullet.tscn<>uid://v3py8ibv6t5b::::res://Sprites and Animations/hitbox dot.png<>uid://6endaft5f6sd::::res://Sprites and Animations/ship.png<>uid://da7qkd04gabgm::::res://Sprites and Animations/thruster.png<>uid://dcv1ybqjnx2ph::::res://SFX/laserShoot (1).wav
+score_counter.gd::GDScript::-1::1734108606::0::1::::<>HBoxContainer<>::
+score_counter.tscn::PackedScene::6002797442312355136::1734108606::0::1::::<><>::uid://c0lmfobnrs7br::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/Number_font (8 x 8).png<>res://score_counter.gd
+score_image.tres::AtlasTexture::3797308374512315794::1734108606::0::1::::<><>::uid://c0lmfobnrs7br::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/Number_font (8 x 8).png
+ship.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+ui.gd::GDScript::-1::1734108606::0::1::::<>MarginContainer<>::
+ui.tscn::PackedScene::4552131533138437526::1734108606::0::1::::<><>::res://ui.gd<>uid://cj6xormygja1x::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/Item_held_box (16 x 16).png<>uid://c1qtmgu2gu1ss::::res://Outsourced asset/bar_background.png<>uid://crr2gxtgxt1cm::::res://score_counter.tscn<>uid://ct0lgoiryohfr::::res://Outsourced asset/bar_foreground.png<>uid://bd1m1f6xdmltw::::res://Outsourced asset/Mini Pixel Pack 3/Items/Circle_+_Square_+_Missile_pick-ups (16 x 16).png
+::res://addons/::1734113050
+::res://addons/BulletUpHell/::1734113050
+BuH.gd::GDScript::-1::1734108606::0::1::::<>EditorPlugin<>::
+BuHSpawner.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
+customFunctions.gd::GDScript::-1::1734108606::0::1::::customFunctions<>Node<>::
+plugin.cfg::TextFile::-1::1734108606::0::1::::<><>::
+Spawning.tscn::PackedScene::439070406509862218::1734108606::0::1::::<><>::res://addons/BulletUpHell/BuHSpawner.gd<>uid://cd6cgr3kffdfm::::res://addons/BulletUpHell/Bullet/Sprites/Bullet_3.png<>res://addons/BulletUpHell/Bullet/animStates.gd<>uid://cv7jl5y1wjsa7::::res://addons/BulletUpHell/Bullet/Sprites/Bullet_06.png<>uid://b151o05ir5qwv::::res://addons/BulletUpHell/Bullet/Sprites/Bullet_11.png<>uid://d3amsh6xky23b::::res://addons/BulletUpHell/Bullet/Hit Hurt.wav
+::res://addons/BulletUpHell/Bullet/::1734113050
+animStates.gd::GDScript::-1::1734108606::0::1::::animState<>Resource<>res://addons/BulletUpHell/Sprites/NodeIcons24.png::
+BulletNodeProps.gd::GDScript::-1::1734108606::0::1::::BulletNodeProps<>BulletProps<>res://addons/BulletUpHell/Sprites/NodeIcons21.png::
+BulletProps.gd::GDScript::-1::1734108606::0::1::::BulletProps<>PackedDataContainer<>res://addons/BulletUpHell/Sprites/NodeIcons15.png::
+Hit Hurt.wav::AudioStreamWAV::9125310837759437093::1734108606::1734112766::1::::<><>::
+ObjectProps.gd::GDScript::-1::1734108606::0::1::::ObjectProps<>PackedDataContainer<>res://addons/BulletUpHell/Sprites/NodeIcons18.png::
+::res://addons/BulletUpHell/Bullet/Sprites/::1734113050
+Bullet_3.png::CompressedTexture2D::5047536694037826810::1734108606::1734112763::1::::<><>::
+Bullet_06.png::CompressedTexture2D::6313434882569552336::1734108606::1734112763::1::::<><>::
+Bullet_11.png::CompressedTexture2D::4274866953645618497::1734108606::1734112763::1::::<><>::
+::res://addons/BulletUpHell/ExampleScenes/::1734113050
+Example0_Readme.tscn::PackedScene::2480148301616608955::1734108606::0::1::::<><>::
+Example1_Pattern_Types.tscn::PackedScene::6295888557719670333::1734108606::0::1::::<><>::res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCustomPoints.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCustomShape.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCustomArea.gd<>res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd
+Example2_Pattern_Properties.tscn::PackedScene::4813181636554972273::1734108606::0::1::::<><>::res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd<>res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd
+Example3_Cooldowns.tscn::PackedScene::2198374860434909842::1734108606::0::1::::<><>::res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd<>res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd
+Example4_Bullet_Customisation.tscn::PackedScene::6527188153252803814::1734108606::0::1::::<><>::res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd<>res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd
+Example5_Homing.tscn::PackedScene::3052985792588448121::1734108606::0::1::::<><>::res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd<>res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd<>uid://bn3bylu0n121i::::res://addons/BulletUpHell/Sprites/NodeIcons5.png
+Example6_Triggers.tscn::PackedScene::196553393859974850::1734108606::0::1::::<><>::res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/Nodes/BuHTriggerContainer.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd<>res://addons/BulletUpHell/Triggers/TriggerTime.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd<>res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Triggers/TriggerCollision.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd<>res://addons/BulletUpHell/Triggers/TriggerPos.gd<>uid://bn3bylu0n121i::::res://addons/BulletUpHell/Sprites/NodeIcons5.png
+Example7_SpawnScenes.tscn::PackedScene::7819917591385939960::1734108606::0::1::::<><>::res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd<>res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/ObjectProps.gd<>res://addons/BulletUpHell/Bullet/BulletNodeProps.gd<>res://addons/BulletUpHell/Nodes/BuHInstanceLister.gd<>res://addons/BulletUpHell/Nodes/BuHBulletNode.gd
+ExampleScene.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
+PlayerTest.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+PlayerTest.tscn::PackedScene::6410462834485025010::1734108606::0::1::::<><>::
+::res://addons/BulletUpHell/Nodes/::1734113050
+BuHBulletNode.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
+BuHBulletProperties.gd::GDScript::-1::1734108606::0::1::::<>Path2D<>::
+BuHInstanceLister.gd::GDScript::-1::1734108606::0::1::::InstanceLister<>Node<>::
+BuHPattern.gd::GDScript::-1::1734108606::0::1::::<>Path2D<>::
+BuHSpawnPoint.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
+BuHTriggerContainer.gd::GDScript::-1::1734108606::0::1::::TriggerContainer<>Node<>::
+::res://addons/BulletUpHell/SpawnPatterns/::1734113050
+Pattern.gd::GDScript::-1::1734108606::0::1::::Pattern<>NavigationPolygon<>res://addons/BulletUpHell/Sprites/NodeIcons4.png::
+PatternCircle.gd::GDScript::-1::1734108606::0::1::::PatternCircle<>Pattern<>res://addons/BulletUpHell/Sprites/NodeIcons6.png::
+PatternCustomArea.gd::GDScript::-1::1734108606::0::1::::PatternCustomArea<>Pattern<>res://addons/BulletUpHell/Sprites/NodeIcons17.png::
+PatternCustomPoints.gd::GDScript::-1::1734108606::0::1::::PatternCustomPoints<>Pattern<>res://addons/BulletUpHell/Sprites/NodeIcons16.png::
+PatternCustomShape.gd::GDScript::-1::1734108606::0::1::::PatternCustomShape<>Pattern<>res://addons/BulletUpHell/Sprites/NodeIcons9.png::
+PatternLine.gd::GDScript::-1::1734108606::0::1::::PatternLine<>Pattern<>res://addons/BulletUpHell/Sprites/NodeIcons7.png::
+PatternOne.gd::GDScript::-1::1734108606::0::1::::PatternOne<>Pattern<>res://addons/BulletUpHell/Sprites/NodeIcons8.png::
+::res://addons/BulletUpHell/Sprites/::1734113050
+BulletUpHell_Icon.png::CompressedTexture2D::2514362248873468956::1734108606::1734112763::1::::<><>::
+NodeIcons1.png::CompressedTexture2D::9020408639556433249::1734108606::1734112763::1::::<><>::
+NodeIcons2.png::CompressedTexture2D::9211129478772991742::1734108606::1734112763::1::::<><>::
+NodeIcons3.png::CompressedTexture2D::6257569959317766676::1734108606::1734112763::1::::<><>::
+NodeIcons4.png::CompressedTexture2D::7649556672900233557::1734108606::1734112763::1::::<><>::
+NodeIcons5.png::CompressedTexture2D::3356782413954931624::1734108606::1734112763::1::::<><>::
+NodeIcons6.png::CompressedTexture2D::1548489250065283659::1734108606::1734112763::1::::<><>::
+NodeIcons7.png::CompressedTexture2D::1721050317332715273::1734108606::1734112763::1::::<><>::
+NodeIcons8.png::CompressedTexture2D::4386028171701740465::1734108606::1734112763::1::::<><>::
+NodeIcons9.png::CompressedTexture2D::6695748210126922670::1734108606::1734112763::1::::<><>::
+NodeIcons10.png::CompressedTexture2D::8935059100936905763::1734108606::1734112763::1::::<><>::
+NodeIcons11.png::CompressedTexture2D::5437279444780732636::1734108606::1734112763::1::::<><>::
+NodeIcons12.png::CompressedTexture2D::3793780964154457589::1734108606::1734112763::1::::<><>::
+NodeIcons13.png::CompressedTexture2D::6500125943226268740::1734108606::1734112763::1::::<><>::
+NodeIcons14.png::CompressedTexture2D::5173949886686817951::1734108606::1734112763::1::::<><>::
+NodeIcons15.png::CompressedTexture2D::8726797135473547705::1734108606::1734112763::1::::<><>::
+NodeIcons16.png::CompressedTexture2D::7137355223600191488::1734108606::1734112763::1::::<><>::
+NodeIcons17.png::CompressedTexture2D::1135957711558311702::1734108606::1734112763::1::::<><>::
+NodeIcons18.png::CompressedTexture2D::3167875121025617649::1734108606::1734112763::1::::<><>::
+NodeIcons19.png::CompressedTexture2D::1197670779219211716::1734108606::1734112763::1::::<><>::
+NodeIcons20.png::CompressedTexture2D::4964713848957866819::1734108606::1734112763::1::::<><>::
+NodeIcons21.png::CompressedTexture2D::5369852888471951008::1734108606::1734112763::1::::<><>::
+NodeIcons22.png::CompressedTexture2D::6826780208688842653::1734108606::1734112763::1::::<><>::
+::res://addons/BulletUpHell/Triggers/::1734113050
+TriggerCollision.gd::GDScript::-1::1734108606::0::1::::TriggerCollision<>RichTextEffect<>res://addons/BulletUpHell/Sprites/NodeIcons13.png::
+TriggerPos.gd::GDScript::-1::1734108606::0::1::::TriggerPos<>RichTextEffect<>res://addons/BulletUpHell/Sprites/NodeIcons12.png::
+TriggerSignal.gd::GDScript::-1::1734108606::0::1::::TriggerSignal<>RichTextEffect<>res://addons/BulletUpHell/Sprites/NodeIcons11.png::
+TriggerTime.gd::GDScript::-1::1734108606::0::1::::TriggerTime<>RichTextEffect<>res://addons/BulletUpHell/Sprites/NodeIcons10.png::
+::res://addons/bulletuphell example/::1734108438
+bullet test.tscn::PackedScene::5450261308729990219::1734108606::0::1::::<><>::res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd<>res://addons/BulletUpHell/Bullet/animStates.gd<>res://addons/BulletUpHell/Bullet/BulletProps.gd<>res://addons/BulletUpHell/Nodes/BuHPattern.gd<>res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd<>res://addons/Rotor Node/Rotor.gd<>res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd
+::res://addons/Rotor Node/::1734113050
+icon.png::CompressedTexture2D::2835488169079851116::1734108606::1734112763::1::::<><>::
+plugin.cfg::TextFile::-1::1734108606::0::1::::<><>::
+Rotor.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
+RotorExample.tscn::PackedScene::2653803512521617263::1734108606::0::1::::<><>::res://addons/Rotor Node/Rotor.gd<>uid://bgnsctyge67oy::::res://addons/Rotor Node/icon.png
+rotor_plugin.gd::GDScript::-1::1734108606::0::1::::<>EditorPlugin<>::
+::res://Godot license/::1734037385
+icon.svg::CompressedTexture2D::9216870198302911917::1734108606::1734112763::1::::<><>::
+LICENSE.md::TextFile::-1::1734108606::0::1::::<><>::
+README.md::TextFile::-1::1734108606::0::1::::<><>::
+::res://hitflash effect/::1734111329
+hitflash.tres::VisualShader::4084396760103045934::1734112771::0::1::::<><>::
+shadermaterial.tres::ShaderMaterial::1886823254718599691::1734108606::0::1::::<><>::uid://bygrohdgh7s1c::::res://hitflash effect/hitflash.tres
+::res://Outsourced asset/::1734038066
+bar_background.png::CompressedTexture2D::6631956745701202494::1734108606::1734112763::1::::<><>::
+bar_foreground.png::CompressedTexture2D::6158718190534542439::1734108606::1734112762::1::::<><>::
+::res://Outsourced asset/Mini Pixel Pack 3/::1734036682
+LICENSE.txt::TextFile::-1::1734108606::0::1::::<><>::
+Space_BG (2 frames) (64 x 64).png::CompressedTexture2D::6359792572518976115::1734108606::1734112763::1::::<><>::
+::res://Outsourced asset/Mini Pixel Pack 3/Effects/::1734036682
+Explosion (16 x 16).png::CompressedTexture2D::8125639357182439615::1734108606::1734112763::1::::<><>::
+Sparkle (16 x 16).png::CompressedTexture2D::3681393715078318053::1734108606::1734112763::1::::<><>::
+::res://Outsourced asset/Mini Pixel Pack 3/Enemies/::1734036682
+Alan (16 x 16).png::CompressedTexture2D::2081343320645885322::1734108606::1734112763::1::::<><>::
+Bon_Bon (16 x 16).png::CompressedTexture2D::2781292653966719733::1734108606::1734112763::1::::<><>::
+Lips (16 x 16).png::CompressedTexture2D::5041823991704594095::1734108606::1734112763::1::::<><>::
+::res://Outsourced asset/Mini Pixel Pack 3/Items/::1734036682
+Circle_+_Square_+_Missile_pick-ups (16 x 16).png::CompressedTexture2D::2651436382322673656::1734108606::1734113107::1::::<><>::
+Power_item (16 x 16).png::CompressedTexture2D::1064286655618726718::1734108606::1734112763::1::::<><>::
+::res://Outsourced asset/Mini Pixel Pack 3/Player ship/::1734113051
+Boosters (16 x 16).png::CompressedTexture2D::1840613140712149733::1734108606::1734112762::1::::<><>::
+Boosters_left (16 x 16).png::CompressedTexture2D::2063445535552095833::1734108606::1734113107::1::::<><>::
+Boosters_right (16 x 16).png::CompressedTexture2D::4230420206997456055::1734108606::1734113107::1::::<><>::
+Player_ship (16 x 16).png::CompressedTexture2D::7061552164707830069::1734108606::1734113107::1::::<><>::
+::res://Outsourced asset/Mini Pixel Pack 3/Projectiles/::1734113051
+Enemy_projectile (16 x 16).png::CompressedTexture2D::6139987360750815838::1734108606::1734113107::1::::<><>::
+Player_beam (16 x 16).png::CompressedTexture2D::3594299668869128483::1734108606::1734113107::1::::<><>::
+Player_charged_beam (16 x 16).png::CompressedTexture2D::2823649352232039569::1734108606::1734113107::1::::<><>::
+Player_charged_donut_shot (16 x 16).png::CompressedTexture2D::6037451366570619522::1734108606::1734113107::1::::<><>::
+Player_charged_square_shot (16 x 16).png::CompressedTexture2D::192148672830040562::1734108606::1734113107::1::::<><>::
+Player_donut_shot (16 x 16).png::CompressedTexture2D::3164132721104762420::1734108606::1734113107::1::::<><>::
+Player_missile_shots (16 x 16).png::CompressedTexture2D::3604979871130021191::1734108606::1734113107::1::::<><>::
+Player_square_shot (16 x 16).png::CompressedTexture2D::4173810402841244385::1734108606::1734113107::1::::<><>::
+::res://Outsourced asset/Mini Pixel Pack 3/UI objects/::1734036682
+GAME_OVER (72 x 8).png::CompressedTexture2D::6033358920190047059::1734108606::1734112762::1::::<><>::
+Item_held_box (16 x 16).png::CompressedTexture2D::5469959074986072115::1734108606::1734113107::1::::<><>::
+Number_font (8 x 8).png::CompressedTexture2D::6551008884000220467::1734108606::1734112762::1::::<><>::
+Player_life_icon (16 x 16).png::CompressedTexture2D::4280037343784096451::1734108606::1734113107::1::::<><>::
+Power_+_charge_bars (full + empty) (32 x 16).png::CompressedTexture2D::52613876821793291::1734108606::1734113107::1::::<><>::
+START (48 x 8).png::CompressedTexture2D::1047043171866026644::1734108606::1734112763::1::::<><>::
+::res://SFX/::1734036768
+explosion (1).wav::AudioStreamWAV::3984068791426651136::1734108606::1734112766::1::::<><>::
+Formless Onslaught.mp3::AudioStreamMP3::38886877224403671::1734108606::1734112762::1::::<><>::
+laserShoot (1).wav::AudioStreamWAV::7344613249723716505::1734108606::1734112766::1::::<><>::
+::res://Sprites and Animations/::1734113051
+drone_idle.png::CompressedTexture2D::1014108802800459980::1734108606::1734112762::1::::<><>::
+drone_left.png::CompressedTexture2D::6214633440127374201::1734108606::1734112762::1::::<><>::
+drone_right.png::CompressedTexture2D::95577203123252719::1734108606::1734112762::1::::<><>::
+fairy_idle.png::CompressedTexture2D::8006426397065133931::1734108606::1734112762::1::::<><>::
+fairy_left.png::CompressedTexture2D::5033134565725934046::1734108606::1734112762::1::::<><>::
+fairy_right.png::CompressedTexture2D::5066060609715843458::1734108606::1734112762::1::::<><>::
+hitbox dot.png::CompressedTexture2D::1532723653161298225::1734108606::1734112762::1::::<><>::
+maid_extra_attack.png::CompressedTexture2D::6506805035473874072::1734108606::1734112762::1::::<><>::
+maid_idle.png::CompressedTexture2D::3268801660761658696::1734108606::1734112762::1::::<><>::
+maid_left.png::CompressedTexture2D::6275641401431350839::1734108606::1734112762::1::::<><>::
+maid_right.png::CompressedTexture2D::7429636296063996509::1734108606::1734112762::1::::<><>::
+ship.png::CompressedTexture2D::2184906350710539915::1734108606::1734112762::1::::<><>::
+thruster.png::CompressedTexture2D::7226311666548335900::1734108606::1734112762::1::::<><>::
+ufo_idle.png::CompressedTexture2D::8069558551367741047::1734108606::1734112762::1::::<><>::
