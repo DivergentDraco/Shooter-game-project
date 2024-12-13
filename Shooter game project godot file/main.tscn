@@ -64,14 +64,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GameOver" type="TextureRect" parent="CanvasLayer/CenterContainer"]
-layout_mode = 2
-texture = ExtResource("2_ts3fu")
-
 [node name="Start" type="TextureButton" parent="CanvasLayer/CenterContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("3_osiot")
+
+[node name="GameOver" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("2_ts3fu")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture_repeat = 2

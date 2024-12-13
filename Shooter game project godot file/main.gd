@@ -1,5 +1,18 @@
+"""
+This is the main code, it has important nodes and the majority of game functions operates in here.
+
+Here's how it works:
+	1. Add instances and variables, enemy scenes must be pre-made and preload them
+	2. With the player in the scene, ready the scene with start button and hide game over button
+	3. Spawn enemies in waves, each waves got calibrated inside its scene. It will continue to the next wave after every enemies got defeated (This operates inside func _process())
+
+If the player crashed into a bullet or enemy, it dies.
+	
+"""
+
 extends Node2D
 
+#Preloads enemy scenes
 var fairy_enemy = preload("res://fairy_enemy.tscn")
 var fairy_enemy_right = preload("res://fairy_enemy_right.tscn")
 var enemyscene1 = preload("res://EnemyScene1.tscn")
@@ -7,6 +20,7 @@ var enemyscene2 = preload("res://EnemyScene2.tscn")
 var enemyscene3 = preload("res://EnemyScene3.tscn")
 var enemyscene4 = preload("res://EnemyScene4.tscn")
 
+#Sets score, n as enemies' number
 var score = 0
 var playing = false
 var n = 0
@@ -16,7 +30,6 @@ var n = 0
 var current_wave: int
 @export var enemy_scene: PackedScene
 
-var switch_wave: bool
 var wave: int
 
 func _ready():
@@ -28,9 +41,6 @@ func _ready():
 	var tween2 = create_tween().set_loops().set_parallel(false).set_trans(Tween.TRANS_BACK)
 	tween2.tween_property($EnemyAnchor, "position:y", $EnemyAnchor.position.y + 3, 1.5).set_ease(Tween.EASE_IN_OUT)
 	tween2.tween_property($EnemyAnchor, "position:y", $EnemyAnchor.position.y - 3, 1.5).set_ease(Tween.EASE_IN_OUT)
-#	spawn_enemies()	
-	
-	switch_wave = false
 		
 func spawn_enemies1():
 	global.enemy_value = 6
@@ -89,17 +99,17 @@ func _on_player_died():
 	game_over.hide()
 	start_button.show()
 	
+func _on_start_pressed():
+	start_button.hide()
+	new_game()	
+	
 func new_game():
 	$StageMusic.play()
 	score = 0
 	$CanvasLayer/UI.update_score(score)
 	$Player.start()
-	playing = true
+	playing == true
 	spawn_enemies1()
-
-func _on_start_pressed():
-	start_button.hide()
-	new_game()
 
 func _on_area_2d_area_exited(area):
 	if area.is_in_group("enemies"):

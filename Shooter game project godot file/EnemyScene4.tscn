@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://fairy_enemy_right.tscn" id="1_fqklw"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_4fhv0"]
-[ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons bulletuphell/bulletuphell example/bullet test.tscn" id="3_du3jr"]
+[ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="3_du3jr"]
 [ext_resource type="PackedScene" uid="uid://bd4qvrtrmfs8n" path="res://fairy_enemy_left.tscn" id="4_r50qj"]
 
 [sub_resource type="Curve2D" id="Curve2D_ycbdj"]
