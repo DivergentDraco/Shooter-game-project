@@ -1,5 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://b8exv6qda8frv"]
+[gd_scene load_steps=14 format=3 uid="uid://b8exv6qda8frv"]
 
+[ext_resource type="Script" path="res://main.gd" id="1_21msh"]
 [ext_resource type="PackedScene" uid="uid://b54c7ad6cogrm" path="res://ui.tscn" id="1_ddoy4"]
 [ext_resource type="Texture2D" uid="uid://cr7usmfo6apt8" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/GAME_OVER (72 x 8).png" id="2_ts3fu"]
 [ext_resource type="Texture2D" uid="uid://o6gwbftsnc8c" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/START (48 x 8).png" id="3_osiot"]
@@ -52,6 +53,7 @@ _data = {
 size = Vector2(218.182, 292.727)
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_21msh")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -64,14 +66,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="GameOver" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("2_ts3fu")
+
 [node name="Start" type="TextureButton" parent="CanvasLayer/CenterContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("3_osiot")
-
-[node name="GameOver" type="TextureRect" parent="CanvasLayer/CenterContainer"]
-layout_mode = 2
-texture = ExtResource("2_ts3fu")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture_repeat = 2

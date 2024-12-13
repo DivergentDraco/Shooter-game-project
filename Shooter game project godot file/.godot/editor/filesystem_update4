@@ -1,1 +1,7 @@
 res://main.tscn
+res://hitflash effect/hitflash.tres
+res://bullet_pattern1.gd
+res://main.gd
+res://ui.gd
+res://enemy.tscn
+res://hitflash effect/shadermaterial.tres

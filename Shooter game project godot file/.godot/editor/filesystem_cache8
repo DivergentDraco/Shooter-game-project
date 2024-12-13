@@ -1,5 +1,5 @@
 2a60927148abd1d33b818b535e306557
-::res://::1734113106
+::res://::1734113222
 bullet.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
 bullet.tscn::PackedScene::5110429953173045114::1734108606::0::1::::<><>::res://bullet.gd<>uid://bgh2dexnxpy0x::::res://Outsourced asset/Mini Pixel Pack 3/Projectiles/Player_charged_beam (16 x 16).png
 bullet_pattern1.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
@@ -22,7 +22,7 @@ fairy_enemy_left.tscn::PackedScene::2657864066068091007::1734108606::0::1::::<><
 fairy_enemy_right.tscn::PackedScene::198370205726993333::1734108606::0::1::::<><>::res://path2d.gd<>uid://148x6b7nyi2f::::res://hitflash effect/shadermaterial.tres<>res://FairyEnemyRight.gd<>uid://dn1edfs6n7tjr::::res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png<>uid://cegbjppyb37gg::::res://Sprites and Animations/fairy_right.png<>uid://bw06bb0c5676k::::res://SFX/explosion (1).wav
 global.gd::GDScript::-1::1734108606::0::1::::<>Node<>::
 main.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
-main.tscn::PackedScene::4712345680348375123::1734112991::0::1::::<><>::uid://b54c7ad6cogrm::::res://ui.tscn<>uid://cr7usmfo6apt8::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/GAME_OVER (72 x 8).png<>uid://o6gwbftsnc8c::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/START (48 x 8).png<>uid://cwuy4b17rh7ql::::res://Outsourced asset/Mini Pixel Pack 3/Space_BG (2 frames) (64 x 64).png<>uid://b32476hejmrnj::::res://player.tscn<>res://Camera2D.gd<>uid://s3pxeqbskeh::::res://SFX/Formless Onslaught.mp3
+main.tscn::PackedScene::4712345680348375123::1734113118::0::1::::<><>::uid://b54c7ad6cogrm::::res://ui.tscn<>uid://cr7usmfo6apt8::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/GAME_OVER (72 x 8).png<>uid://o6gwbftsnc8c::::res://Outsourced asset/Mini Pixel Pack 3/UI objects/START (48 x 8).png<>uid://cwuy4b17rh7ql::::res://Outsourced asset/Mini Pixel Pack 3/Space_BG (2 frames) (64 x 64).png<>uid://b32476hejmrnj::::res://player.tscn<>res://Camera2D.gd<>uid://s3pxeqbskeh::::res://SFX/Formless Onslaught.mp3
 nod.gd::GDScript::-1::1734108606::0::1::::<>Node2D<>::
 path2d.gd::GDScript::-1::1734108606::0::1::::<>Path2D<>::
 player.gd::GDScript::-1::1734108606::0::1::::<>Area2D<>::
@@ -134,15 +134,15 @@ Sparkle (16 x 16).png::CompressedTexture2D::3681393715078318053::1734108606::173
 Alan (16 x 16).png::CompressedTexture2D::2081343320645885322::1734108606::1734112763::1::::<><>::
 Bon_Bon (16 x 16).png::CompressedTexture2D::2781292653966719733::1734108606::1734112763::1::::<><>::
 Lips (16 x 16).png::CompressedTexture2D::5041823991704594095::1734108606::1734112763::1::::<><>::
-::res://Outsourced asset/Mini Pixel Pack 3/Items/::1734036682
+::res://Outsourced asset/Mini Pixel Pack 3/Items/::1734113107
 Circle_+_Square_+_Missile_pick-ups (16 x 16).png::CompressedTexture2D::2651436382322673656::1734108606::1734113107::1::::<><>::
 Power_item (16 x 16).png::CompressedTexture2D::1064286655618726718::1734108606::1734112763::1::::<><>::
-::res://Outsourced asset/Mini Pixel Pack 3/Player ship/::1734113051
+::res://Outsourced asset/Mini Pixel Pack 3/Player ship/::1734113107
 Boosters (16 x 16).png::CompressedTexture2D::1840613140712149733::1734108606::1734112762::1::::<><>::
 Boosters_left (16 x 16).png::CompressedTexture2D::2063445535552095833::1734108606::1734113107::1::::<><>::
 Boosters_right (16 x 16).png::CompressedTexture2D::4230420206997456055::1734108606::1734113107::1::::<><>::
 Player_ship (16 x 16).png::CompressedTexture2D::7061552164707830069::1734108606::1734113107::1::::<><>::
-::res://Outsourced asset/Mini Pixel Pack 3/Projectiles/::1734113051
+::res://Outsourced asset/Mini Pixel Pack 3/Projectiles/::1734113107
 Enemy_projectile (16 x 16).png::CompressedTexture2D::6139987360750815838::1734108606::1734113107::1::::<><>::
 Player_beam (16 x 16).png::CompressedTexture2D::3594299668869128483::1734108606::1734113107::1::::<><>::
 Player_charged_beam (16 x 16).png::CompressedTexture2D::2823649352232039569::1734108606::1734113107::1::::<><>::
@@ -151,7 +151,7 @@ Player_charged_square_shot (16 x 16).png::CompressedTexture2D::19214867283004056
 Player_donut_shot (16 x 16).png::CompressedTexture2D::3164132721104762420::1734108606::1734113107::1::::<><>::
 Player_missile_shots (16 x 16).png::CompressedTexture2D::3604979871130021191::1734108606::1734113107::1::::<><>::
 Player_square_shot (16 x 16).png::CompressedTexture2D::4173810402841244385::1734108606::1734113107::1::::<><>::
-::res://Outsourced asset/Mini Pixel Pack 3/UI objects/::1734036682
+::res://Outsourced asset/Mini Pixel Pack 3/UI objects/::1734113107
 GAME_OVER (72 x 8).png::CompressedTexture2D::6033358920190047059::1734108606::1734112762::1::::<><>::
 Item_held_box (16 x 16).png::CompressedTexture2D::5469959074986072115::1734108606::1734113107::1::::<><>::
 Number_font (8 x 8).png::CompressedTexture2D::6551008884000220467::1734108606::1734112762::1::::<><>::

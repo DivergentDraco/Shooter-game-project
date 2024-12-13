@@ -79,9 +79,8 @@ func _on_enemy_died(value):
 	$Camera2D.add_trauma(0.5)
 
 func _process(_delta):
+	print (playing)
 	if playing == true:
-		
-		#print(wave)
 		if global.enemy_value == 0:
 			if wave == 1:
 				spawn_enemies1()
@@ -108,7 +107,7 @@ func new_game():
 	score = 0
 	$CanvasLayer/UI.update_score(score)
 	$Player.start()
-	playing == true
+	playing = true
 	spawn_enemies1()
 
 func _on_area_2d_area_exited(area):
