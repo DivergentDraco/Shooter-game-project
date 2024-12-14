@@ -2,6 +2,19 @@ res://main.tscn
 res://hitflash effect/hitflash.tres
 res://bullet_pattern1.gd
 res://main.gd
-res://ui.gd
 res://enemy.tscn
 res://hitflash effect/shadermaterial.tres
+res://EnemyScene3.tscn
+res://EnemyScene1.tscn
+res://EnemyScene4.tscn
+res://EnemyScene2.tscn
+res://fairy_enemy_left.tscn
+res://enemy_bullet.tscn
+res://bullet.tscn
+res://bullet_pattern1.tscn
+res://FairyEnemyRight.gd
+res://addons/bulletuphell example/bullet test.tscn
+res://addons/BulletUpHell/Spawning.tscn
+res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd
+res://addons/BulletUpHell/ExampleScenes/Example0_Readme.tscn
+res://addons/BulletUpHell/ExampleScenes/Example1_Pattern_Types.tscn

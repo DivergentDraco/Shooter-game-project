@@ -4,7 +4,7 @@ signal died
 
 var start_pos = Vector2.ZERO
 var speed = 100
-var bullet_scene = preload("res://enemy_bullet.tscn")
+#var bullet_scene = preload("res://enemy_bullet.tscn")
 var anchor
 var follow_anchor = false
 var hp = 3
@@ -37,9 +37,9 @@ func explode():
 		queue_free()
 
 func _on_shoot_timer_timeout():
-	var b = bullet_scene.instantiate()
-	get_tree().root.add_child(b)
-	b.start(position)
+	#var b = bullet_scene.instantiate()
+	#get_tree().root.add_child(b)
+	#b.start(position)
 	$ShootTimer.wait_time = randf_range(4, 20)
 	$ShootTimer.start()
 

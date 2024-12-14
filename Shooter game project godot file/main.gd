@@ -13,12 +13,7 @@ If the player crashed into a bullet or enemy, it dies.
 extends Node2D
 
 #Preloads enemy scenes
-var fairy_enemy = preload("res://fairy_enemy.tscn")
-var fairy_enemy_right = preload("res://fairy_enemy_right.tscn")
-var enemyscene1 = preload("res://EnemyScene1.tscn")
-var enemyscene2 = preload("res://EnemyScene2.tscn")
-var enemyscene3 = preload("res://EnemyScene3.tscn")
-var enemyscene4 = preload("res://EnemyScene4.tscn")
+@onready var resource_preloader = $ResourcePreloader
 
 #Sets score, n as enemies' number
 var score = 0
@@ -30,6 +25,7 @@ var n = 0
 var current_wave: int
 @export var enemy_scene: PackedScene
 
+#setting the wave number as int
 var wave: int
 
 func _ready():
@@ -41,37 +37,6 @@ func _ready():
 	var tween2 = create_tween().set_loops().set_parallel(false).set_trans(Tween.TRANS_BACK)
 	tween2.tween_property($EnemyAnchor, "position:y", $EnemyAnchor.position.y + 3, 1.5).set_ease(Tween.EASE_IN_OUT)
 	tween2.tween_property($EnemyAnchor, "position:y", $EnemyAnchor.position.y - 3, 1.5).set_ease(Tween.EASE_IN_OUT)
-		
-func spawn_enemies1():
-	global.enemy_value = 6
-	for n in 3:
-		var e = enemyscene1.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-	wave = 2
-	
-func spawn_enemies2():
-	global.enemy_value = 4
-	for n in 2:
-		var e = enemyscene2.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-	wave = 1
-		
-func spawn_enemies3():
-	global.enemy_value += 5
-	for n in 4:
-		var e = enemyscene3.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-	wave = 4
-		
-func spawn_enemies4():
-	while n < 1:
-		var e = enemyscene4.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-		n += 1
 
 func _on_enemy_died(value):
 	score += value
@@ -79,7 +44,7 @@ func _on_enemy_died(value):
 	$Camera2D.add_trauma(0.5)
 
 func _process(_delta):
-	print (playing)
+	print (global.enemy_value)
 	if playing == true:
 		if global.enemy_value == 0:
 			if wave == 1:
@@ -99,6 +64,9 @@ func _on_player_died():
 	start_button.show()
 	
 func _on_start_pressed():
+	#FIX! delete every bullets in the screen
+	get_tree().call_group("BulletProps", "queue_free")
+	
 	start_button.hide()
 	new_game()	
 	
@@ -113,3 +81,41 @@ func new_game():
 func _on_area_2d_area_exited(area):
 	if area.is_in_group("enemies"):
 		global.enemy_value -= 1
+
+"""
+The following section sets the enemy's waves
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+"""
+
+func spawn_enemies1():
+	#IMPORTANT: set global.enemy_value equals to the amount of enemies its going to spawn (refer to how much n(rounds) you add and the enemies in the scene)
+	global.enemy_value = 6
+	for n in 3:
+		var e = resource_preloader.get_resource("EnemyScene1").instantiate()
+		add_child(e)
+		await get_tree().create_timer(1).timeout
+	#sets wave number to 2, sending back to func _process(_delta) to select the 2nd wave and so on
+	wave = 2
+	
+func spawn_enemies2():
+	global.enemy_value = 4
+	for n in 2:
+		var e = resource_preloader.get_resource("EnemyScene2").instantiate()
+		add_child(e)
+		await get_tree().create_timer(1).timeout
+	wave = 3
+		
+func spawn_enemies3():
+	global.enemy_value += 8
+	for n in 4:
+		var e = resource_preloader.get_resource("EnemyScene3").instantiate()
+		add_child(e)
+		await get_tree().create_timer(1).timeout
+	wave = 4
+		
+func spawn_enemies4():
+	while n < 1:
+		var e = resource_preloader.get_resource("EnemyScene4").instantiate()
+		add_child(e)
+		await get_tree().create_timer(1).timeout
+		n += 1

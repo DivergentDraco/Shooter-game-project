@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cvx1mnumf2p38"]
+[gd_scene load_steps=26 format=3 uid="uid://cvx1mnumf2p38"]
 
 [ext_resource type="Script" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_3jldb"]
 [ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_ah2t8"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomShape.gd" id="7_aiav0"]
 [ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomArea.gd" id="8_ky438"]
 [ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="9_x0nxu"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="10_pgixx"]
 [ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_tkfof"]
 [ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="11_iv1jv"]
 
@@ -201,7 +202,7 @@ wait_tween_time = 0.0
 
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_yktta"]
 script = ExtResource("10_tkfof")
-anim_more = Array[Resource("res://addons/BulletUpHell/Bullet/animStates.gd")]([])
+anim_more = Array[ExtResource("10_pgixx")]([])
 damage = 1.0
 speed = 100.0
 scale = 1.0

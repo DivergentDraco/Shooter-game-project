@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b8exv6qda8frv"]
+[gd_scene load_steps=20 format=3 uid="uid://b8exv6qda8frv"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_21msh"]
 [ext_resource type="PackedScene" uid="uid://b54c7ad6cogrm" path="res://ui.tscn" id="1_ddoy4"]
@@ -8,6 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://b32476hejmrnj" path="res://player.tscn" id="5_7bpry"]
 [ext_resource type="Script" path="res://Camera2D.gd" id="6_nnvno"]
 [ext_resource type="AudioStream" uid="uid://s3pxeqbskeh" path="res://SFX/Formless Onslaught.mp3" id="7_ikw0u"]
+[ext_resource type="PackedScene" uid="uid://duqc75liklrf" path="res://EnemyScene1.tscn" id="9_wm16j"]
+[ext_resource type="PackedScene" uid="uid://cnud3hfcvjbhe" path="res://EnemyScene2.tscn" id="10_sdxdr"]
+[ext_resource type="PackedScene" uid="uid://dho30yobd33m8" path="res://EnemyScene3.tscn" id="11_00o35"]
+[ext_resource type="PackedScene" uid="uid://cndyogclaw7wd" path="res://EnemyScene4.tscn" id="12_bsm36"]
+[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="13_vdhg6"]
+[ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://fairy_enemy_right.tscn" id="14_8246c"]
 
 [sub_resource type="Animation" id="Animation_frim2"]
 length = 0.001
@@ -102,6 +108,9 @@ noise = SubResource("FastNoiseLite_uf0tv")
 [node name="StageMusic" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_ikw0u")
 volume_db = -5.706
+
+[node name="ResourcePreloader" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("EnemyScene1", "EnemyScene2", "EnemyScene3", "EnemyScene4", "fairy_enemy", "fairy_enemy_right"), [ExtResource("9_wm16j"), ExtResource("10_sdxdr"), ExtResource("11_00o35"), ExtResource("12_bsm36"), ExtResource("13_vdhg6"), ExtResource("14_8246c")]]
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(120, 160)
