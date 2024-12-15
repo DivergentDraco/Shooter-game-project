@@ -1,0 +1,196 @@
+[gd_scene load_steps=25 format=3 uid="uid://cod2ree4u3iep"]
+
+[ext_resource type="Script" path="res://fairy_enemy.gd" id="2_in01f"]
+[ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="3_dron8"]
+[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="3_em4nk"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_lpi5k"]
+[ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="5_wf1aj"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="6_rxvpa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jaa6u"]
+atlas = ExtResource("3_dron8")
+region = Rect2(0, 0, 28, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrw8i"]
+atlas = ExtResource("3_dron8")
+region = Rect2(28, 0, 28, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0q7ex"]
+atlas = ExtResource("3_dron8")
+region = Rect2(56, 0, 28, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xn5x"]
+atlas = ExtResource("3_dron8")
+region = Rect2(84, 0, 28, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
+atlas = ExtResource("4_lpi5k")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
+atlas = ExtResource("4_lpi5k")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
+atlas = ExtResource("4_lpi5k")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
+atlas = ExtResource("4_lpi5k")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
+atlas = ExtResource("4_lpi5k")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
+atlas = ExtResource("4_lpi5k")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajjby"]
+atlas = ExtResource("5_wf1aj")
+region = Rect2(0, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_puf11"]
+atlas = ExtResource("5_wf1aj")
+region = Rect2(36, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oaqyv"]
+atlas = ExtResource("5_wf1aj")
+region = Rect2(72, 0, 36, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_87myr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jaa6u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrw8i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0q7ex")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xn5x")
+}],
+"loop": true,
+"name": &"UFO_animation",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ap1v4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dab0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_om7ce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s5xor")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwnqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3mtu0")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajjby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_puf11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oaqyv")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_csg2p"]
+size = Vector2(26, 16)
+
+[sub_resource type="Animation" id="Animation_jemjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_iryfb"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
+_data = {
+"RESET": SubResource("Animation_jemjn"),
+"hit_flash": SubResource("Animation_iryfb")
+}
+
+[node name="UFOEnemy" type="Area2D" groups=["enemies"]]
+script = ExtResource("2_in01f")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = ExtResource("3_em4nk")
+sprite_frames = SubResource("SpriteFrames_87myr")
+animation = &"UFO_animation"
+autoplay = "UFO_animation"
+frame_progress = 0.0274713
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_csg2p")
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite2D")
+libraries = {
+"": SubResource("AnimationLibrary_ymajm")
+}
+
+[node name="MoveTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ExplodeSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_rxvpa")
+volume_db = -12.329
+max_polyphony = 10
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("")
+
+[connection signal="timeout" from="MoveTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

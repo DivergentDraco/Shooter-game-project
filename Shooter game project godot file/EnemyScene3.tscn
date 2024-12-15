@@ -1,9 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://dho30yobd33m8"]
+[gd_scene load_steps=16 format=3 uid="uid://dho30yobd33m8"]
 
+[ext_resource type="PackedScene" uid="uid://cod2ree4u3iep" path="res://UFO_enemy.tscn" id="1_dum65"]
 [ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://fairy_enemy_right.tscn" id="1_hhrqr"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_maf4u"]
 [ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="3_7hqam"]
 [ext_resource type="PackedScene" uid="uid://bd4qvrtrmfs8n" path="res://fairy_enemy_left.tscn" id="4_xlwn1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jdcfm"]
+resource_local_to_scene = true
+shader = ExtResource("2_maf4u")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
 
 [sub_resource type="Curve2D" id="Curve2D_ycbdj"]
 _data = {
@@ -96,6 +103,11 @@ shader_parameter/tint = Color(1, 1, 1, 1)
 
 [node name="Node2D" type="Node2D"]
 
+[node name="UFOEnemy" parent="." instance=ExtResource("1_dum65")]
+
+[node name="AnimatedSprite2D" parent="UFOEnemy" index="0"]
+material = SubResource("ShaderMaterial_jdcfm")
+
 [node name="FairyEnemyRightPath" parent="." instance=ExtResource("1_hhrqr")]
 position = Vector2(-266, -48)
 curve = SubResource("Curve2D_ycbdj")
@@ -121,6 +133,7 @@ material = SubResource("ShaderMaterial_3c8tv")
 
 [node name="Node2D" parent="FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft" index="6" instance=ExtResource("3_7hqam")]
 
+[editable path="UFOEnemy"]
 [editable path="FairyEnemyRightPath"]
 [editable path="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight/Node2D"]
 [editable path="FairyEnemyLeftPath"]

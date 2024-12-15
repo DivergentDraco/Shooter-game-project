@@ -3,50 +3,82 @@
 extends PackedDataContainer
 class_name BulletProps
 
-var damage:float = 1
-var speed:float = 100
-var scale:float = 1
-var angle:float = 0
-var groups:PackedStringArray = []
-var death_after_time:float = 30
-var death_outside_box:Rect2 = Rect2()
-var death_from_collision:bool = true
+@export var damage:float = 1
+@export var speed:float = 100
+@export var scale:float = 1
+@export_range(-PI,PI) var angle:float = 0
+@export var groups:PackedStringArray
+
+@export var custom_data:Dictionary = Spawning.custom_bullet_prop_data
+
+## destruction
+@export_group("Destruction", "death_")
+@export_range(0, 999999, 0.001, "hide_slider") var death_after_time:float = 30
+@export var death_outside_box:Rect2 = Rect2()
+@export var death_from_collision:bool = true
+@export_range(0, 999999, 0.1, "hide_slider") var death_speed_under:float = 0
+enum CullingLevel {Anim, Move, Full, Inherit}
+@export var death_culling_overwrite:CullingLevel = CullingLevel.Inherit
 
 ## animations
-@export_group("Animation", "anim_")
+@export_group("Animation")
+@export_subgroup("Color", "spec_")
+@export var spec_modulate:Gradient
+@export var spec_modulate_loop:float = 0.0
+@export var no_rotation:bool = false
 @export var anim_idle:animState
 @export var anim_spawn:animState
 @export var anim_shoot:animState
 @export var anim_waiting:animState
 @export var anim_delete:animState
 @export var anim_more:Array[animState] = []
+@export_subgroup("Trail", "spec_trail_")
+@export_range(0, 999999, 1, "hide_slider", "suffix:px") var spec_trail_length:float = 0.0
+@export_range(0, 999999, 1, "hide_slider", "suffix:px") var spec_trail_width:float = 0.0
+@export var spec_trail_modulate:Color = Color.WHITE
+@export var spec_trail_gradient:Gradient
+@export var spec_trail_fade_out:bool = false
+@export var spec_trail_thin_out:bool = false
+@export_range(0, 0.1, 0.001) var spec_trail_smooth:float = 0.03
 
 ## movement
-enum CURVE_TYPE{None,LoopFromStart,OnceThenDie,OnceThenStay,LoopFromEnd}
-var a_direction_equation:String = ""
-#var a_angular_equation:String = ""
-var a_curve_movement:int = CURVE_TYPE.None
+@export_group("Movement", "a_")
+enum CURVE_TYPE{None,LoopFromStart,OnceThenDie,OnceThenStay,LoopFromEnd,OnceThenStop}
+@export var a_direction_equation:String = ""
+@export var a_angular_equation:String = ""
+@export var a_curve_movement:CURVE_TYPE = CURVE_TYPE.None
 var curve:Curve2D = null
-var a_speed_multiplier:Curve = Curve.new()
-var a_speed_multi_iterations = 0
-var a_speed_multi_scale:float
+@export_range(-1, 999999) var a_speed_multi_iterations:int = 0
+@export var a_speed_multi_scale:float
+@export var a_speed_multiplier:Curve = Curve.new()
+@export_subgroup("Depth", "depth_")
+@export var depth_active:Vector2 = Vector2(0, 0)
+@export var depth_spawn:float = 0
+@export var depth_speed:float = 100
+@export var depth_min_max:Vector2 = Vector2(-300, 100)
+@export var depth_bounce:bool = false
+#@export var depth_fading:bool = false
+#@export var depth_scaling:bool = true
+
 
 ## special props
-var spec_bounces:int = 0
-var spec_no_collision:bool = false
-var spec_modulate:Gradient
-var spec_modulate_loop:float = 0.0
-#var spec_skew:float = 0.0
-var spec_rotating_speed:float = 0.0
-var spec_trail_length:float = 0.0
-var spec_trail_width:float = 0.0
-var spec_trail_modulate:Color = Color.WHITE
-#var spec_angle_no_colliding:float = 0.0
-#var spec_angle_no_coll_offset:float = 0.0
+@export_group("Physics", "spec_")
+@export_range(-1, 999999) var spec_bounces:int = 0
+#@export_range(-999999, 999999, 0.001, "hide_slider", "suffix:°", "radians_as_degrees") var spec_forced_bounce_angle:float = 0.0
+@export var spec_no_collision:bool = false
+@export var spec_rotating_speed:float = 0.0
+@export var spec_only_spin_sprite:bool = true
+@export var spec_weight:float = 1
+## advanced scale
+@export_subgroup("Scale", "scale_")
+@export_range(-1, 999999) var scale_multi_iterations:int = 0
+@export var scale_multiplier:Curve = Curve.new()
+@export var scale_multi_scale:float = 1
 
 ## triggers
-var trigger_container:String
-var trigger_wait_for_shot:bool = true
+@export_group("Triggers", "trigger")
+@export_placeholder("Container ID") var trigger_container:String
+@export var trigger_wait_for_shot:bool = true
 
 ## homing
 enum GROUP_SELECT{Nearest_on_homing,Nearest_on_spawn,Nearest_on_shoot,Nearest_anywhen,Random}
@@ -68,12 +100,12 @@ var homing_steer:float = 0
 var homing_time_start:float = 0
 var homing_duration:float = 999
 var homing_mouse:bool
+var homing_detection_dist:float = 0
+var homing_start_signal:String = ""
+var homing_range:Vector2 = Vector2(9999, 20)
+var homing_imprecision:Vector2 = Vector2(0,0)
 
-## advanced scale
-var scale_multi_iterations:int = 0
-var scale_multiplier:Curve = Curve.new()
-var scale_multi_scale:float = 1
-
+@export_subgroup("","")
 ## random
 var r_randomisation_chances:float=1
 # physics
@@ -115,6 +147,14 @@ var r_death_outside_chances:float
 var r_wait_for_shot_chances:float
 # draw
 # animations directly in
+#todo
+var r_no_coll_chances:float
+var r_modulate_variation:Vector3
+
+
+var node_homing:Node2D
+var node_container:Node2D
+
 
 var anim_idle_texture:String = "0"
 var anim_spawn_texture:String
@@ -128,14 +168,6 @@ var anim_idle_sfx:int = -1 #TODO change to string
 var anim_spawn_sfx:int = -1
 var anim_waiting_sfx:int = -1
 var anim_delete_sfx:int = -1
-#todo
-var r_no_coll_chances:float
-var r_modulate_variation:Vector3
-
-
-var node_homing:Node2D
-var node_container:Node2D
-
 
 func set_homing_type(value):
 	homing_type = value
@@ -143,136 +175,8 @@ func set_homing_type(value):
 	notify_property_list_changed()
 
 func _get_property_list() -> Array:
-	var PL1 = [{
-			name = "damage",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "speed",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "scale",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "angle",
-			type = TYPE_FLOAT,
-			hint = PROPERTY_HINT_RANGE,
-			hint_string = "-3.1416, 3.1416",
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "groups",
-			type = TYPE_PACKED_STRING_ARRAY,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "Animations",
-			type = TYPE_NIL,
-			hint_string = "anim_",
-			usage = PROPERTY_USAGE_GROUP
-		},
+	var PL1 = [
 		{
-			name = "Special Properties",
-			type = TYPE_NIL,
-			hint_string = "spec_",
-			usage = PROPERTY_USAGE_GROUP
-		},{
-			name = "spec_bounces",
-			type = TYPE_INT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "spec_no_collision",
-			type = TYPE_BOOL,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "spec_modulate",
-			type = TYPE_OBJECT,
-			hint = PROPERTY_HINT_RESOURCE_TYPE,
-			hint_string = "Gradient",
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "spec_modulate_loop",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "spec_trail_length",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "spec_trail_width",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "spec_trail_modulate",
-			type = TYPE_COLOR,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "spec_rotating_speed",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},
-		{
-			name = "Destruction",
-			type = TYPE_NIL,
-			hint_string = "death_",
-			usage = PROPERTY_USAGE_GROUP
-		},{
-			name = "death_after_time",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "death_outside_box",
-			type = TYPE_RECT2,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "death_from_collision",
-			type = TYPE_BOOL,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "Advanced Movement",
-			type = TYPE_NIL,
-			hint_string = "a_",
-			usage = PROPERTY_USAGE_GROUP
-		},{
-			name = "a_direction_equation",
-			type = TYPE_STRING,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "a_curve_movement",
-			type = TYPE_INT,
-			hint = PROPERTY_HINT_ENUM,
-			hint_string = CURVE_TYPE,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "a_speed_multiplier",
-			type = TYPE_OBJECT,
-			hint = PROPERTY_HINT_RESOURCE_TYPE,
-			hint_string = "Curve",
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "a_speed_multi_iterations",
-			type = TYPE_INT,
-			hint = PROPERTY_HINT_RANGE,
-			hint_string = "-1, 999999",
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "a_speed_multi_scale",
-			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "Triggers",
-			type = TYPE_NIL,
-			hint_string = "trigger_",
-			usage = PROPERTY_USAGE_GROUP
-		},{
-			name = "trigger_container",
-			type = TYPE_STRING,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "trigger_wait_for_shot",
-			type = TYPE_BOOL,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
 			name = "Homing",
 			type = TYPE_NIL,
 			hint_string = "homing_",
@@ -352,29 +256,27 @@ func _get_property_list() -> Array:
 		},{
 			name = "homing_duration",
 			type = TYPE_FLOAT,
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "Advanced Scale",
-			type = TYPE_NIL,
-			hint_string = "scale_",
-			usage = PROPERTY_USAGE_GROUP
-		},{
-			name = "scale_multi_iterations",
-			type = TYPE_INT,
 			hint = PROPERTY_HINT_RANGE,
-			hint_string = "-1, 999999",
+			hint_string = "0, 999999",
 			usage = PROPERTY_USAGE_DEFAULT
 		},{
-			name = "scale_multiplier",
-			type = TYPE_OBJECT,
-			hint = PROPERTY_HINT_RESOURCE_TYPE,
-			hint_string = "Curve",
-			usage = PROPERTY_USAGE_DEFAULT
-		},{
-			name = "scale_multi_scale",
+			name = "homing_detection_dist",
 			type = TYPE_FLOAT,
 			usage = PROPERTY_USAGE_DEFAULT
 		},{
+			name = "homing_start_signal",
+			type = TYPE_STRING,
+			usage = PROPERTY_USAGE_DEFAULT
+		},{
+			name = "homing_range",
+			type = TYPE_VECTOR2,
+			usage = PROPERTY_USAGE_DEFAULT
+		},{
+			name = "homing_imprecision",
+			type = TYPE_VECTOR2,
+			usage = PROPERTY_USAGE_DEFAULT
+		},
+		{
 			name = "Random",
 			type = TYPE_NIL,
 			hint_string = "r_",

@@ -64,8 +64,7 @@ func _on_player_died():
 	start_button.show()
 	
 func _on_start_pressed():
-	#FIX! delete every bullets in the screen
-	get_tree().call_group("BulletProps", "queue_free")
+	Spawning.clear_all_bullets()
 	
 	start_button.hide()
 	new_game()	
