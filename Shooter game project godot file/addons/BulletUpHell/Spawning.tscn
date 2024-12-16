@@ -101,7 +101,6 @@ default_delete = SubResource("Resource_tl1ht")
 [node name="0" type="Area2D" parent="SharedAreas"]
 
 [node name="ShapeManager" type="AnimatedSprite2D" parent="."]
-visible = false
 sprite_frames = SubResource("1")
 animation = &"Example"
 
@@ -117,9 +116,7 @@ shape = SubResource("3")
 stream = ExtResource("5_rada6")
 
 [node name="Bouncy" type="CharacterBody2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bouncy"]
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-visible = false

@@ -93,7 +93,7 @@ sprite_frames = SubResource("SpriteFrames_p6f8n")
 animation = &"right"
 autoplay = "forward"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="PlayerCollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_3oajm")
 
 [node name="GunCooldown" type="Timer" parent="."]

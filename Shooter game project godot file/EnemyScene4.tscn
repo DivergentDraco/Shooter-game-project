@@ -103,7 +103,6 @@ script = SubResource("GDScript_7oiqi")
 
 [node name="AnimatedSprite2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="0"]
 material = SubResource("ShaderMaterial_p1e6j")
-animation = &"new_animation"
 
 [node name="Node2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="6" instance=ExtResource("3_du3jr")]
 
