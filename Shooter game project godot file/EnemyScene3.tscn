@@ -1,18 +1,18 @@
-[gd_scene load_steps=44 format=3 uid="uid://dho30yobd33m8"]
+[gd_scene load_steps=45 format=3 uid="uid://dho30yobd33m8"]
 
-[ext_resource type="Script" path="res://UFO_path_follow_2d.gd" id="1_xsrsm"]
-[ext_resource type="Script" path="res://UFOEnemy.gd" id="2_ik5sw"]
+[ext_resource type="Script" uid="uid://dlpdb2xyeaavo" path="res://UFO_path_follow_2d.gd" id="1_xsrsm"]
+[ext_resource type="Script" uid="uid://bxbhfw1yu3m5c" path="res://UFOEnemy.gd" id="2_ik5sw"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_maf4u"]
 [ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="3_unjno"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_8x6f1"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="5_qlgjx"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="6_daamr"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="8_fs5ts"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="9_wubvn"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_oxqoo"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="11_qdmh1"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="12_6vw4v"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="14_ny3bb"]
+[ext_resource type="Script" uid="uid://duik6mnuviyhd" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="8_fs5ts"]
+[ext_resource type="Script" uid="uid://dk6iqdpc7n1tw" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="9_wubvn"]
+[ext_resource type="Script" uid="uid://cxc325lsu21hd" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_oxqoo"]
+[ext_resource type="Script" uid="uid://t0gcuhiw4ua7" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="11_qdmh1"]
+[ext_resource type="Script" uid="uid://tnd8up867va5" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="12_6vw4v"]
+[ext_resource type="Script" uid="uid://3tim1te65sv7" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="14_ny3bb"]
 
 [sub_resource type="Curve2D" id="Curve2D_sfs1t"]
 _data = {
@@ -52,8 +52,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ve51y"]
 _data = {
-"RESET": SubResource("Animation_kcb6x"),
-"new_animation": SubResource("Animation_yvjex")
+&"RESET": SubResource("Animation_kcb6x"),
+&"new_animation": SubResource("Animation_yvjex")
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jdcfm"]
@@ -189,6 +189,9 @@ tracks/0/keys = {
 "values": [false]
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5fn7f"]
+blend_mode = 1
+
 [sub_resource type="Animation" id="Animation_iryfb"]
 resource_name = "hit_flash"
 length = 0.1
@@ -202,20 +205,20 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [true, false]
+"values": [SubResource("CanvasItemMaterial_5fn7f"), false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-"RESET": SubResource("Animation_jemjn"),
-"hit_flash": SubResource("Animation_iryfb")
+&"RESET": SubResource("Animation_jemjn"),
+&"hit_flash": SubResource("Animation_iryfb")
 }
 
 [sub_resource type="Curve2D" id="Curve2D_v1s8e"]
 
-[sub_resource type="Curve" id="Curve_aknj0"]
+[sub_resource type="Curve" id="Curve_74x6a"]
 
-[sub_resource type="Curve" id="Curve_vf2ig"]
+[sub_resource type="Curve" id="Curve_k1e5a"]
 
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_72xe0"]
 script = ExtResource("10_oxqoo")
@@ -244,7 +247,7 @@ a_angular_equation = ""
 a_curve_movement = 0
 a_speed_multi_iterations = 0
 a_speed_multi_scale = 0.0
-a_speed_multiplier = SubResource("Curve_aknj0")
+a_speed_multiplier = SubResource("Curve_74x6a")
 depth_active = Vector2(0, 0)
 depth_spawn = 0.0
 depth_speed = 100.0
@@ -256,7 +259,7 @@ spec_rotating_speed = 0.0
 spec_only_spin_sprite = true
 spec_weight = 1.0
 scale_multi_iterations = 0
-scale_multiplier = SubResource("Curve_vf2ig")
+scale_multiplier = SubResource("Curve_k1e5a")
 scale_multi_scale = 1.0
 trigger_container = ""
 trigger_wait_for_shot = true
@@ -362,7 +365,7 @@ script = ExtResource("1_xsrsm")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UFOPath2D/PathFollow2D"]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_ve51y")
+&"": SubResource("AnimationLibrary_ve51y")
 }
 autoplay = "new_animation"
 
@@ -375,7 +378,6 @@ material = SubResource("ShaderMaterial_jdcfm")
 sprite_frames = SubResource("SpriteFrames_87myr")
 animation = &"UFO_animation"
 autoplay = "UFO_animation"
-frame_progress = 0.0274713
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
 shape = SubResource("RectangleShape2D_csg2p")
@@ -383,7 +385,7 @@ shape = SubResource("RectangleShape2D_csg2p")
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-"": SubResource("AnimationLibrary_ymajm")
+&"": SubResource("AnimationLibrary_ymajm")
 }
 
 [node name="MoveTimer" type="Timer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]

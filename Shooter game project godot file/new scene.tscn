@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bk1e2ts78fbin"]
+
+[ext_resource type="Script" uid="uid://qxx6qko2w5rl" path="res://new_script.gd" id="1_04n72"]
+
+[node name="NewScene" type="Node2D"]
+script = ExtResource("1_04n72")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

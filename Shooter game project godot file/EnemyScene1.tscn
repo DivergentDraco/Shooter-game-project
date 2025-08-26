@@ -1,18 +1,23 @@
-[gd_scene load_steps=28 format=3 uid="uid://duqc75liklrf"]
+[gd_scene load_steps=53 format=3 uid="uid://duqc75liklrf"]
 
-[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="1_ybym5"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_ndhw5"]
-[ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="3_oglmg"]
-[ext_resource type="Script" path="res://fairy_enemy.gd" id="4_ac6l7"]
+[ext_resource type="Script" uid="uid://b44shrc741sdh" path="res://fairy_enemy.gd" id="4_ac6l7"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="5_hee8e"]
+[ext_resource type="Script" uid="uid://h5rw6b6xhjgx" path="res://bullet_pattern1.gd" id="6_5hroy"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="6_or8kk"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="7_el8he"]
+[ext_resource type="Script" uid="uid://duik6mnuviyhd" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="7_segcq"]
+[ext_resource type="Script" uid="uid://dk6iqdpc7n1tw" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="8_wkrx3"]
+[ext_resource type="Script" uid="uid://cxc325lsu21hd" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="9_bvals"]
+[ext_resource type="Script" uid="uid://t0gcuhiw4ua7" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="10_oc37t"]
+[ext_resource type="Script" uid="uid://tnd8up867va5" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="11_tgjiw"]
+[ext_resource type="Script" uid="uid://3tim1te65sv7" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="12_vguwx"]
 
 [sub_resource type="Curve2D" id="Curve2D_k8rha"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 136)
+"points": PackedVector2Array(0, 0, 0, 0, 28, -6, 41.0585, 1.41581, -41.0585, -1.41581, 0, 136, 0, 0, 0, 0, -27, -19)
 }
-point_count = 2
+point_count = 3
 
 [sub_resource type="GDScript" id="GDScript_oes2y"]
 script/source = "extends Path2D
@@ -33,30 +38,6 @@ resource_local_to_scene = true
 shader = ExtResource("2_ndhw5")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
-
-[sub_resource type="Animation" id="Animation_81gsa"]
-length = 0.001
-
-[sub_resource type="Animation" id="Animation_mnlve"]
-resource_name = "ease"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PathFollow2D:progress_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.435275, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_upjx4"]
-_data = {
-"RESET": SubResource("Animation_81gsa"),
-"ease": SubResource("Animation_mnlve")
-}
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
 atlas = ExtResource("5_hee8e")
@@ -170,28 +151,363 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-"RESET": SubResource("Animation_jemjn"),
-"hit_flash": SubResource("Animation_iryfb")
+&"RESET": SubResource("Animation_jemjn"),
+&"hit_flash": SubResource("Animation_iryfb")
+}
+
+[sub_resource type="Curve2D" id="Curve2D_v1s8e"]
+
+[sub_resource type="Curve" id="Curve_c5f6y"]
+
+[sub_resource type="Curve" id="Curve_nen1w"]
+
+[sub_resource type="PackedDataContainer" id="PackedDataContainer_kjjyh"]
+script = ExtResource("9_bvals")
+damage = 1.0
+speed = 100.0
+scale = 0.3
+angle = -0.0006
+groups = PackedStringArray()
+custom_data = {}
+death_after_time = 15.0
+death_outside_box = Rect2(0, 0, 0, 0)
+death_from_collision = true
+death_speed_under = 0.0
+death_culling_overwrite = 3
+spec_modulate_loop = 0.0
+no_rotation = false
+anim_more = Array[ExtResource("8_wkrx3")]([])
+spec_trail_length = 0.0
+spec_trail_width = 0.0
+spec_trail_modulate = Color(1, 1, 1, 1)
+spec_trail_fade_out = false
+spec_trail_thin_out = false
+spec_trail_smooth = 0.03
+a_direction_equation = ""
+a_angular_equation = ""
+a_curve_movement = 0
+a_speed_multi_iterations = 0
+a_speed_multi_scale = 0.0
+a_speed_multiplier = SubResource("Curve_c5f6y")
+depth_active = Vector2(0, 0)
+depth_spawn = 0.0
+depth_speed = 100.0
+depth_min_max = Vector2(-300, 100)
+depth_bounce = false
+spec_bounces = 0
+spec_no_collision = false
+spec_rotating_speed = 0.0
+spec_only_spin_sprite = true
+spec_weight = 1.0
+scale_multi_iterations = 0
+scale_multiplier = SubResource("Curve_nen1w")
+scale_multi_scale = 1.0
+trigger_container = ""
+trigger_wait_for_shot = true
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 0.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_blkin"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_g6mvi"]
+resource_name = "PatternLine"
+source_geometry_group_name = &"navigation_polygon_source_group"
+script = ExtResource("11_tgjiw")
+offset = Vector2(0, 0)
+center = 1
+symmetric = true
+bullet = "1"
+nbr = 4
+iterations = 10
+cooldown_spawn = 0.1
+cooldown_shoot = 0.0
+cooldown_next_spawn = 0.0
+cooldown_next_shoot = 0.0
+cooldown_layers = PackedVector2Array()
+cooldown_stasis = false
+on_interruption = 0
+pattern_angle = 0.0
+pattern_angle_target = NodePath("")
+pattern_angle_mouse = false
+wait_behavior = 0
+wait_tween_momentum = 0
+wait_tween_length = 0.0
+wait_tween_time = 0.0
+forced_angle = 0.0
+forced_target = NodePath("")
+forced_lookat_mouse = false
+forced_pattern_lookat = true
+impulse = 0
+bullet_list = Array[String]([])
+skip_step = 0
+skip_list = Array[PackedInt32Array]([])
+skip_in_list = true
+
+[sub_resource type="Animation" id="Animation_81gsa"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_mnlve"]
+resource_name = "ease"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_upjx4"]
+_data = {
+&"RESET": SubResource("Animation_81gsa"),
+&"ease": SubResource("Animation_mnlve")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpd2m"]
+atlas = ExtResource("5_hee8e")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ns641"]
+atlas = ExtResource("5_hee8e")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w152l"]
+atlas = ExtResource("5_hee8e")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b7glw"]
+atlas = ExtResource("5_hee8e")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8y27a"]
+atlas = ExtResource("5_hee8e")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kx32g"]
+atlas = ExtResource("5_hee8e")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cohs1"]
+atlas = ExtResource("6_or8kk")
+region = Rect2(0, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x26tj"]
+atlas = ExtResource("6_or8kk")
+region = Rect2(36, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onmo2"]
+atlas = ExtResource("6_or8kk")
+region = Rect2(72, 0, 36, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lg0xb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kpd2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ns641")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w152l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b7glw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8y27a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kx32g")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cohs1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x26tj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_onmo2")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3bknm"]
+size = Vector2(18, 22)
+
+[sub_resource type="Animation" id="Animation_m470b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_plb43"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c0xpb"]
+_data = {
+&"RESET": SubResource("Animation_m470b"),
+&"hit_flash": SubResource("Animation_plb43")
 }
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(52, 0)
 
-[node name="FairyEnemyPath" parent="." instance=ExtResource("1_ybym5")]
+[node name="FairyEnemyPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_k8rha")
 script = SubResource("GDScript_oes2y")
 
-[node name="PathFollow2D" parent="FairyEnemyPath" index="0"]
+[node name="PathFollow2D" type="PathFollow2D" parent="FairyEnemyPath"]
+position = Vector2(28, -6)
+rotates = false
 loop = false
 
-[node name="AnimatedSprite2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy" index="0"]
+[node name="FairyEnemy" type="Area2D" parent="FairyEnemyPath/PathFollow2D" groups=["enemies"]]
+script = ExtResource("4_ac6l7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
 material = SubResource("ShaderMaterial_echkn")
+sprite_frames = SubResource("SpriteFrames_87myr")
+animation = &"new_animation"
+autoplay = "new_animation"
 
-[node name="bullet_pattern1" parent="FairyEnemyPath/PathFollow2D/FairyEnemy" index="7" instance=ExtResource("3_oglmg")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
+shape = SubResource("RectangleShape2D_csg2p")
 
-[node name="AnimationPlayer" parent="FairyEnemyPath" index="1"]
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
+root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-"": SubResource("AnimationLibrary_upjx4")
+&"": SubResource("AnimationLibrary_ymajm")
+}
+
+[node name="MoveTimer" type="Timer" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
+one_shot = true
+
+[node name="ExplodeSFX" type="AudioStreamPlayer" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
+stream = ExtResource("7_el8he")
+volume_db = -12.329
+max_polyphony = 10
+bus = &"New Bus"
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
+
+[node name="bullet_pattern1" type="Node2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy"]
+script = ExtResource("6_5hroy")
+
+[node name="BulletPattern" type="Path2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy/bullet_pattern1"]
+curve = SubResource("Curve2D_v1s8e")
+script = ExtResource("7_segcq")
+id = "1"
+props = SubResource("PackedDataContainer_kjjyh")
+
+[node name="SpawnPattern" type="Path2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy/bullet_pattern1"]
+curve = SubResource("Curve2D_blkin")
+script = ExtResource("10_oc37t")
+id = "two"
+pattern = SubResource("NavigationPolygon_g6mvi")
+
+[node name="RayCast2D" type="RayCast2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy/bullet_pattern1"]
+target_position = Vector2(28, 0)
+collision_mask = 3
+
+[node name="SpawnPoint" type="Node2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy/bullet_pattern1/RayCast2D"]
+script = ExtResource("12_vguwx")
+auto_pattern_id = "two"
+pool_amount = 100
+auto_start_after_time = 0.3
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FairyEnemyPath"]
+libraries = {
+&"": SubResource("AnimationLibrary_upjx4")
 }
 autoplay = "ease"
 
@@ -199,10 +515,11 @@ autoplay = "ease"
 position = Vector2(130, 0)
 curve = SubResource("Curve2D_k8rha")
 script = SubResource("GDScript_oes2y")
+metadata/_edit_lock_ = true
 
 [node name="PathFollow2D" type="PathFollow2D" parent="FairyEnemyPath2"]
-position = Vector2(0, 136)
-progress = 136.0
+position = Vector2(-28.3426, 0.737101)
+progress = 300.392
 rotates = false
 loop = false
 
@@ -211,17 +528,17 @@ script = ExtResource("4_ac6l7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
 material = SubResource("ShaderMaterial_echkn")
-sprite_frames = SubResource("SpriteFrames_87myr")
+sprite_frames = SubResource("SpriteFrames_lg0xb")
 animation = &"new_animation"
 autoplay = "new_animation"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
-shape = SubResource("RectangleShape2D_csg2p")
+shape = SubResource("RectangleShape2D_3bknm")
 
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-"": SubResource("AnimationLibrary_ymajm")
+&"": SubResource("AnimationLibrary_c0xpb")
 }
 
 [node name="MoveTimer" type="Timer" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
@@ -237,16 +554,48 @@ max_polyphony = 10
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
 
-[node name="bullet_pattern1" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy" instance=ExtResource("3_oglmg")]
+[node name="bullet_pattern1" type="Node2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
+script = ExtResource("6_5hroy")
+
+[node name="BulletPattern" type="Path2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy/bullet_pattern1"]
+curve = SubResource("Curve2D_v1s8e")
+script = ExtResource("7_segcq")
+id = "1"
+props = SubResource("PackedDataContainer_kjjyh")
+
+[node name="SpawnPattern" type="Path2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy/bullet_pattern1"]
+curve = SubResource("Curve2D_blkin")
+script = ExtResource("10_oc37t")
+id = "two"
+pattern = SubResource("NavigationPolygon_g6mvi")
+
+[node name="RayCast2D" type="RayCast2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy/bullet_pattern1"]
+target_position = Vector2(28, 0)
+collision_mask = 3
+
+[node name="SpawnPoint" type="Node2D" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy/bullet_pattern1/RayCast2D"]
+script = ExtResource("12_vguwx")
+auto_pattern_id = "two"
+pool_amount = 100
+auto_start_after_time = 0.3
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="FairyEnemyPath2"]
 libraries = {
-"": SubResource("AnimationLibrary_upjx4")
+&"": SubResource("AnimationLibrary_upjx4")
 }
 autoplay = "ease"
 
+[connection signal="area_exited" from="FairyEnemyPath/PathFollow2D/FairyEnemy" to="FairyEnemyPath/PathFollow2D/FairyEnemy" method="_on_area_exited"]
+[connection signal="timeout" from="FairyEnemyPath/PathFollow2D/FairyEnemy/MoveTimer" to="FairyEnemyPath/PathFollow2D/FairyEnemy" method="_on_timer_timeout"]
+[connection signal="timeout" from="FairyEnemyPath/PathFollow2D/FairyEnemy/ShootTimer" to="FairyEnemyPath/PathFollow2D/FairyEnemy" method="_on_shoot_timer_timeout"]
+[connection signal="screen_exited" from="FairyEnemyPath/PathFollow2D/FairyEnemy/VisibleOnScreenNotifier2D" to="FairyEnemyPath/PathFollow2D/FairyEnemy" method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="FairyEnemyPath2/PathFollow2D/FairyEnemy/MoveTimer" to="FairyEnemyPath2/PathFollow2D/FairyEnemy" method="_on_timer_timeout"]
 [connection signal="timeout" from="FairyEnemyPath2/PathFollow2D/FairyEnemy/ShootTimer" to="FairyEnemyPath2/PathFollow2D/FairyEnemy" method="_on_shoot_timer_timeout"]
 [connection signal="screen_exited" from="FairyEnemyPath2/PathFollow2D/FairyEnemy/VisibleOnScreenNotifier2D" to="FairyEnemyPath2/PathFollow2D/FairyEnemy" method="_on_visible_on_screen_notifier_2d_screen_exited"]
-
-[editable path="FairyEnemyPath"]

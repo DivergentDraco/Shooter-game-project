@@ -64,8 +64,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y4uyb"]
 _data = {
-"RESET": SubResource("Animation_0vqsy"),
-"ease": SubResource("Animation_qwawq")
+&"RESET": SubResource("Animation_0vqsy"),
+&"ease": SubResource("Animation_qwawq")
 }
 
 [sub_resource type="Curve2D" id="Curve2D_8j7sb"]
@@ -103,13 +103,12 @@ script = SubResource("GDScript_7oiqi")
 
 [node name="AnimatedSprite2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="0"]
 material = SubResource("ShaderMaterial_p1e6j")
-animation = &"new_animation"
 
 [node name="Node2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="6" instance=ExtResource("3_0nj84")]
 
 [node name="AnimationPlayer" parent="FairyEnemyRightPath" index="1"]
 libraries = {
-"": SubResource("AnimationLibrary_y4uyb")
+&"": SubResource("AnimationLibrary_y4uyb")
 }
 
 [node name="FairyEnemyLeftPath" parent="." instance=ExtResource("4_8byui")]
