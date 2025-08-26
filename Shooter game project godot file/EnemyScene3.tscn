@@ -1,42 +1,30 @@
-[gd_scene load_steps=14 format=3 uid="uid://dho30yobd33m8"]
+[gd_scene load_steps=45 format=3 uid="uid://dho30yobd33m8"]
 
-[ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://fairy_enemy_right.tscn" id="1_hhrqr"]
+[ext_resource type="Script" uid="uid://dlpdb2xyeaavo" path="res://UFO_path_follow_2d.gd" id="1_xsrsm"]
+[ext_resource type="Script" uid="uid://bxbhfw1yu3m5c" path="res://UFOEnemy.gd" id="2_ik5sw"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_maf4u"]
-[ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="3_7hqam"]
-[ext_resource type="PackedScene" uid="uid://bd4qvrtrmfs8n" path="res://fairy_enemy_left.tscn" id="4_xlwn1"]
+[ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="3_unjno"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_8x6f1"]
+[ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="5_qlgjx"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="6_daamr"]
+[ext_resource type="Script" uid="uid://duik6mnuviyhd" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="8_fs5ts"]
+[ext_resource type="Script" uid="uid://dk6iqdpc7n1tw" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="9_wubvn"]
+[ext_resource type="Script" uid="uid://cxc325lsu21hd" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_oxqoo"]
+[ext_resource type="Script" uid="uid://t0gcuhiw4ua7" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="11_qdmh1"]
+[ext_resource type="Script" uid="uid://tnd8up867va5" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="12_6vw4v"]
+[ext_resource type="Script" uid="uid://3tim1te65sv7" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="14_ny3bb"]
 
-[sub_resource type="Curve2D" id="Curve2D_ycbdj"]
+[sub_resource type="Curve2D" id="Curve2D_sfs1t"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 255, 83, 0, 0, 0, 0, 255, 82, -70.9957, -17.3982, 70.9957, 17.3982, 390, 166, 0, 0, 0, 0, 525, 180)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 25.7166, 4.45953, -25.7166, -4.45953, -59, 47, 1.33786, 13.8245, -1.33786, -13.8245, -99, 24, -56.7846, 0, 56.7846, 0, -14, 12, 2.50282, -25.1951, -2.50282, 25.1951, 92, 50, -1.50169, 35.2064, 1.50169, -35.2064, -96, 41, 0, 0, 0, 0, 187, 37)
 }
-point_count = 4
+point_count = 8
 
-[sub_resource type="GDScript" id="GDScript_7oiqi"]
-script/source = "extends Path2D
-
-var speed = 100
-
-@onready var screensize  = get_viewport_rect().size
-@onready var pathfollow:PathFollow2D = $PathFollow2D
-	
-func _process(delta: float) -> void:
-	pathfollow.progress += speed * delta
-	
-	
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p1e6j"]
-resource_local_to_scene = true
-shader = ExtResource("2_maf4u")
-shader_parameter/enabled = false
-shader_parameter/tint = Color(1, 1, 1, 1)
-
-[sub_resource type="Animation" id="Animation_0vqsy"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_kcb6x"]
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../..:progress")
+tracks/0/path = NodePath("PathFollow2D:progress_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -46,81 +34,405 @@ tracks/0/keys = {
 "values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_qwawq"]
-resource_name = "ease"
-length = 4.0
+[sub_resource type="Animation" id="Animation_yvjex"]
+resource_name = "new_animation"
+length = 9.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../..:progress")
+tracks/0/path = NodePath("PathFollow2D:progress_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2.2),
-"transitions": PackedFloat32Array(1.51572, 4.43828),
+"times": PackedFloat32Array(0, 1.66667, 1.86667, 8.6),
+"transitions": PackedFloat32Array(0.217638, 1, 1, 1),
 "update": 0,
-"values": [0.0, 278.212]
+"values": [0.0, 0.0638298, 0.0638298, 1.0]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_y4uyb"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ve51y"]
 _data = {
-"RESET": SubResource("Animation_0vqsy"),
-"ease": SubResource("Animation_qwawq")
+&"RESET": SubResource("Animation_kcb6x"),
+&"new_animation": SubResource("Animation_yvjex")
 }
 
-[sub_resource type="Curve2D" id="Curve2D_8j7sb"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 249, 34, 64.3467, -24.0416, -64.3467, 24.0416, 146, 106, 0, 0, 0, 0, -20, 132)
-}
-point_count = 3
-
-[sub_resource type="GDScript" id="GDScript_6i2vb"]
-script/source = "extends Path2D
-
-var speed = 100
-
-@onready var screensize  = get_viewport_rect().size
-@onready var pathfollow:PathFollow2D = $PathFollow2D
-	
-func _process(delta: float) -> void:
-	pathfollow.progress += speed * delta
-	
-	
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3c8tv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jdcfm"]
 resource_local_to_scene = true
 shader = ExtResource("2_maf4u")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jaa6u"]
+atlas = ExtResource("3_unjno")
+region = Rect2(0, 0, 28, 18)
 
-[node name="FairyEnemyRightPath" parent="." instance=ExtResource("1_hhrqr")]
-position = Vector2(-266, -48)
-curve = SubResource("Curve2D_ycbdj")
-script = SubResource("GDScript_7oiqi")
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrw8i"]
+atlas = ExtResource("3_unjno")
+region = Rect2(28, 0, 28, 18)
 
-[node name="AnimatedSprite2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="0"]
-material = SubResource("ShaderMaterial_p1e6j")
-animation = &"new_animation"
+[sub_resource type="AtlasTexture" id="AtlasTexture_0q7ex"]
+atlas = ExtResource("3_unjno")
+region = Rect2(56, 0, 28, 18)
 
-[node name="Node2D" parent="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight" index="6" instance=ExtResource("3_7hqam")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xn5x"]
+atlas = ExtResource("3_unjno")
+region = Rect2(84, 0, 28, 18)
 
-[node name="AnimationPlayer" parent="FairyEnemyRightPath" index="1"]
-libraries = {
-"": SubResource("AnimationLibrary_y4uyb")
+[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
+atlas = ExtResource("4_8x6f1")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
+atlas = ExtResource("4_8x6f1")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
+atlas = ExtResource("4_8x6f1")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
+atlas = ExtResource("4_8x6f1")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
+atlas = ExtResource("4_8x6f1")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
+atlas = ExtResource("4_8x6f1")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajjby"]
+atlas = ExtResource("5_qlgjx")
+region = Rect2(0, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_puf11"]
+atlas = ExtResource("5_qlgjx")
+region = Rect2(36, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oaqyv"]
+atlas = ExtResource("5_qlgjx")
+region = Rect2(72, 0, 36, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_87myr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jaa6u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrw8i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0q7ex")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xn5x")
+}],
+"loop": true,
+"name": &"UFO_animation",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ap1v4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dab0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_om7ce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s5xor")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwnqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3mtu0")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajjby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_puf11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oaqyv")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_csg2p"]
+size = Vector2(26, 16)
+
+[sub_resource type="Animation" id="Animation_jemjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
-[node name="FairyEnemyLeftPath" parent="." instance=ExtResource("4_xlwn1")]
-curve = SubResource("Curve2D_8j7sb")
-script = SubResource("GDScript_6i2vb")
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5fn7f"]
+blend_mode = 1
 
-[node name="AnimatedSprite2D" parent="FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft" index="0"]
-material = SubResource("ShaderMaterial_3c8tv")
+[sub_resource type="Animation" id="Animation_iryfb"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("CanvasItemMaterial_5fn7f"), false]
+}
 
-[node name="Node2D" parent="FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft" index="6" instance=ExtResource("3_7hqam")]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
+_data = {
+&"RESET": SubResource("Animation_jemjn"),
+&"hit_flash": SubResource("Animation_iryfb")
+}
 
-[editable path="FairyEnemyRightPath"]
-[editable path="FairyEnemyRightPath/PathFollow2D/FairyEnemyRight/Node2D"]
-[editable path="FairyEnemyLeftPath"]
+[sub_resource type="Curve2D" id="Curve2D_v1s8e"]
+
+[sub_resource type="Curve" id="Curve_74x6a"]
+
+[sub_resource type="Curve" id="Curve_k1e5a"]
+
+[sub_resource type="PackedDataContainer" id="PackedDataContainer_72xe0"]
+script = ExtResource("10_oxqoo")
+damage = 1.0
+speed = 200.0
+scale = 0.3
+angle = 0.0
+groups = PackedStringArray()
+custom_data = {}
+death_after_time = 30.0
+death_outside_box = Rect2(0, 0, 0, 0)
+death_from_collision = true
+death_speed_under = 0.0
+death_culling_overwrite = 3
+spec_modulate_loop = 0.0
+no_rotation = false
+anim_more = Array[ExtResource("9_wubvn")]([])
+spec_trail_length = 0.0
+spec_trail_width = 0.0
+spec_trail_modulate = Color(1, 1, 1, 1)
+spec_trail_fade_out = false
+spec_trail_thin_out = false
+spec_trail_smooth = 0.03
+a_direction_equation = ""
+a_angular_equation = ""
+a_curve_movement = 0
+a_speed_multi_iterations = 0
+a_speed_multi_scale = 0.0
+a_speed_multiplier = SubResource("Curve_74x6a")
+depth_active = Vector2(0, 0)
+depth_spawn = 0.0
+depth_speed = 100.0
+depth_min_max = Vector2(-300, 100)
+depth_bounce = false
+spec_bounces = 0
+spec_no_collision = false
+spec_rotating_speed = 0.0
+spec_only_spin_sprite = true
+spec_weight = 1.0
+scale_multi_iterations = 0
+scale_multiplier = SubResource("Curve_k1e5a")
+scale_multi_scale = 1.0
+trigger_container = ""
+trigger_wait_for_shot = true
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_blkin"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_111uy"]
+resource_name = "PatternLine"
+script = ExtResource("12_6vw4v")
+offset = Vector2(0, 0)
+center = 0
+symmetric = true
+bullet = "ufo"
+nbr = 1
+iterations = 50
+cooldown_spawn = 0.2
+cooldown_shoot = 0.0
+cooldown_next_spawn = 0.0
+cooldown_next_shoot = 0.0
+cooldown_layers = PackedVector2Array()
+cooldown_stasis = false
+on_interruption = 0
+pattern_angle = 0.0
+pattern_angle_target = NodePath("")
+pattern_angle_mouse = false
+wait_behavior = 0
+wait_tween_momentum = 0
+wait_tween_length = 0.0
+wait_tween_time = 0.0
+forced_angle = 1.5708
+forced_target = NodePath("")
+forced_lookat_mouse = false
+forced_pattern_lookat = true
+impulse = 0
+bullet_list = Array[String]([])
+skip_step = 0
+skip_list = Array[PackedInt32Array]([])
+skip_in_list = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2jhan"]
+size = Vector2(222.727, 320)
+
+[node name="Node2D" type="Node2D"]
+metadata/_edit_lock_ = true
+
+[node name="UFOPath2D" type="Path2D" parent="."]
+position = Vector2(109, 14)
+curve = SubResource("Curve2D_sfs1t")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="UFOPath2D"]
+rotation = 1.5708
+rotates = false
+loop = false
+script = ExtResource("1_xsrsm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UFOPath2D/PathFollow2D"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_ve51y")
+}
+autoplay = "new_animation"
+
+[node name="UFOEnemy" type="Area2D" parent="UFOPath2D/PathFollow2D" groups=["enemies"]]
+rotation = -1.5708
+script = ExtResource("2_ik5sw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+material = SubResource("ShaderMaterial_jdcfm")
+sprite_frames = SubResource("SpriteFrames_87myr")
+animation = &"UFO_animation"
+autoplay = "UFO_animation"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+shape = SubResource("RectangleShape2D_csg2p")
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+root_node = NodePath("../AnimatedSprite2D")
+libraries = {
+&"": SubResource("AnimationLibrary_ymajm")
+}
+
+[node name="MoveTimer" type="Timer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+one_shot = true
+
+[node name="ExplodeSFX" type="AudioStreamPlayer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+stream = ExtResource("6_daamr")
+volume_db = -12.329
+max_polyphony = 10
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+
+[node name="Node2D" type="Node2D" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+
+[node name="BulletPattern" type="Path2D" parent="UFOPath2D/PathFollow2D/UFOEnemy/Node2D"]
+curve = SubResource("Curve2D_v1s8e")
+script = ExtResource("8_fs5ts")
+id = "ufo"
+props = SubResource("PackedDataContainer_72xe0")
+
+[node name="SpawnPoint" type="Node2D" parent="UFOPath2D/PathFollow2D/UFOEnemy/Node2D"]
+script = ExtResource("14_ny3bb")
+auto_pattern_id = "ufo"
+pool_amount = 100
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
+
+[node name="SpawnPattern" type="Path2D" parent="UFOPath2D/PathFollow2D/UFOEnemy/Node2D"]
+curve = SubResource("Curve2D_blkin")
+script = ExtResource("11_qdmh1")
+id = "ufo"
+pattern = SubResource("NavigationPolygon_111uy")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(111, 160)
+shape = SubResource("RectangleShape2D_2jhan")
+debug_color = Color(0.935964, 1.57869e-05, 0.628502, 0.0235294)
+metadata/_edit_lock_ = true
+
+[connection signal="timeout" from="UFOPath2D/PathFollow2D/UFOEnemy/MoveTimer" to="UFOPath2D/PathFollow2D/UFOEnemy" method="_on_timer_timeout"]
+[connection signal="timeout" from="UFOPath2D/PathFollow2D/UFOEnemy/ShootTimer" to="UFOPath2D/PathFollow2D/UFOEnemy" method="_on_shoot_timer_timeout"]
+[connection signal="screen_exited" from="UFOPath2D/PathFollow2D/UFOEnemy/VisibleOnScreenNotifier2D" to="UFOPath2D/PathFollow2D/UFOEnemy" method="_on_visible_on_screen_notifier_2d_screen_exited"]

@@ -1,96 +1,65 @@
-"""
-This is the main code, it has important nodes and the majority of game functions operates in here.
 
-Here's how it works:
-	1. Add instances and variables, enemy scenes must be pre-made and preload them
-	2. With the player in the scene, ready the scene with start button and hide game over button
-	3. Spawn enemies in waves, each waves got calibrated inside its scene. It will continue to the next wave after every enemies got defeated (This operates inside func _process())
-
-If the player crashed into a bullet or enemy, it dies.
-	
-"""
+#This is the main code, it has important nodes and the majority of game functions operates in here.
+#
+#Here's how it works:
+	#1. Add instances and variables, enemy scenes must be pre-made and preload them
+	#2. With the player in the scene, ready the scene with start button and hide game over button
+	#3. Spawn enemies in waves, each waves got calibrated inside its scene. It will continue to the next wave after every enemies got defeated (This operates inside func _process())
+#
+#If the player crashed into a bullet or enemy, the player dies.
 
 extends Node2D
 
 #Preloads enemy scenes
-var fairy_enemy = preload("res://fairy_enemy.tscn")
-var fairy_enemy_right = preload("res://fairy_enemy_right.tscn")
-var enemyscene1 = preload("res://EnemyScene1.tscn")
-var enemyscene2 = preload("res://EnemyScene2.tscn")
-var enemyscene3 = preload("res://EnemyScene3.tscn")
-var enemyscene4 = preload("res://EnemyScene4.tscn")
+@onready var resource_preloader = $ResourcePreloader
 
-#Sets score, n as enemies' number
+#Sets initial score
 var score = 0
+#Sets initial playing state
 var playing = false
-var n = 0
+#Sets initial amount of enemy
+var enemy_number = 0
+# Counts the total number of enemies instantiated
+var total_enemies_instantiated: int = 0
 @onready var start_button = $CanvasLayer/CenterContainer/Start
 @onready var game_over = $CanvasLayer/CenterContainer/GameOver
 
+#Declare variable current wave as integer
 var current_wave: int
 @export var enemy_scene: PackedScene
-
-var wave: int
+var wave: int = 0
+var allow_next_wave: bool = true
 
 func _ready():
 	game_over.hide()
 	start_button.show()
-	var tween = create_tween().set_loops().set_parallel(false).set_trans(Tween.TRANS_SINE)
-	tween.tween_property($EnemyAnchor, "position:x", $EnemyAnchor.position.x + 3, 1.0)
-	tween.tween_property($EnemyAnchor, "position:x", $EnemyAnchor.position.x - 3, 1.0)
-	var tween2 = create_tween().set_loops().set_parallel(false).set_trans(Tween.TRANS_BACK)
-	tween2.tween_property($EnemyAnchor, "position:y", $EnemyAnchor.position.y + 3, 1.5).set_ease(Tween.EASE_IN_OUT)
-	tween2.tween_property($EnemyAnchor, "position:y", $EnemyAnchor.position.y - 3, 1.5).set_ease(Tween.EASE_IN_OUT)
-		
-func spawn_enemies1():
-	global.enemy_value = 6
-	for n in 3:
-		var e = enemyscene1.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-	wave = 2
 	
-func spawn_enemies2():
-	global.enemy_value = 4
-	for n in 2:
-		var e = enemyscene2.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-	wave = 1
-		
-func spawn_enemies3():
-	global.enemy_value += 5
-	for n in 4:
-		var e = enemyscene3.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-	wave = 4
-		
-func spawn_enemies4():
-	while n < 1:
-		var e = enemyscene4.instantiate()
-		add_child(e)
-		await get_tree().create_timer(1).timeout
-		n += 1
-
 func _on_enemy_died(value):
 	score += value
 	$CanvasLayer/UI.update_score(score)
 	$Camera2D.add_trauma(0.5)
 
 func _process(_delta):
-	print (playing)
-	if playing == true:
-		if global.enemy_value == 0:
-			if wave == 1:
-				spawn_enemies1()
-			if wave == 2:
-				spawn_enemies2()
-			if wave == 3:
-				spawn_enemies3()
-				
+	if Input.is_action_pressed("shoot") and playing == false:
+		Spawning.clear_all_bullets()
+		start_button.hide()
+		new_game()	
+
+	# print(total_enemies_instantiated)
+	if playing == true and total_enemies_instantiated == 0 and allow_next_wave == true:
+		wave += 1; 
+		# print("Wave changed! Now at wave:", wave)
+		match wave:
+			1: spawn_enemies("EnemyScene6", 1, 1, 0.0)
+			2: 
+				spawn_enemies("EnemyScene1", 20, 2, 0.2)
+				spawn_enemies("EnemyScene3", 4, 1, 1.0)
+			3: spawn_enemies("EnemyScene2", 4, 2, 1.0)
+			4: spawn_enemies("EnemyScene3", 4, 1, 1.0)
+			5: spawn_enemies("EnemyScene4", 10, 2, 0.5)
+			
+
 func _on_player_died():
-#	print("game over")
 	playing = false
 	get_tree().call_group("enemies", "queue_free")
 	game_over.show()
@@ -99,17 +68,29 @@ func _on_player_died():
 	start_button.show()
 	
 func _on_start_pressed():
-	start_button.hide()
-	new_game()	
+	if Input.is_action_pressed("shoot"):
+		Spawning.clear_all_bullets()
+		start_button.hide()
+		new_game()	
 	
 func new_game():
 	$StageMusic.play()
 	score = 0
 	$CanvasLayer/UI.update_score(score)
-	$Player.start()
+	$CanvasLayer/CenterContainer/Player.start()
 	playing = true
-	spawn_enemies1()
 
+#Enemy exits the area and despawns
 func _on_area_2d_area_exited(area):
 	if area.is_in_group("enemies"):
-		global.enemy_value -= 1
+		total_enemies_instantiated -= 1
+
+# Generalized enemy spawning function
+func spawn_enemies(scene_name: String, count: int, enemy_amount: int, delay: float):
+	for i in count:
+		allow_next_wave = false
+		var e = resource_preloader.get_resource(scene_name).instantiate()
+		add_child(e)
+		total_enemies_instantiated += (enemy_amount * 1)
+		await get_tree().create_timer(delay).timeout
+	allow_next_wave = true

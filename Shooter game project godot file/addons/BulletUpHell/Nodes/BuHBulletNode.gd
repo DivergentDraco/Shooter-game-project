@@ -2,7 +2,7 @@ extends Area2D
 
 #const FLIP:Array = [-1,1]
 
-@export var ID:String
+@export_placeholder("ID") var ID:String
 @export var ignore_children:Array[String] = []
 
 var textures:Array[Dictionary]

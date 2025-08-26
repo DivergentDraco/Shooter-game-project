@@ -1,42 +1,60 @@
 [gd_scene load_steps=14 format=3 uid="uid://cjwfaivji1uy2"]
 
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_yje1n"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="2_56skk"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="3_v6lta"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="4_b1bdv"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="5_x8ofc"]
-[ext_resource type="Script" path="res://addons/Rotor Node/Rotor.gd" id="6_7yadl"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_qlbbf"]
+[ext_resource type="Script" uid="uid://duik6mnuviyhd" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_yje1n"]
+[ext_resource type="Script" uid="uid://dk6iqdpc7n1tw" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="2_56skk"]
+[ext_resource type="Script" uid="uid://cxc325lsu21hd" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="3_v6lta"]
+[ext_resource type="Script" uid="uid://t0gcuhiw4ua7" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="4_b1bdv"]
+[ext_resource type="Script" uid="uid://vj06duyw0oge" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="5_x8ofc"]
+[ext_resource type="Script" uid="uid://cghhupo1pf7b4" path="res://addons/Rotor Node/Rotor.gd" id="6_7yadl"]
+[ext_resource type="Script" uid="uid://3tim1te65sv7" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_qlbbf"]
 
 [sub_resource type="Curve2D" id="Curve2D_v1s8e"]
 
-[sub_resource type="Curve" id="Curve_aknj0"]
+[sub_resource type="Curve" id="Curve_nhmq5"]
 
-[sub_resource type="Curve" id="Curve_vf2ig"]
+[sub_resource type="Curve" id="Curve_c1rks"]
 
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_72xe0"]
 script = ExtResource("3_v6lta")
-anim_more = Array[ExtResource("2_56skk")]([])
 damage = 1.0
-speed = 50.0
+speed = 200.0
 scale = 0.3
 angle = 0.0
 groups = PackedStringArray()
-spec_bounces = 0
-spec_no_collision = false
-spec_modulate_loop = 0.0
-spec_trail_length = 0.0
-spec_trail_width = 0.0
-spec_trail_modulate = Color(1, 1, 1, 1)
-spec_rotating_speed = 0.0
+custom_data = {}
 death_after_time = 30.0
 death_outside_box = Rect2(0, 0, 0, 0)
 death_from_collision = true
+death_speed_under = 0.0
+death_culling_overwrite = 3
+spec_modulate_loop = 0.0
+no_rotation = false
+anim_more = Array[ExtResource("2_56skk")]([])
+spec_trail_length = 0.0
+spec_trail_width = 0.0
+spec_trail_modulate = Color(1, 1, 1, 1)
+spec_trail_fade_out = false
+spec_trail_thin_out = false
+spec_trail_smooth = 0.03
 a_direction_equation = ""
+a_angular_equation = ""
 a_curve_movement = 0
-a_speed_multiplier = SubResource("Curve_aknj0")
 a_speed_multi_iterations = 0
 a_speed_multi_scale = 0.0
+a_speed_multiplier = SubResource("Curve_nhmq5")
+depth_active = Vector2(0, 0)
+depth_spawn = 0.0
+depth_speed = 100.0
+depth_min_max = Vector2(-300, 100)
+depth_bounce = false
+spec_bounces = 0
+spec_no_collision = false
+spec_rotating_speed = 0.0
+spec_only_spin_sprite = true
+spec_weight = 1.0
+scale_multi_iterations = 0
+scale_multiplier = SubResource("Curve_c1rks")
+scale_multi_scale = 1.0
 trigger_container = ""
 trigger_wait_for_shot = true
 homing_type = 0
@@ -44,9 +62,10 @@ homing_target = NodePath("")
 homing_steer = 0.0
 homing_time_start = 0.0
 homing_duration = 999.0
-scale_multi_iterations = 0
-scale_multiplier = SubResource("Curve_vf2ig")
-scale_multi_scale = 1.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
 r_randomisation_chances = 1.0
 r_speed_choice = PackedFloat32Array()
 r_speed_variation = Vector3(0, 0, 0)
@@ -92,30 +111,38 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 resource_name = "PatternCircle"
 source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("5_x8ofc")
-radius = 0
+radius = 0.0
 angle_total = 6.28319
 angle_decal = 0.0
-symmetric = false
 center = 0
-symmetry_type = 0
+perspective = 1.0
+symmetric = false
 bullet = "1"
 nbr = 17
 iterations = 10
-pattern_angle = 0.0
-pattern_angle_target = NodePath("")
-pattern_angle_mouse = false
-forced_angle = 0.0
-forced_target = NodePath("")
-forced_lookat_mouse = false
-forced_pattern_lookat = true
-cooldown_stasis = false
 cooldown_spawn = 2.0
 cooldown_shoot = 0.0
 cooldown_next_spawn = 0.0
 cooldown_next_shoot = 0.0
+cooldown_layers = PackedVector2Array()
+cooldown_stasis = false
+on_interruption = 0
+pattern_angle = 0.0
+pattern_angle_target = NodePath("")
+pattern_angle_mouse = false
+wait_behavior = 0
 wait_tween_momentum = 0
 wait_tween_length = 0.0
 wait_tween_time = 0.0
+forced_angle = 0.0
+forced_target = NodePath("")
+forced_lookat_mouse = false
+forced_pattern_lookat = true
+impulse = 0
+bullet_list = Array[String]([])
+skip_step = 0
+skip_list = Array[PackedInt32Array]([])
+skip_in_list = true
 
 [node name="Node2D" type="Node2D"]
 
@@ -137,16 +164,15 @@ speed = 3
 
 [node name="SpawnPoint" type="Node2D" parent="Rotor"]
 script = ExtResource("7_qlbbf")
-active = true
 auto_pattern_id = "one"
-shared_area_name = "0"
-rotating_speed = 0.0
 pool_amount = 100
-auto_start_on_cam = true
-auto_start_after_time = 0.0
-auto_start_at_distance = 5.0
-auto_distance_from = NodePath("")
-trigger_container = NodePath("")
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -154,13 +180,13 @@ trigger_container = NodePath("")
 position = Vector2(8.58307e-06, 0)
 scale = Vector2(0.827036, 0.85329)
 script = ExtResource("7_qlbbf")
-active = true
 auto_pattern_id = "one"
-shared_area_name = "0"
 rotating_speed = 0.05
 pool_amount = 100
-auto_start_on_cam = true
-auto_start_after_time = 0.0
-auto_start_at_distance = 5.0
-auto_distance_from = NodePath("")
-trigger_container = NodePath("")
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)

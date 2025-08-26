@@ -3,7 +3,7 @@
 extends BulletProps
 class_name BulletNodeProps
 
-@export var instance_id:String
+@export_placeholder("Instance ID") var instance_id:String
 
 @export var overwrite_groups:bool = false
 

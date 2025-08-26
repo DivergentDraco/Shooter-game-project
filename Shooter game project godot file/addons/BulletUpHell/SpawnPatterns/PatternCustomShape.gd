@@ -7,11 +7,12 @@ var shape:Curve2D
 var angles:Array = []
 var pos:Array = []
 
-@export_group("Custom Shape")
 @export var closed_shape = false
 @export var center_pos:Vector2
+@export_range(0, 9999, 1, "suffix:th bullet") var center:int = 0
+
+@export_subgroup("Shooting")
 @export var symmetric:bool = false
-@export var center:int = 0
 @export var symmetry_type = Spawning.SYMTYPE.Line
 
 
