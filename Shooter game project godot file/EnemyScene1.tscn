@@ -182,6 +182,8 @@ curve = SubResource("Curve2D_k8rha")
 script = SubResource("GDScript_oes2y")
 
 [node name="PathFollow2D" parent="FairyEnemyPath" index="0"]
+position = Vector2(0, 136)
+progress = 136.0
 loop = false
 
 [node name="AnimatedSprite2D" parent="FairyEnemyPath/PathFollow2D/FairyEnemy" index="0"]
