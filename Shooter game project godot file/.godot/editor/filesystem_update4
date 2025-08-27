@@ -1,1 +1,26 @@
 res://default_bus_layout.tres
+res://EnemyScene3.tscn
+res://hitflash effect/hitflash.tres
+res://bullet_pattern1.gd
+res://main.tscn
+res://fairy_enemy_left.tscn
+res://hitflash effect/shadermaterial.tres
+res://fairy_enemy.tscn
+res://fairy_enemy_right.tscn
+res://player.tscn
+res://enemy.tscn
+res://main menu.tscn
+res://addons/BulletUpHell/ExampleScenes/Example1_Pattern_Types.tscn
+res://addons/BulletUpHell/Spawning.tscn
+res://EnemyScene2.tscn
+res://addons/bulletuphell example/bullet test.tscn
+res://bullet.tscn
+res://UFO_enemy.tscn
+res://EnemyScene1.tscn
+res://enemy.gd
+res://fairy_enemy.gd
+res://bullet_pattern1.tscn
+res://addons/BulletUpHell/ExampleScenes/Example0_Readme.tscn
+res://main.gd
+res://UFOEnemy.gd
+res://EnemyScene4.tscn
