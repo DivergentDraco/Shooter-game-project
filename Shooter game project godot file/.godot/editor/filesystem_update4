@@ -11,7 +11,6 @@ res://player.tscn
 res://enemy.tscn
 res://main menu.tscn
 res://addons/BulletUpHell/ExampleScenes/Example1_Pattern_Types.tscn
-res://addons/BulletUpHell/Spawning.tscn
 res://EnemyScene2.tscn
 res://addons/bulletuphell example/bullet test.tscn
 res://bullet.tscn
@@ -23,3 +22,7 @@ res://addons/BulletUpHell/ExampleScenes/Example0_Readme.tscn
 res://EnemyScene4.tscn
 res://EnemyScene5.tscn
 res://EnemyScene6.tscn
+res://addons/BulletUpHell/Spawning.tscn
+res://addons/BulletUpHell/Bullet/LaserBeam.tscn
+res://enemy_bullet.tscn
+res://main.gd

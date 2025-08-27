@@ -3,11 +3,10 @@ extends Path2D
 class_name BulletPattern
 
 @export_placeholder("ID") var id:String = ""
-@export var props:PackedDataContainer
+@export var props:Resource
 
 
 func _ready():
-	randomize()
 	add_to_group("BulletProps")
 	if Engine.is_editor_hint():
 		generate_bulletprops()
@@ -24,3 +23,4 @@ func _ready():
 
 func generate_bulletprops():
 	if not props: props = Spawning.generate_new_bulletprops()
+	else: Spawning.update_custom_bullet_prop_data(props)

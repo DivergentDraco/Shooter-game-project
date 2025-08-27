@@ -1,6 +1,12 @@
 @tool
 extends EditorPlugin
 
+###############################################################
+## BulletUpHell BLAST, by Dark Peace
+## purchasing the plugin through Dark Peace's Itch.io page grants you the right to use this plugin in your projects
+## you cannot share this plugin's code with anyone else
+## you can use this plugin to make and distribute any game, even commercially
+###############################################################
 
 func _enter_tree():
 	add_custom_type("SpawnPattern", "Path2D", preload("res://addons/BulletUpHell/Nodes/BuHPattern.gd"), preload("res://addons/BulletUpHell/Sprites/NodeIcons1.png"))

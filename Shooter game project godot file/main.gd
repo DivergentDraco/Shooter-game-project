@@ -52,7 +52,7 @@ func _process(_delta):
 		match wave:
 			1: spawn_enemies("EnemyScene6", 1, 1, 0.0)
 			2: 
-				spawn_enemies("EnemyScene1", 20, 2, 0.2)
+				spawn_enemies("EnemyScene1", 2, 2, 0.2)
 				spawn_enemies("EnemyScene3", 4, 1, 1.0)
 			3: spawn_enemies("EnemyScene2", 4, 2, 1.0)
 			4: spawn_enemies("EnemyScene3", 4, 1, 1.0)

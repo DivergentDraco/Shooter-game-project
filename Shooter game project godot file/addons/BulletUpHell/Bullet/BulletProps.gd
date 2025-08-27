@@ -1,6 +1,6 @@
 @tool
 @icon("res://addons/BulletUpHell/Sprites/NodeIcons15.png")
-extends PackedDataContainer
+extends Resource
 class_name BulletProps
 
 @export var damage:float = 1
@@ -21,11 +21,12 @@ enum CullingLevel {Anim, Move, Full, Inherit}
 @export var death_culling_overwrite:CullingLevel = CullingLevel.Inherit
 
 ## animations
-@export_group("Animation")
+@export_group("Visuals")
 @export_subgroup("Color", "spec_")
 @export var spec_modulate:Gradient
 @export var spec_modulate_loop:float = 0.0
 @export var no_rotation:bool = false
+@export var z_index:int = 0
 @export var anim_idle:animState
 @export var anim_spawn:animState
 @export var anim_shoot:animState
@@ -57,14 +58,10 @@ var curve:Curve2D = null
 @export var depth_speed:float = 100
 @export var depth_min_max:Vector2 = Vector2(-300, 100)
 @export var depth_bounce:bool = false
-#@export var depth_fading:bool = false
-#@export var depth_scaling:bool = true
-
 
 ## special props
 @export_group("Physics", "spec_")
 @export_range(-1, 999999) var spec_bounces:int = 0
-#@export_range(-999999, 999999, 0.001, "hide_slider", "suffix:°", "radians_as_degrees") var spec_forced_bounce_angle:float = 0.0
 @export var spec_no_collision:bool = false
 @export var spec_rotating_speed:float = 0.0
 @export var spec_only_spin_sprite:bool = true
@@ -79,6 +76,9 @@ var curve:Curve2D = null
 @export_group("Triggers", "trigger")
 @export_placeholder("Container ID") var trigger_container:String
 @export var trigger_wait_for_shot:bool = true
+
+@export_group("Advanced")
+@export var temp_count:int = -1
 
 ## homing
 enum GROUP_SELECT{Nearest_on_homing,Nearest_on_spawn,Nearest_on_shoot,Nearest_anywhen,Random}
@@ -145,16 +145,10 @@ var r_trigger_choice:PackedStringArray
 var r_bounce_variation:Vector3
 var r_death_outside_chances:float
 var r_wait_for_shot_chances:float
-# draw
-# animations directly in
-#todo
 var r_no_coll_chances:float
 var r_modulate_variation:Vector3
 
-
 var node_homing:Node2D
-var node_container:Node2D
-
 
 var anim_idle_texture:String = "0"
 var anim_spawn_texture:String

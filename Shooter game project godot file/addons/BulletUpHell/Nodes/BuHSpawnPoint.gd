@@ -16,6 +16,7 @@ var shared_area
 @export var process_id:int = -1
 @export var rotating_speed:float = 0.0
 @export_range(0, 9999, 1, "suffix:bullets") var pool_amount:int = 50
+@export var use_local_rotation:bool = false
 
 @export_group("Multi-Pattern", "patterns_")
 @export var patterns_multi:PackedStringArray
@@ -48,12 +49,11 @@ var r_start_distance_variation:Vector3
 
 var trig_container:TriggerContainer
 var trigger_counter = 0
-var trig_iter:Dictionary
+var trig_iter:Dictionary[int, int]
 var trigger_timeout:bool = false
 var trigger_time:float = 0
 var trig_collider
 var trig_signal
-
 
 var was_on_cam = false
 var was_at_dist = false
@@ -75,8 +75,7 @@ func _ready():
 		shared_area = Spawning.get_shared_area(shared_area_name)
 	else: push_error("Spawnpoint doesn't have any shared_area")
 	
-	randomize()
-	if int(r_active_chances) < 1 and randf_range(0,1) > r_active_chances:
+	if int(r_active_chances) < 1 and Spawning.RAND.randf_range(0,1) > r_active_chances:
 		active = false
 		set_physics_process(false)
 		return
@@ -92,18 +91,11 @@ func _ready():
 		if not (auto_start_on_cam or auto_distance_from != NodePath()) and auto_start_after_time > float(0.0):
 			await get_tree().create_timer(auto_start_after_time, false).timeout
 			was_at_time = true
-	#elif auto_distance_from != NodePath(): set_physics_process(true)
-	#if active:
-		#if auto_start_after_time > float(0.0):
-			#await get_tree().create_timer(auto_start_after_time, false).timeout
-		#auto_call = true
-		#set_physics_process(active)
 		
 	if rotating_speed > 0: set_physics_process(active)
 		
 	if auto_trigger_container:
 		trig_container = get_node(auto_trigger_container)
-#		set_physics_process(false)
 	
 	call_deferred("set_pool")
 
@@ -124,7 +116,6 @@ func _physics_process(delta):
 		call_deferred("spawn")
 		can_respawn = false
 		if not rotating_speed > 0: set_physics_process(false)
-		#apply_randomness(false)
 	elif was_at_dist == false and auto_distance_from != NodePath() and \
 			global_position.distance_to(get_node(auto_distance_from).global_position) <= auto_start_at_distance:
 		if auto_start_after_time > float(0.0):
@@ -134,23 +125,23 @@ func _physics_process(delta):
 
 func _draw():
 	if not Engine.is_editor_hint() or not preview_activate: return
-	for b in preview_points:
-		#print(b)
+	for b:PackedVector2Array in preview_points:
 		draw_polyline(b, Color.WEB_PURPLE, 2)
 		draw_circle(b[0], 10, Color.WEB_PURPLE)
-		for i in b.size()-1:
+		for i:int in b.size()-1:
 			draw_circle(b[i+1], 5, Color.WEB_PURPLE)
 
 
 func check_can_spawn():
-	return (!auto_start_on_cam or was_on_cam) and (auto_distance_from == NodePath() or was_at_dist) and (auto_start_after_time == float(0.0) or was_at_time)
+	return (!auto_start_on_cam or was_on_cam) and (auto_distance_from == NodePath() or was_at_dist) \
+			and (auto_start_after_time == float(0.0) or was_at_time)
 
 func spawn():
 	if patterns_multi.is_empty():
 		assert(auto_pattern_id != "", "You must input a pattern in auto_pattern_id")
 		Spawning.spawn(self, auto_pattern_id, shared_area_name, process_id)
 	elif patterns_all_in_1:
-		for p in patterns_multi:
+		for p:String in patterns_multi:
 			Spawning.spawn(self, p, shared_area_name, process_id)
 	else: Spawning.spawn_list([self], patterns_multi, patterns_loops, [shared_area_name], process_id)
 
@@ -163,12 +154,9 @@ func apply_randomness():
 	if r_start_distance_variation != Vector3():
 		auto_start_at_distance = Spawning.random_get_variation(auto_start_at_distance, r_start_distance_variation.x, r_start_distance_variation.y, r_start_distance_variation.z)
 	
-	#if not init: return
-	
 	if r_pattern_choice != "":
 		auto_pattern_id = Spawning.random_get_choice(r_pattern_choice.split(";", false))
 	
-	#if r_switch_time:
 	if r_start_time_choice != "":
 		auto_start_after_time = Spawning.random_get_choice(r_start_time_choice.split(";", false))
 	if r_start_time_variation != Vector3():
@@ -177,19 +165,19 @@ func apply_randomness():
 func set_pool():
 	assert(has_pattern)
 	if not (active and pool_amount > 0): return
-	var props
 	if not patterns_multi.is_empty():
-		for p in patterns_multi:
-			props = Spawning.pattern(p)["bullet"]
-			Spawning.create_pool(props, shared_area_name, pool_amount, Spawning.bullet(props).has("instance_id"))
+		for p:String in patterns_multi:
+			_call_pooling(Spawning.pattern(p)["bullet"])
 	else:
 		var pattern:Pattern = Spawning.pattern(auto_pattern_id)
-		props = pattern["bullet"]
-		Spawning.create_pool(props, shared_area_name, pool_amount, Spawning.bullet(props).has("instance_id"))
+		_call_pooling(pattern["bullet"])
 		if not pattern["bullet_list"].is_empty():
-			for b in pattern["bullet_list"]:
-				Spawning.create_pool(b, shared_area_name, pool_amount, Spawning.bullet(b).has("instance_id"))
-		
+			for b:String in pattern["bullet_list"]: _call_pooling(b)
+
+func _call_pooling(id):
+	var create_pool:Callable = Callable(Spawning, "create_object_pool") if Spawning.bullet(id).has("instance_id") \
+							else Callable(Spawning, "create_pool")
+	create_pool.call(id, pool_amount, shared_area_name)
 
 func triggerSignal(sig):
 	trig_signal = sig
@@ -202,16 +190,13 @@ func trig_timeout(time:float=0):
 		trigger_time = 0
 		return true
 	return false
-#	checkTrigger()
 
 func checkTrigger():
 	if not (active and auto_pattern_id != "" and trig_container): return
-	trig_container.checkTriggers(self, self)
-#		Spawning.spawn(self, auto_pattern_id, shared_area_name)
+	trig_container.checkTriggers(self)
 
 func callAction():
 	spawn()
-	#Spawning.spawn(self, auto_pattern_id, shared_area_name)
 
 func on_screen(is_on):
 	if was_on_cam: return
@@ -220,7 +205,6 @@ func on_screen(is_on):
 		was_at_time = true
 	was_on_cam = true
 	set_physics_process(active)
-
 
 func _set_start_on_cam(value):
 	auto_start_on_cam = value

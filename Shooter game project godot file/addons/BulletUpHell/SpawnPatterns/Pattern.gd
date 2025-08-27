@@ -1,6 +1,6 @@
 @tool
 @icon("res://addons/BulletUpHell/Sprites/NodeIcons4.png")
-extends NavigationPolygon
+extends Resource
 class_name Pattern
 
 @export_placeholder("BulletProps ID") var bullet:String = ""
@@ -34,7 +34,6 @@ enum MOMENTUM{None,TRANS_LINEAR,TRANS_SINE,TRANS_QUINT,TRANS_QUART,TRANS_QUAD,TR
 @export var wait_tween_time:float = 0
 
 @export_group("Shooting")
-#@export_group("Forced Angle", "forced_")
 @export_range(-999999, 999999, 0.001, "hide_slider", "suffix:°", "radians_as_degrees") var forced_angle:float = 0.0
 @export var forced_target:NodePath
 @export var forced_lookat_mouse:bool = false
@@ -45,14 +44,14 @@ enum MOMENTUM{None,TRANS_LINEAR,TRANS_SINE,TRANS_QUINT,TRANS_QUART,TRANS_QUAD,TR
 @export var bullet_list:Array[String]
 @export_subgroup("Skipping", "skip_")
 @export_range(0, 999999) var skip_step:int
+@export_range(0, 999999) var skip_amount:int
 @export var skip_list:Array[PackedInt32Array]
 var skip_array:Array[PackedInt32Array]
 @export var skip_in_list:bool = true
+@export var temp_count:int = -1
 
 @export_group("Random", "random_")
 @export var random:PatternRandomizer
 
 var has_random
 var node_target:Node2D
-
-

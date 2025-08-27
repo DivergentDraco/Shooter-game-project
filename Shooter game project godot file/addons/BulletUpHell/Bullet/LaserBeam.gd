@@ -3,7 +3,7 @@
 extends Area2D
 class_name LaserBeam
 
-signal collided(global_position:Vector2, collider:Node, normal:Vector2)
+signal collided(global_position:Vector2, collider:Node, normal:Vector2, full_length:float, laser:LaserBeam)
 signal ray_built
 signal laser_built
 
@@ -59,7 +59,6 @@ enum END {Delete, Stay, ShrinkW, Disable} #  shrinkL
 enum TEXTUREMODE {None, Tile, Stretch}
 enum CAP {None, Box, Round}
 @export_category("Line2D")
-#@export var default_color:Color = Color.RED : set = set_default_color
 @export var gradient:Gradient : set = set_gradient
 @export var texture:Texture2D = null : set = set_texture
 @export var texture_mode:TEXTUREMODE = TEXTUREMODE.None : set = set_texture_mode
@@ -99,7 +98,7 @@ func _reset_nodes():
 		add_child(instance)
 
 func disable(remove_nodes:bool=false):
-	for n in get_children():
+	for n:Node2D in get_children():
 		if n is CollisionShape2D: n.queue_free()
 	if remove_nodes:
 		$Line2D.queue_free()
@@ -108,7 +107,7 @@ func disable(remove_nodes:bool=false):
 		$Line2D.clear_points()
 		$RayCast2D.enabled = false
 
-func _ready():
+func init():
 	if not enabled or not casting: return
 	points.clear()
 	_reset_nodes()
@@ -123,6 +122,11 @@ func _ready():
 	reset_cast()
 	was_enabled = true
 
+func _ready():
+	init()
+	if Engine.is_editor_hint(): return
+	collided.connect(Spawning.laser_collide)
+
 func _physics_process(delta):
 	if not enabled or not casting: return
 	if update_cooldown == INFINITE: return
@@ -134,12 +138,11 @@ func _physics_process(delta):
 		update_idx = 0
 		can_update = false
 		reset_cast()
-		#queue_redraw()
 
 func init_shapes():
 	shapes.clear()
 	var shape:CollisionShape2D
-	for s in bounce_count+1:
+	for s:int in bounce_count+1:
 		shape = CollisionShape2D.new()
 		shape.disabled = true
 		shape.shape = RectangleShape2D.new()
@@ -154,21 +157,27 @@ func reset_cast():
 	points.clear()
 	$RayCast2D.position = Vector2.ZERO
 	$RayCast2D.rotation = 0
-	for s in shapes.size():
+	for s:int in shapes.size():
 		shapes[s].disabled = true
 	ray_cast()
 	$Line2D.global_rotation = self.global_rotation
 	set_show_collisions(show_collisions)
-	#$Line2D.rotation = -rotation
 
 func _draw() -> void:
 	if start_texture: draw_texture(start_texture, points[0] - start_texture.get_size()/2)
 	if end_texture: draw_texture(end_texture, points[-1] - end_texture.get_size()/2)
 	if bounce_hit_texture:
-		for p in points.size()-2: draw_texture(bounce_hit_texture, points[p+1] - bounce_hit_texture.get_size()/2)
+		for p:int in points.size()-2: draw_texture(bounce_hit_texture, points[p+1] - bounce_hit_texture.get_size()/2)
 	
-	#for p in points.size()-1:
+	## debug
+	#for p:int in points.size()-1:
 		#draw_circle(Vector2(points[p]+points[p+1])/2, 10, Color.AZURE)
+	#for p:int in points.size():
+		#draw_circle(Vector2(points[p]), 10, Color.AQUA)
+	#
+	#draw_circle(($RayCast2D.target_position+global_position-$RayCast2D.global_position)
+		#.rotated($RayCast2D.global_rotation)
+		#, 10, Color.ORANGE)
 
 func ray_cast():
 	$RayCast2D.position = Vector2.ZERO
@@ -182,19 +191,19 @@ func ray_cast():
 	var max_while:int = 0; var pos:Vector2; var angle:Vector2; var ray_length:float;
 	while $RayCast2D.is_colliding() and max_while <= bounce_count:
 		# one iteration per bounce
-		
 		max_while += 1
 		pos = $RayCast2D.get_collision_point()
 		angle = $RayCast2D.get_collision_normal()
 		ray_length = $RayCast2D.global_position.distance_to(pos)
 		points.append(to_local(pos))
-		collided.emit(pos, $RayCast2D.get_collider(), angle)
 		
 		if max_whole_length > 0:
 			if current_length + ray_length >= max_whole_length:
 				ray_length = max_whole_length-current_length
 				$RayCast2D.target_position.x = ray_length
 			current_length += ray_length
+		
+		collided.emit(pos, $RayCast2D.get_collider(), angle, current_length+ray_length, self)
 		
 		if not make_ray(ray_length): break
 		if expand_on == SPEED.Length:
@@ -217,8 +226,8 @@ func ray_cast():
 	# if last laser segment doesnt hit a wall, still draw it
 	if can_end_midair and (max_while < bounce_count or points.size() < 2):
 		if max_whole_length > 0: $RayCast2D.target_position.x = max_whole_length-current_length
-		points.append(($RayCast2D.target_position-global_position + $RayCast2D.global_position)
-						.rotated($RayCast2D.global_rotation-get_parent().global_rotation))
+		points.append( to_local(to_global(points[-1]) + $RayCast2D.target_position.rotated($RayCast2D.global_rotation) ) )
+		queue_redraw()
 		make_ray($RayCast2D.target_position.x)
 	
 	$RayCast2D.enabled = false
@@ -234,20 +243,18 @@ func ray_cast():
 func can_bounce_on(collider:Node):
 	if bounce_groups.is_empty() or bounce_count == 0: return true
 	var is_in_group:bool = false
-	for group in collider.get_groups():
+	for group:String in collider.get_groups():
 		if group in bounce_groups: is_in_group = true
-	
-	if bounce_group_list == GROUPLIST.WhiteList: return is_in_group
-	else: return !is_in_group
-	
-	
+	return is_in_group == (bounce_group_list == GROUPLIST.WhiteList)
+
+
 var angle:float = 0;
 func make_ray(ray_length:float):
 	if points.size() <= 1: return
 	
 	var idx:int = points.size()-1
 	var start_pos:Vector2 = points[idx-1]
-	angle = start_pos.angle_to_point(points[idx])#+get_parent().global_rotation
+	angle = start_pos.angle_to_point(points[idx])
 	if expand_on == SPEED.None:
 		# instantly build the ray (laser segment)
 		$Line2D.add_point(points[idx])
@@ -271,9 +278,6 @@ func make_ray(ray_length:float):
 	# move collision shape at right place
 	shapes[idx-1].global_rotation = self.global_rotation+angle
 	shapes[idx-1].position = ((start_pos+points[idx])/2)
-	#shapes[idx-1].global_position = global_position+(Vector2(ray_length,0).rotated(self.global_rotation)/2)+(start_pos)
-	#print(points[idx-1])
-	#print(shapes[idx-1].global_position, shapes[idx-1].shape.size)
 	
 	ray_is_built(idx-1)
 	return (max_shot_duration <= 0 or current_duration > max_shot_duration)
@@ -283,7 +287,7 @@ func build_ray(new_pos:Vector2, idx:int):
 	# line
 	$Line2D.set_point_position(idx, new_pos)
 	# shape
-	var new_length = $Line2D.get_point_position(idx-1).distance_to(new_pos)
+	var new_length:float = $Line2D.get_point_position(idx-1).distance_to(new_pos)
 	shapes[idx-1].shape.size = Vector2(new_length, laser_width/2)
 	shapes[idx-1].global_position = (points[idx-1]+Vector2(new_length,0).rotated(angle)/2)+global_position
 
@@ -293,7 +297,7 @@ func ray_is_built(p_idx):
 	
 	# spawn scene at collision points
 	if bounce_spawn_on_bounce != "":
-		for p in points.size():
+		for p:int in points.size():
 			if p == points.size()-1: continue
 			instance_bounce.global_position = points[p]+global_position
 			spawn_parent.call_deferred("add_child", instance_bounce.duplicate())
@@ -343,13 +347,13 @@ func hit(collider):
 func can_expand_width():
 	return (expand_on == SPEED.Width and speed > 0) and (max_shot_duration == INFINITE and bounce_cooldown == 0)
 
+
+
 ## SETGETS
-
-
 
 func set_show_collisions(value):
 	show_collisions = value
-	for s in get_children():
+	for s:Node2D in get_children():
 		if not s is CollisionShape2D: continue
 		s.visible = value
 
@@ -365,7 +369,6 @@ func set_laser_length(value):
 	laser_length = value
 	_reset_nodes()
 	$RayCast2D.target_position = Vector2(laser_length,0)
-	#reset_cast()
 
 func set_laser_width(value):
 	laser_width = value
@@ -413,11 +416,6 @@ func set_cap_mode(value):
 	begin_cap_mode = value
 	_reset_nodes()
 	$Line2D.begin_cap_mode = begin_cap_mode
-	
-#func set_default_color(value):
-	#default_color = value
-	#_reset_nodes()
-	#$Line2D.default_color = default_color
 
 func set_speed_type(value):
 	expand_on = value
@@ -444,7 +442,7 @@ func set_can_update():
 
 func set_enabled(value):
 	enabled = value
-	if not was_enabled: _ready()
+	if not was_enabled: init()
 	elif not enabled: disable()
 	else:
 		init_shapes()

@@ -1,5 +1,5 @@
 @icon("res://addons/BulletUpHell/Sprites/NodeIcons13.png")
-extends RichTextEffect
+extends Trigger
 class_name TriggerCollision
 
 @export_placeholder("Group name") var group_to_collide:String = "" # left empty for all

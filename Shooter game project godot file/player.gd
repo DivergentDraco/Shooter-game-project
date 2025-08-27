@@ -34,7 +34,7 @@ func _ready():
 func start():
 	show()
 	set_process(true)
-	position = Vector2(screensize.x/2, screensize.y)
+	position = Vector2(screensize.x/2, screensize.y - 50)
 	$Node2D1/GunCooldown.wait_time = cooldown
 	
 func _process(delta):
@@ -66,8 +66,11 @@ func _process(delta):
 	array.resize(20)
 #Select the 10th position stored in the array
 	$Node2D2.position = array[10]
-	position = position.clamp(Vector2(8, 8)+Vector2(165,0), screensize - Vector2(8, 8)+Vector2(165,0))
-	
+
+#Limit the player only inside the box	
+	# position = position.clamp(Vector2(8+165, 8), screensize - Vector2(173, 8))
+	position = position.clamp(Vector2(8, 8), screensize - Vector2(8, 8))
+
 	if Input.is_action_pressed("shoot") and can_shoot:
 		shoot()
 
@@ -80,7 +83,8 @@ func shoot():
 	$Node2D1/AudioStreamPlayer.play()
 	var b = bullet_scene.instantiate()
 	get_tree().root.add_child(b)
-	b.start(position, bullet_mode)
+	var bullet_offset = Vector2(159, 0) # half bullet size
+	b.start(position + bullet_offset, bullet_mode)
 	await get_tree().create_timer(0.045).timeout
 	can_shoot = true
 

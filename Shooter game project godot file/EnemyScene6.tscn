@@ -8,9 +8,9 @@
 [ext_resource type="Script" uid="uid://dcgggjlg7ts6s" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="8_wr1xk"]
 [ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="9_0ai8h"]
 [ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_5s1rb"]
+[ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="11_ga3xo"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="11_j3l24"]
 [ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="12_g68xl"]
-[ext_resource type="Script" uid="uid://cfg5vce6oxtyb" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="13_me6gd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jdcfm"]
 resource_local_to_scene = true
@@ -155,6 +155,7 @@ death_speed_under = 0.0
 death_culling_overwrite = 3
 spec_modulate_loop = 0.0
 no_rotation = false
+z_index = 0
 anim_more = Array[ExtResource("9_0ai8h")]([])
 spec_trail_length = 0.0
 spec_trail_width = 0.0
@@ -183,6 +184,7 @@ scale_multiplier = SubResource("Curve_vf2ig")
 scale_multi_scale = 1.0
 trigger_container = ""
 trigger_wait_for_shot = true
+temp_count = -1
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -233,16 +235,19 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
 [sub_resource type="Curve2D" id="Curve2D_blkin"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_111uy"]
-resource_name = "PatternLine"
-script = ExtResource("13_me6gd")
-offset = Vector2(0, 0)
+[sub_resource type="Resource" id="Resource_ospr5"]
+resource_name = "PatternCircle"
+script = ExtResource("11_ga3xo")
+radius = 20.0
+angle_total = 2.06867
+angle_decal = 0.563881
 center = 0
-symmetric = true
-bullet = "ufo"
-nbr = 1
-iterations = 50
-cooldown_spawn = 0.2
+perspective = 1.0
+symmetric = false
+bullet = "maid"
+nbr = 30
+iterations = 9999
+cooldown_spawn = 0.1
 cooldown_shoot = 0.0
 cooldown_next_spawn = 0.0
 cooldown_next_shoot = 0.0
@@ -256,15 +261,18 @@ wait_behavior = 0
 wait_tween_momentum = 0
 wait_tween_length = 0.0
 wait_tween_time = 0.0
-forced_angle = 1.5708
+forced_angle = 0.0
 forced_target = NodePath("")
 forced_lookat_mouse = false
 forced_pattern_lookat = true
 impulse = 0
 bullet_list = Array[String]([])
 skip_step = 0
+skip_amount = 0
 skip_list = Array[PackedInt32Array]([])
 skip_in_list = true
+temp_count = -1
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
 
 [node name="MaidEnemy" type="Area2D" groups=["enemies"]]
 position = Vector2(22, 21)
@@ -307,19 +315,27 @@ scale = Vector2(2.15, 2.10938)
 [node name="BulletPattern" type="Path2D" parent="Node2D"]
 curve = SubResource("Curve2D_v1s8e")
 script = ExtResource("8_wr1xk")
-id = "ufo"
+id = "maid"
 props = SubResource("PackedDataContainer_72xe0")
 
 [node name="SpawnPoint" type="Node2D" parent="Node2D"]
 script = ExtResource("11_j3l24")
-auto_pattern_id = "ufo"
+auto_pattern_id = "maid"
+rotating_speed = 0.06
 pool_amount = 100
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="SpawnPattern" type="Path2D" parent="Node2D"]
 curve = SubResource("Curve2D_blkin")
 script = ExtResource("12_g68xl")
-id = "ufo"
-pattern = SubResource("NavigationPolygon_111uy")
+id = "maid"
+pattern = SubResource("Resource_ospr5")
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]

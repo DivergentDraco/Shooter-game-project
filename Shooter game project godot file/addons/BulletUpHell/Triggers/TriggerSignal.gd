@@ -1,5 +1,5 @@
 @icon("res://addons/BulletUpHell/Sprites/NodeIcons11.png")
-extends RichTextEffect
+extends Trigger
 class_name TriggerSignal
 
 @export_placeholder("Signal name") var sig:String = ""

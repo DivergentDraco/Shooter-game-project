@@ -1,5 +1,5 @@
 @icon("res://addons/BulletUpHell/Sprites/NodeIcons12.png")
-extends RichTextEffect
+extends Trigger
 class_name TriggerPos
 
 enum AXIS { X, Y, BOTH}

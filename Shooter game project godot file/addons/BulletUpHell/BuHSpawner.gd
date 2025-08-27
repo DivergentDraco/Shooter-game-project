@@ -1,17 +1,27 @@
 @tool
 extends Node2D
 
+###############################################################
+## BulletUpHell BLAST, by Dark Peace
+## purchasing the plugin through Dark Peace's Itch.io page grants you the right to use this plugin in your projects
+## you cannot share this plugin's code with anyone else
+## you can use this plugin to make and distribute any game, even commercially
+###############################################################
+
 signal bullet_collided_area(area:Area2D,area_shape_index:int,bullet:Dictionary,local_shape_index:int,shared_area:Area2D)
 signal bullet_collided_body(body:Node,body_shape_index:int,bullet:Dictionary,local_shape_index:int,shared_area:Area2D)
 signal resume_process(process_id:int)
+signal process_info(process_id:int, spawner, pattern:String, props:String, bullets:Array)
 
-const STANDARD_BULLET_RADIUS = 5
-
+const STANDARD_BULLET_RADIUS:float = 5
+var CORESNBR:int = OS.get_processor_count()
 var CUSTOM:customFunctions = customFunctions.new()
+var DrawerInstance:Node2D
 
 @export var custom_bullet_prop_data:Dictionary
-@export_placeholder("Group name") var GROUP_BOUNCE:String = "Slime"
+@export_placeholder("Group name") var GROUP_BOUNCE:PackedStringArray = ["Bounce"]
 @export_range(0.001, 999, 0.01, "hide_slider") var time_scale:float = 1
+@export var RAND_SEED:int = -1
 @export var Gravity:Vector2 = Vector2(0,0)
 @export var MAX_ACC:int = 500
 
@@ -21,43 +31,40 @@ var CUSTOM:customFunctions = customFunctions.new()
 @export var default_shoot:animState
 @export var default_waiting:animState
 @export var default_delete:animState
-#@export var rand_variation_list:Array[Curve] = []
 
-@export_group("Optimisation Culling", "cull_")
+@export_group("Culling", "cull_")
 enum CULLINGLVL {Anim, Move, Full, Inherit}
 @export var cull_technique:CULLINGLVL = CULLINGLVL.Full
-@export var cull_trigger = true
-@export_range(0.01, 60, 0.016, "hide_slider") var cull_culling_rate:float = 0.01
+@export var cull_trigger:bool = true
+@export_range(0.01, 60, 0.016, "hide_slider", "suffix:s") var cull_culling_rate:float = 0.01
+@export_range(0, 2000, 1, "hide_slider", "suffix:bullets") var cull_increase_at:int = 750
+@export_range(0, 2000, 1, "hide_slider", "suffix:bullets") var cull_max_bullets:int = 9999
 @export_subgroup("Screen Culling", "cull_")
-@export_range(0, 999999, 10, "hide_slider") var cull_margin:float = STANDARD_BULLET_RADIUS*10
+@export_range(0, 999999, 10, "hide_slider", "suffix:px") var cull_margin:float = STANDARD_BULLET_RADIUS*10
 @export var cull_fixed_screen:bool = false
-@export_range(0.01, 60, 0.016, "hide_slider") var cull_viewport_refresh:float = 0.01
+@export_range(0.01, 60, 0.016, "hide_slider", "suffix:s") var cull_viewport_refresh:float = 0.01
 @export_subgroup("Culling from distance to...")
-@export_range(0, 999999, 10, "hide_slider") var cull_faking_dist:float = 0
-@export_range(0, 999999, 10, "hide_slider") var cull_unfaking_dist:float = 0
-
+@export_range(0, 999999, 10, "hide_slider", "suffix:px") var cull_faking_dist:float = 0
+@export_range(0, 999999, 10, "hide_slider", "suffix:px") var cull_unfaking_dist:float = 0
 
 ## Data Structs
-var arrayProps:Dictionary = {}
-var arrayTriggers:Dictionary = {}
-var arrayPatterns:Dictionary = {}
-var arrayContainers:Dictionary = {}
-var arrayInstances:Dictionary = {}
-var arrayAnim:Dictionary = {}
+var arrayProps:Dictionary[String, Dictionary] = {}
+var arrayTriggers:Dictionary[String, Trigger] = {}
+var arrayPatterns:Dictionary[String, Pattern] = {}
+var arrayContainers:Dictionary[String, TriggerContainer] = {}
+var arrayInstances:Dictionary[String, Node] = {}
+var arrayAnim:Dictionary[String, Array] = {}
 @onready var textures:SpriteFrames = $ShapeManager.sprite_frames
-@onready var arrayShapes:Dictionary = {} # format: id={shape, offset, rotation}
+@onready var arrayShapes:Dictionary[String, Array] = {} # format: id=[shape, offset, rotation]
 
-
-var poolBullets:Dictionary = {}
-var shape_indexes:Dictionary = {}
-var shape_rids:Dictionary = {}
+var poolBullets:Dictionary = {} # (active rid, bullet)
 var Phys = PhysicsServer2D
-enum BState{Unactive, Spawning, Spawned, Shooting, Moving, Deleting, QueuedFree}
-const UNACTIVE_ZONE = Vector2(99999,99999)
+enum BState{Unactive, Spawning, Spawned, Shooting, Moving, Paused, Deleting, QueuedFree}
+const UNACTIVE_ZONE:Vector2 = Vector2(99999,99999)
 # pooling
 var inactive_pool:Dictionary = {}
 
-# spawning processes
+## spawning processes
 var process_stop:Array[int] = []
 var process_stop_all:bool = false
 var process_pause:Array[int] = []
@@ -65,22 +72,19 @@ var process_pause_all:bool = false
 var process_get:int = 0
 var process_infos:Array = []
 var process_counter:int = 0
+var process_list:Array[int]
+var process_next_id:int = 900000
 
 # spawning delays
-const ACTION_SPAWN = 0
-const ACTION_SHOOT = 1
-const ACTION_BOTH = 2
 var poolQueue:Array = [] # format : [action:0=spawn1=shoot2=both, arraytospawn, arraytoshoot]
-var poolTimes:Array = []
-var loop_length = 9999
-var time = 0
-var next_in_queue
+var poolTimes:Array[float] = []
+var time:float = 0
 
-var RAND = RandomNumberGenerator.new()
+var RAND
 var expression = Expression.new()
 var _delta:float = 0
 var start_homing_group:Array[String]
-var HOMING_MARGIN = 20
+var HOMING_MARGIN := 20.0
 enum GROUP_SELECT{Nearest_on_homing, Nearest_on_spawn, Nearest_on_shoot, Nearest_anywhen, Random}
 enum SYMTYPE{ClosedShape,Line}
 enum CURVE_TYPE{None, LoopFromStart, OnceThenDie, OnceThenStay, LoopFromEnd, OnceThenStop}
@@ -98,68 +102,68 @@ var can_cull:bool = false
 var interest_list:Array[Node]
 
 var global_reset_counter:int = 0
-
-## multithreading
-#var spawn_thread: Thread
-#var move_thread: Thread
-#var draw_thread: Thread
-
-
+var bullet_id_counter:int = 0
 
 
 
 #§§§§§§§§§§§§§ GLOBAL §§§§§§§§§§§§§
 
 func _ready():
-	if Engine.is_editor_hint(): return
-
-	#spawn_thread = Thread.new()
-	#move_thread = Thread.new()
-	#draw_thread = Thread.new()
-
-	randomize()
-
 	$ShapeManager.hide()
-	for s in $ShapeManager.get_children():
+	if Engine.is_editor_hint(): return
+	
+	RAND = RandomNumberGenerator.new()
+	if RAND_SEED == -1:
+		RAND.randomize()
+		RAND_SEED = RAND.seed
+	else: RAND.seed = RAND_SEED
+
+	DrawerInstance = $"Drawers/0".duplicate()
+	$"Drawers/0".z_index = z_index
+	$"Drawers/0".name = str(z_index)
+	
+	for s:Node2D in $ShapeManager.get_children():
 		assert(s is CollisionShape2D or s is CollisionPolygon2D)
 		if s.shape: arrayShapes[s.name] = [s.shape,s.position,s.rotation]
 		s.queue_free()
 
-	for a in $SharedAreas.get_children():
+	for a:Area2D in $SharedAreas.get_children():
 		assert(a is Area2D)
-		a.connect("area_shape_entered",Callable(self,"bullet_collide_area").bind(a))
-		a.connect("body_shape_entered",Callable(self,"bullet_collide_body").bind(a))
+		a.connect("area_shape_entered", Callable(self,"bullet_collide_area").bind(a))
+		a.connect("body_shape_entered", Callable(self,"bullet_collide_body").bind(a))
 		a.set_meta("ShapeCount", 0)
+		a.set_meta("Bullets", {})
 
 	reset_bounce()
 
 	var default_anims:Array[animState] = [default_idle, default_spawn, default_shoot, default_waiting, default_delete]
-	for a in default_anims.size():
+	for a:int in default_anims.size():
 		default_anims[a].ID = "@"+["anim_idle","anim_spawn","anim_shoot","anim_waiting","anim_delete"][a]
 		set_anim_states(default_anims[a])
-	
-	#update_viewport()
+
 
 func reset(minimal:bool=false):
 	# change that in order signal that a reset has been made and stop the currently running func
 	global_reset_counter += 1
+	#process_list.clear()
 	# reset bullets
-	reset_bullets()
+	clear_all_bullets()
 	# empty data structure
-	inactive_pool.clear()
-	shape_indexes.clear()
-	shape_rids.clear()
-	poolBullets.clear()
+	_free_rids()
 	poolQueue.clear()
 	poolTimes.clear()
 	# reset time count
 	time = 0
 	_delta = 0
 	# reset active bullet states
-	for a in $SharedAreas.get_children():
+	for a:Area2D in $SharedAreas.get_children():
 		a.set_meta("ShapeCount", 0)
+		a.set_meta("Bullets", {})
 	# reset bounce calculation
 	reset_bounce()
+	# remove Drawers
+	for child:Node2D in $Drawers.get_children():
+		child.queue_free()
 	# remove unneeded resources
 	if not minimal:
 		arrayContainers.clear()
@@ -168,57 +172,82 @@ func reset(minimal:bool=false):
 		arrayTriggers.clear()
 		arrayProps.clear()
 	else:
-		for array in [arrayContainers, arrayInstances, arrayPatterns, arrayProps, arrayTriggers, arrayAnim]:
+		for array:Dictionary in [arrayContainers, arrayInstances, arrayPatterns, arrayProps, arrayTriggers, arrayAnim]:
 			for elem in array.keys():
 				if elem[0] == "@": continue
 				array.erase(elem)
 
+func _free_rids():
+	for k in inactive_pool.keys():
+		if inactive_pool[k] is Array:
+			for b in inactive_pool[k]:
+				if b[0] is RID: Phys.free_rid(b[0])
+	inactive_pool.clear()
+	
+	for b in poolBullets.keys():
+		if b is RID: Phys.free_rid(b)
+	poolBullets.clear()
+	
+	# todo handle poolQueues
 
-func _exit_tree():
-	#spawn_thread.wait_to_finish()
-	#draw_thread.wait_to_finish()
-	#move_thread.wait_to_finish()
-	pass
+func clear_temp_resources(symbol="%", max:int=INF, arrays:Array=[arrayContainers, arrayInstances, arrayPatterns, arrayProps, arrayTriggers, arrayAnim]):
+	var count:int = 0
+	for array:Dictionary in arrays:
+		for elem in array.keys():
+			if elem[0] == "%" and count < max:
+				array.erase(elem)
+				count += 1
 
-func _process(delta: float) -> void:
-	if Engine.is_editor_hint(): return
+func reload_path_pattern(pattern:Pattern, source:Node):
+	if pattern.forced_target: pattern.node_target = source.get_node(pattern.forced_target)
+	if pattern.get("pattern_angle_target"):
+		pattern.node_pattern_target = source.get_node(pattern.pattern_angle_target)
 
-	#_delta = delta*time_scale
-	if not cull_fixed_screen:
-		_viewport_refresher += _delta
-		if _viewport_refresher >= cull_viewport_refresh: update_viewport()
+func reload_path_bullet(props:Resource, source:Node):
+	if props.homing_target: props.node_homing = source.get_node(props.homing_target)
+	elif props.homing_special_target: props.node_homing = get_special_target(props.homing_special_target)
+
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	_delta = delta*time_scale
 
+	if not cull_fixed_screen:
+		_viewport_refresher += _delta
+		if _viewport_refresher >= cull_viewport_refresh: update_viewport()
+
 	if not poolBullets.is_empty():
-		_update_culling(_delta)
-		#bullet_movement(delta)
+		_update_culling()
 		queue_redraw()
 
 	time += _delta
-	if time == loop_length: time = 0
+	var next_in_queue:Array
 	while not poolQueue.is_empty() and poolTimes[0] < time:
-		next_in_queue = poolQueue[0]
-		match next_in_queue[0]:
-			ACTION_SPAWN: _spawn(next_in_queue[1])
-			ACTION_SHOOT: _shoot(next_in_queue[1])
-			ACTION_BOTH: _spawn_and_shoot(next_in_queue[1],next_in_queue[2])
-		poolQueue.pop_front()
+		next_in_queue = poolQueue.pop_front()
+		if next_in_queue[0]["state"] < BState.Spawning: _spawn(next_in_queue)
+		elif next_in_queue[0]["state"] < BState.Moving: 
+			_shoot(next_in_queue)
 		poolTimes.pop_front()
 
+	# handle bounces
+	for i:int in range(min(bounce_queue.size(), $Bouncy.get_child_count())):
+		var bounce_data:Array = bounce_queue.pop_front()
+		_process_bounce(bounce_data[0], bounce_data[1], bounce_data[2])
+
 func change_scene_to_file(file:String):
-	reset_bullets()
+	reset()
 	get_tree().change_scene_to_file(file)
 
 func change_scene_to_packed(scene:PackedScene):
-	reset_bullets()
+	reset()
 	get_tree().change_scene_to_packed(scene)
 
-func reset_bullets():
-	clear_all_bullets()
+func call_custom(function:String, argv:Array=[]):
+	if not CUSTOM.has_method(function): return
+	CUSTOM.callv(function, argv)
 
+func setup_viewport(pos:Vector2, area:String):
+	$SharedAreas.get_node(area).position += pos
 
 
 
@@ -229,7 +258,7 @@ func new_instance(id:String, instance:Node2D):
 		push_warning("Warning : New instance ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
 		return
 	arrayInstances[id] = instance
-func new_trigger(id:String, t:RichTextEffect):
+func new_trigger(id:String, t:Trigger):
 	if arrayTriggers.has(id):
 		push_warning("Warning : New trigger ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
 		return
@@ -244,7 +273,7 @@ func new_bullet(id:String, b:Dictionary):
 		push_warning("Warning : New bullet ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
 		return
 	arrayProps[id] = b
-func new_container(node):
+func new_container(node:TriggerContainer):
 	if arrayContainers.has(node.id):
 		push_warning("Warning : New container ignored. Name "+node.id+" already exists. Make sure this duplicate isn't an error.")
 		return
@@ -269,50 +298,60 @@ func container(id:String):
 
 #### API for nodes ####
 
+func update_custom_bullet_prop_data(props):
+	for key in self.custom_bullet_prop_data:
+		if props.custom_data.has(key): continue
+		props.custom_data[key] = self.custom_bullet_prop_data[key]
+	for key in props.custom_data:
+		if self.custom_bullet_prop_data.has(key): continue
+		props.custom_data.erase(key)
+	return props
+
 func generate_new_bulletprops():
-	var props = BulletProps.new()
+	var props := BulletProps.new()
 	# manage custom data
-	if not Spawning.custom_bullet_prop_data.is_empty():
-		for key in Spawning.custom_bullet_prop_data:
-			if props.custom_data.has(key): continue
-			else: props.custom_data[key] = Spawning.custom_bullet_prop_data[key]
-		for key in props.custom_data:
-			if Spawning.custom_bullet_prop_data.has(key): continue
-			else: props.custom_data.erase(key)
+	if not self.custom_bullet_prop_data.is_empty():
+		return update_custom_bullet_prop_data(props)
+	return props
+
+func generate_new_bulletnodeprops():
+	var props := BulletNodeProps.new()
+	# manage custom data
+	if not self.custom_bullet_prop_data.is_empty():
+		return update_custom_bullet_prop_data(props)
 	return props
 
 # remove unnecessary bloat from bulletprops and return a clean dictionary
-func sanitize_bulletprops(props:PackedDataContainer, id:String, source:Node) -> Dictionary:
+func sanitize_bulletprops(props:Resource, id:String, source:Node, preview:bool=false) -> Dictionary:
 	if not props is ObjectProps:
 		if props.homing_type == props.TARGET_TYPE.ListPositions:
 			props.homing_list = props.homing_list_pos.duplicate()
 		elif props.homing_type == props.TARGET_TYPE.ListNodes:
 			props.homing_list = []
-			for n in props.homing_list_nodes: props.homing_list.append(source.get_node(n))
+			for n:NodePath in props.homing_list_nodes: props.homing_list.append(source.get_node(n))
 		elif props.homing_type == props.TARGET_TYPE.MouseCursor:
 			props.homing_mouse = true
 		if props.homing_target: props.node_homing = source.get_node(props.homing_target)
-		elif props.homing_special_target: props.node_homing = Spawning.get_special_target(props.homing_special_target)
+		elif props.homing_special_target: props.node_homing = get_special_target(props.homing_special_target)
 		elif not (props.homing_list.size() < 2 or props.homing_list_ordered): props.homing_list.shuffle()
 
 	var dict:Dictionary = {}; var P:String; var value; var has_random:bool=false;
-	var allow_random:bool = (props is ObjectProps or randf_range(0,1) <= props.get("r_randomisation_chances"));
-	var anim_array:Array[animState];
-	for p in props.get_property_list():
+	var allow_random:bool = (props is ObjectProps or RAND.randf_range(0,1) <= props.get("r_randomisation_chances"));
+	for p:Dictionary in props.get_property_list():
 		P = p["name"]
 		value = props.get(P)
-		if P in ["__data__","spec_top_level","spec_ally","mask","r_randomisation_chances",
-			"RefCounted","Resource","resource_local_to_scene","resource_path","Resource","node_container",
-			"resource_name","PackedDataContainer","script","Script Variables","homing_position", "homing_list_ordered", "homing_type",
-			"homing_list_pos","homing_list_nodes","Movement","Physics","Animation","Homing","Destruction",
-			"Triggers","Homing","BulletProps.gd","Random","","Color","Trail","Scale"]:
+		if P in ["__data__","spec_top_level","spec_ally","mask","r_randomisation_chances", "resource_scene_unique_id",
+			"RefCounted","Resource","resource_local_to_scene","resource_path",
+			"resource_name","script","Script Variables","homing_position", "homing_list_ordered", "homing_type",
+			"homing_list_pos","homing_list_nodes","Movement","Physics","Visuals","Homing","Destruction", "Depth",
+			"Triggers","Homing","BulletProps.gd","ObjectProps.gd","BulletNodeProps.gd","Random","","Color","Trail","Scale"]:
 				continue
 		elif P in ["a_direction_equation","trigger_container", "anim_spawn_texture","anim_waiting_texture",\
 			"anim_delete_texture","anim_spawn_collision","anim_waiting_collision","anim_delete_collision",\
 			"homing_special_target","homing_group","homing_start_signal","a_angular_equation"] and value == "": continue
 		elif P in ["a_speed_multi_iterations","scale_multi_iterations","spec_bounces","spec_rotating_speed", \
 			"spec_warn","spec_explo","spec_skew","spec_modulate_loop","spec_trail_length",\
-			"a_curve_movement","death_speed_under","homing_detection_dist","spec_trail_unlimited"] and int(value) == int(0): continue
+			"a_curve_movement","death_speed_under","homing_detection_dist","spec_trail_unlimited","temp_count"] and int(value) == int(0): continue
 		elif P in ["anim_idle_sfx","anim_spawn_sfx","anim_waiting_sfx","anim_delete_sfx"] and value == -1: continue
 		elif P in ["spec_tourment","spec_no_collision","overwrite_groups","homing_mouse","spec_spin_only_sprite","no_rotation", \
 				] and value == false: continue
@@ -321,7 +360,7 @@ func sanitize_bulletprops(props:PackedDataContainer, id:String, source:Node) -> 
 		elif P in ["spec_modulate","curve", "spec_trail_gradient"] and value == null: continue
 		elif P in ["homing_list","homing_surface","groups"] and value.is_empty(): continue
 		elif P == "death_outside_box" and value == Rect2(): continue
-		#elif P == "spec_weight" and Gravity == Vector2.ZERO: continue
+		elif P == "spec_weight" and value == 1 and Gravity == Vector2.ZERO: continue
 
 		elif P in ["homing_steer","homing_time_start","homing_duration","node_homing","homing_range","homing_imprecision","homing_detection_dist"] \
 			and not ((dict.get("homing_target",false) or dict.get("homing_position",false)) \
@@ -339,9 +378,9 @@ func sanitize_bulletprops(props:PackedDataContainer, id:String, source:Node) -> 
 		elif P in ["depth_spawn","depth_speed","depth_min_max","depth_bounce"] \
 				and not dict.has("depth_active"): continue
 
-		elif P.left(5) == "anim_":
+		elif not preview and P.left(5) == "anim_":
 			if P == "anim_more":
-				for a in value: set_anim_states(a, P, id)
+				for a:animState in value: set_anim_states(a, P, id)
 			elif P == "anim_idle":
 				if value == null: dict[P] = "@anim_idle"
 				else:
@@ -375,21 +414,23 @@ func sanitize_bulletprops(props:PackedDataContainer, id:String, source:Node) -> 
 		elif P == "custom_data":
 			for key in value:
 				dict[key] = value[key]
-			continue
+
+		elif P == "z_index":
+			if value == 0: value = z_index
+			if value != z_index and not $Drawers.has_node(str(value)):
+				var new_node := DrawerInstance.duplicate()
+				new_node.name = str(value)
+				new_node.z_index = value
+				$Drawers.add_child(new_node)
+
 		dict[P] = value
-	dict["__ID__"] = id
 	return dict
 
 func set_anim_states(a:animState, P:String="", id:String=""):
 	if a.ID == "": a.ID = "_"+id+"_"+P
-	var col
-	var sfx
 	if a.texture == "": a.texture = arrayAnim["@"+P][ANIM.TEXTURE]
-	if a.collision == "": col = arrayAnim["@"+P][ANIM.COLLISION]
-	else: col = arrayShapes[a.collision]
-	if a.SFX == "": sfx = null
-	else: sfx = $SFX.get_node(a.SFX)
-
+	var col = arrayAnim["@"+P][ANIM.COLLISION] if a.collision == "" else arrayShapes[a.collision]
+	var sfx = null if a.SFX == "" else $SFX.get_node(a.SFX)
 	arrayAnim[a.ID] = [a.texture, col, sfx, a.tex_scale, a.tex_skew]
 	return a.ID
 
@@ -398,19 +439,19 @@ func sanitize_pattern(pattern:Pattern, source:Node):
 	if pattern.get("pattern_angle_target"):
 		pattern.node_pattern_target = source.get_node(pattern.pattern_angle_target)
 	if pattern.resource_name == "PatternCustomShape":
-		if pattern.closed_shape: pattern.symmetry_type = Spawning.SYMTYPE.ClosedShape
+		if pattern.closed_shape: pattern.symmetry_type = SYMTYPE.ClosedShape
 	elif pattern.resource_name in ["PatternLine","PatternCircle"]:
 		if not pattern.skip_list.is_empty():
 			pattern.skip_array = pattern.skip_list
 		elif pattern.skip_step > 0:
-			#for i in pattern.nbr:
+			pattern.skip_array = [[]]
 			var i:int = 0
 			while i < pattern.nbr:
 				if (i+1)%pattern.skip_step == 0:
-					for amount in pattern.skip_amount: pattern.skip_array.append(i+amount+1)
+					for amount:int in pattern.skip_amount:
+						pattern.skip_array[0].append(i+amount+1)
 					i += pattern.skip_amount-1
 				i += 1
-
 	if pattern.bullet == "" and not pattern.bullet_list.is_empty():
 		pattern.bullet = pattern.bullet_list[0]
 
@@ -420,10 +461,9 @@ func sanitize_pattern(pattern:Pattern, source:Node):
 	# determines if the pattern contains randomness
 	if pattern.random != null:
 		var ran:PatternRandomizer = pattern.random
-		#var i:int = 0
-		if int(ran.randomisation_chances) == 1 or randf_range(0, 1) < ran.randomisation_chances:
+		if int(ran.randomisation_chances) == 1 or RAND.randf_range(0, 1) < ran.randomisation_chances:
 			var P:String
-			for p in ran.get_property_list():
+			for p:Dictionary in ran.get_property_list():
 				P = p["name"]
 				if (p["type"] == TYPE_STRING and ran.get(P) == "") or \
 					(p["type"] == TYPE_VECTOR3 and ran.get(P) == Vector3()) or \
@@ -436,9 +476,9 @@ func sanitize_pattern(pattern:Pattern, source:Node):
 	return pattern
 
 # PatternCustomArea : creates a polygon from a curve
-func curve_to_polygon(pattern:NavigationPolygon, curve:Curve2D):
+func curve_to_polygon(pattern:Resource, curve:Curve2D):
 	var point:Vector2; var poly:Array[Vector2]
-	for p in curve.get_point_count():
+	for p:int in curve.get_point_count():
 		point = curve.get_point_position(p)
 		poly.append(point)
 		if point.x < pattern.limit_rect.position.x: pattern.limit_rect.position.x = point.x
@@ -448,11 +488,11 @@ func curve_to_polygon(pattern:NavigationPolygon, curve:Curve2D):
 	pattern.polygon = PackedVector2Array(poly)
 
 # PatternCustomPoints : find the positions and angles of the bullets
-func points_distribute(pattern:NavigationPolygon, curve:Curve2D):
+func points_distribute(pattern:Resource, curve:Curve2D):
 	var point_count:int = curve.get_point_count()
 	pattern.nbr = point_count
 	var angle:float; var pos:Vector2
-	for point in point_count:
+	for point:int in point_count:
 		pos = curve.get_point_position(point)
 		if pattern.calculate_angles == pattern.ANGLE_TYPE.FromTangeant:
 			if point == point_count-1:
@@ -468,26 +508,26 @@ func points_distribute(pattern:NavigationPolygon, curve:Curve2D):
 			pattern.angles.append(angle+(PI*int(pattern.reversed_angle)))
 
 # PatternCustomArea : generates spawn positions for bullets inside an area
-func area_distribute(pattern:NavigationPolygon):
+func area_distribute(pattern:Resource):
 	var maybe_pos; var tries:int
-	for i in pattern.pooling:
+	for i:int in pattern.pooling:
 		pattern.pos.append([])
-		for j in pattern.nbr:
-			maybe_pos = Vector2(randf_range(pattern.limit_rect.position.x,pattern.limit_rect.size.x),\
-								randf_range(pattern.limit_rect.position.y,pattern.limit_rect.size.y))
+		for j:int in pattern.nbr:
+			maybe_pos = Vector2(RAND.randf_range(pattern.limit_rect.position.x,pattern.limit_rect.size.x),\
+								RAND.randf_range(pattern.limit_rect.position.y,pattern.limit_rect.size.y))
 			tries = pattern.tries_max
 			while tries > 0 and not Geometry2D.is_point_in_polygon(maybe_pos, pattern.polygon):
 				tries -= 1
-				maybe_pos = Vector2(randf_range(pattern.limit_rect.position.x,pattern.limit_rect.size.x),\
-									randf_range(pattern.limit_rect.position.y,pattern.limit_rect.size.y))
+				maybe_pos = Vector2(RAND.randf_range(pattern.limit_rect.position.x,pattern.limit_rect.size.x),\
+									RAND.randf_range(pattern.limit_rect.position.y,pattern.limit_rect.size.y))
 			pattern.pos[i].append(maybe_pos-pattern.center_pos)
 
 # PatternCustomArea : generates spawn positions for bullets inside an area following a grid pattern
-func grid_distribute(pattern:NavigationPolygon):
+func grid_distribute(pattern:Resource):
 	pattern.pos.append([])
 	var maybe_pos
-	for x in (pattern.limit_rect.size.x-pattern.limit_rect.position.x)/pattern.grid_spawning.x:
-		for y in (pattern.limit_rect.size.y-pattern.limit_rect.position.y)/pattern.grid_spawning.y:
+	for x:float in (pattern.limit_rect.size.x-pattern.limit_rect.position.x)/pattern.grid_spawning.x:
+		for y:float in (pattern.limit_rect.size.y-pattern.limit_rect.position.y)/pattern.grid_spawning.y:
 			maybe_pos = pattern.limit_rect.position+Vector2(pattern.grid_spawning.x*x,pattern.grid_spawning.y*y)
 			if Geometry2D.is_point_in_polygon(maybe_pos, pattern.polygon):
 				pattern.pos[0].append(maybe_pos-pattern.center_pos)
@@ -495,71 +535,88 @@ func grid_distribute(pattern:NavigationPolygon):
 	pattern.pooling = 1
 
 # PatternCustomShape : generates spawn positions and angles for bullets along a custom curve
-func shape_distribute(pattern:NavigationPolygon, curve:Curve2D, follow:PathFollow2D):
-	#var follow:PathFollow2D = PathFollow2D.new()
-	#add_child(follow)
+func shape_distribute(pattern:Resource, curve:Curve2D, follow:PathFollow2D):
 	var length:float = curve.get_baked_length()
-	for b in pattern.nbr:
-		var pos_on_curve
-		if pattern.closed_shape: pos_on_curve = length/pattern.nbr*b
-		else: pos_on_curve = length/(pattern.nbr-1)*b
+	for b:int in pattern.nbr:
+		var pos_on_curve = length/pattern.nbr*b if pattern.closed_shape else length/(pattern.nbr-1)*b
 		follow.h_offset = pos_on_curve
 		pattern.pos.append(pattern.shape.sample_baked(pos_on_curve).rotated(pattern.pattern_angle)-pattern.center_pos)
 		pattern.angles.append(follow.rotation-PI/2)
-	#remove_child(follow)
 
 
 
 
 #§§§§§§§§§§§§§ POOLING §§§§§§§§§§§§§
 
-func create_pool(bullet:String, shared_area:String, amount:int, object:bool=false):
-	var props:Dictionary = arrayProps[bullet]
-	if not inactive_pool.has(bullet):
-		inactive_pool[bullet] = []
-		inactive_pool["__SIZE__"+bullet] = 0
+func free_inactive(id, shared_area:String, keep:int=0):
+	if shared_area == "": id = arrayInstances[id]
+	var pool:Array = inactive_pool[id][shared_area] if shared_area != "" else inactive_pool[id]
+	if keep == 0:
+		pool.clear()
+		inactive_pool.erase(id)
+		Phys.free_rid(id)
+	else: while pool.size() > keep: pool.pop_back()
 
-	if object:
-		for i in amount:
-			inactive_pool[bullet].append(instance(props["instance_id"]).duplicate())
-	else:
-		var shared_rid:RID = get_shared_area_rid(shared_area)
-		var count:int = Phys.area_get_shape_count(shared_rid)
-		var new_rid:RID
-		$SharedAreas.get_node(shared_area).set_meta("ShapeCount", $SharedAreas.get_node(shared_area).get_meta("ShapeCount",0)+amount) # Warning, bad sync possible ?
-		for i in amount:
-			new_rid = create_shape(shared_rid, arrayAnim[props["anim_spawn"]][ANIM.COLLISION], true, count+i)
-#			shape_indexes[new_rid] = count+i
-			_update_shape_indexes(new_rid, count+i, shared_area)
-			inactive_pool[bullet].append([new_rid, shared_area])
-	inactive_pool["__SIZE__"+bullet] += amount
+func _get_pool(key, shared_area:String, object:bool=false):
+	# create pool if it doesn't exist
+	if not inactive_pool.has(key):
+		if object:
+			inactive_pool[key] = []
+			return inactive_pool[key]
+		else: inactive_pool[key] = {shared_area:[]}
+	elif not object and not inactive_pool[key].has(shared_area):
+		inactive_pool[key][shared_area] = []
+	elif object: return inactive_pool[key]
+	return inactive_pool[key][shared_area]
+
+func create_pool(id:String, amount:int, shared_area:String):
+	var shape_data:Array = arrayAnim[arrayProps[id]["anim_spawn"]][ANIM.COLLISION]
+	_create_pool(shape_data, _get_pool(shape_data[0], shared_area, false), shared_area, amount)
+
+func create_object_pool(id:String, amount:int, shared_area:String=""):
+	var instance:Node2D = arrayInstances[arrayProps[id]["instance_id"]]
+	_create_object_pool(instance, _get_pool(instance, "", true), amount)
+
+func _create_pool(shape_data:Array, pool:Array, shared_area:String, amount:int):
+	var area:Area2D = $SharedAreas.get_node(shared_area)
+	var current_count:int
+	var new_rid:RID
+	for i:int in amount:
+		current_count = area.get_meta("ShapeCount")
+		area.set_meta("ShapeCount", current_count+1)
+		pool.append([create_shape(area, shape_data, true, current_count+1), current_count])
+
+func _create_object_pool(instance:Node2D, pool:Array, amount:int):
+	for i:int in amount: pool.append(instance.duplicate())
 
 # return RID for default bullets OR object reference for scenes
-func wake_from_pool(bullet:String, queued_instance:Dictionary, shared_area:String, object:bool=false):
-	if not inactive_pool.has(bullet):
-		push_warning("WARNING : there's no bullet pool for bullet of ID "+bullet+" . Create a pool upon game load to avoid lag by calling Spawning.create_pool()")
-		create_pool(bullet, queued_instance["shared_area"].name, 50, object) # TODO : 50 is arbitrary, there might be lag if it needs more
-	elif inactive_pool[bullet].is_empty():
-		push_warning("WARNING : bullet pool for bullet of ID "+bullet+" is empty. Create bigger one next time to avoid lag.")
-		create_pool(bullet, queued_instance["shared_area"].name, max(inactive_pool["__SIZE__"+bullet]/10, 50), object)
+func wake_from_pool(props:Dictionary, id:String, shared_area:String, nbr:int, object:bool=false):
+	var shape_data:Array = arrayAnim[props["anim_spawn"]][ANIM.COLLISION] if not object else []
+	var key = shape_data[0] if not object else arrayInstances[props["instance_id"]]
+	var pool:Array = _get_pool(key, shared_area, object)
 	
-	if inactive_pool[bullet][0] is Array:
-		var i:int = 0
-		while inactive_pool[bullet][i][1] != shared_area: i += 1
-		var bID = inactive_pool[bullet].pop_at(i)[0]
-		return bID
-	else:
-		return inactive_pool[bullet].pop_at(0)
+	if pool.size() < nbr:
+		push_warning("WARNING : bullet pool for bullet of ID "+id+" is empty. Create bigger one next time to avoid lag.")
+		if object: _create_object_pool(key, pool, nbr)
+		else: _create_pool(shape_data, pool, shared_area, nbr)
 
-func back_to_grave(bullet:String, bID, B:Dictionary):
-	inactive_pool[bullet].append([bID, B["shared_area"].name])
-	B["state"] = BState.QueuedFree
+	return pool.pop_back()
 
-	if bID is Node2D: bID.get_parent().remove_child(bID)
+func back_to_grave(B:Dictionary):
+	var bID = B["RID"]
+	if bID is RID:
+		B["state"] = BState.QueuedFree
+		inactive_pool[B["colID"][0]][B["shared_area"].name].append([bID, B["index"]])
+	elif bID is int:
+		B["state"] = BState.QueuedFree
+	else:#if is_instance_valid(bID):  # <--- add if there is an issue
+		inactive_pool[arrayInstances[B["props"]["instance_id"]]].append(bID)
+		bID.get_parent().call_deferred("remove_child", bID)
+		poolBullets.erase(bID)
 
-func create_shape(shared_rid:RID, ColID:Array, init:bool=false, count:int=0) -> RID:
+func create_shape(shared:Area2D, ColID:Array, init:bool=false, count:int=0) -> RID:
 	var new_shape:RID
-	var template_shape = ColID[0]
+	var template_shape:Shape2D = ColID[0]
 	if template_shape is CircleShape2D:
 		new_shape = Phys.circle_shape_create()
 		Phys.shape_set_data(new_shape, template_shape.radius)
@@ -585,9 +642,9 @@ func create_shape(shared_rid:RID, ColID:Array, init:bool=false, count:int=0) -> 
 		new_shape = Phys.segment_shape_create()
 		Phys.shape_set_data(new_shape, [template_shape.a,template_shape.b])
 
-	Phys.area_add_shape(shared_rid, new_shape, Transform2D(ColID[2],ColID[1]+(UNACTIVE_ZONE*int(init))))
-	if count == 0: count = Phys.area_get_shape_count(shared_rid)
-	Phys.area_set_shape_disabled(shared_rid, count-1, true)
+	Phys.area_add_shape(shared.get_rid(), new_shape, Transform2D(ColID[2],ColID[1]+(UNACTIVE_ZONE*int(init))))
+	if count == 0: count = shared.get_meta("ShapeCount")-1
+	Phys.area_set_shape_disabled(shared.get_rid(), count-1, true)
 	return new_shape
 
 
@@ -600,19 +657,14 @@ func create_shape(shared_rid:RID, ColID:Array, init:bool=false, count:int=0) -> 
 ### INIT BULLETS DATA ###
 
 func set_angle(pattern:Pattern, pos:Vector2, queued_instance:Dictionary):
-	if pattern.forced_target != NodePath() and is_instance_valid(pattern.node_target):
-		if pattern.forced_pattern_lookat: queued_instance["rotation"] = pos.angle_to_point(pattern.node_target.global_position)
-		else: queued_instance["rotation"] = (pos+queued_instance["spawn_pos"]).angle_to_point(pattern.node_target.global_position)
-	elif pattern.forced_lookat_mouse:
-		if pattern.forced_pattern_lookat: queued_instance["rotation"] = pos.angle_to_point(get_global_mouse_position())
-		else: queued_instance["rotation"] = (pos+queued_instance["spawn_pos"]).angle_to_point(get_global_mouse_position())
-	elif pattern.forced_angle != 0.0:
+	if pattern.forced_angle != 0.0:
 		queued_instance["rotation"] = pattern.forced_angle
-
-func _set_bullet_props(bullet:String, bullet_props:Dictionary={}):
-	if bullet_props.is_empty(): bullet_props = arrayProps[bullet]
-	if bullet_props.get("has_random", false): bullet_props = create_random_props(bullet_props)
-	return bullet_props
+	elif pattern.forced_target != NodePath() and is_instance_valid(pattern.node_target):
+		queued_instance["rotation"] = pos.angle_to_point(pattern.node_target.global_position) if pattern.forced_pattern_lookat \
+								else (pos+queued_instance["spawn_pos"]).angle_to_point(pattern.node_target.global_position)
+	elif pattern.forced_lookat_mouse:
+		queued_instance["rotation"] = pos.angle_to_point(get_global_mouse_position()) if pattern.forced_pattern_lookat \
+								else (pos+queued_instance["spawn_pos"]).angle_to_point(get_global_mouse_position())
 
 func create_bullet_instance_dict(queued_instance:Dictionary, bullet_props:Dictionary, pattern:Pattern):
 	queued_instance["shape_disabled"] = true
@@ -630,13 +682,13 @@ func create_bullet_instance_dict(queued_instance:Dictionary, bullet_props:Dictio
 		queued_instance["follows_parent"] = pattern.wait_behavior
 	return queued_instance
 
-func _object_init_groups(is_bullet_node:bool, bID:Node2D, queued_instance:Dictionary, bullet_props):
-	if is_bullet_node: bID.b = queued_instance
+func _object_init_groups(is_bullet_node:bool, bullet:Node2D, queued_instance:Dictionary, bullet_props):
+	if is_bullet_node: bullet.b = queued_instance
 	if bullet_props.has("overwrite_groups"):
-		for g in bID.get_groups():
-			bID.remove_group(g)
-	for g in bullet_props.get("groups", []):
-		bID.add_to_group(g)
+		for g:String in bullet.get_groups():
+			bullet.remove_group(g)
+	for g:String in bullet_props.get("groups", []):
+		bullet.add_to_group(g)
 
 func set_spawn_data(queued_instance:Dictionary, bullet_props:Dictionary, pattern:Pattern, i:int, ori_angle:float, pos:Vector2):
 	var angle:float
@@ -663,7 +715,7 @@ func set_spawn_data(queued_instance:Dictionary, bullet_props:Dictionary, pattern
 			queued_instance["spawn_pos"] = pattern.pos[i].rotated(forced_angle)
 			queued_instance["rotation"] = bullet_props.angle + pattern.angles[i] + ori_angle
 		"PatternCustomArea":
-			queued_instance["spawn_pos"] = pattern.pos[randi()%pattern.pooling][i].rotated(forced_angle)
+			queued_instance["spawn_pos"] = pattern.pos[RAND.randi()%pattern.pooling][i].rotated(forced_angle)
 			queued_instance["rotation"] = bullet_props.angle + ori_angle
 
 func get_spawn_positions(pattern:Pattern):
@@ -672,15 +724,15 @@ func get_spawn_positions(pattern:Pattern):
 	var forced_angle = pattern.get("pattern_angle")
 	match pattern.resource_name:
 		"PatternCircle":
-			for i in pattern.nbr:
+			for i:int in pattern.nbr:
 				res.append(get_spawn_pos_circle(get_spawn_angle_circle(pattern.angle_total, pattern.angle_decal, pattern.nbr-int(pattern.angle_total < 2*PI), i), forced_angle, pattern.radius))
 		"PatternLine":
-			for i in pattern.nbr:
+			for i:int in pattern.nbr:
 				res.append(get_spawn_pos_line(pattern.offset, pattern.center, forced_angle, pattern.nbr, i))
 		"PatternCustomShape","PatternCustomPoints":
-			for i in pattern.nbr: res.append(pattern.pos[i].rotated(forced_angle))
+			for i:int in pattern.nbr: res.append(pattern.pos[i].rotated(forced_angle))
 		"PatternCustomArea":
-			for i in pattern.nbr: res.append(pattern.pos[randi()%pattern.pooling][i].rotated(forced_angle))
+			for i:int in pattern.nbr: res.append(pattern.pos[RAND.randi()%pattern.pooling][i].rotated(forced_angle))
 	return res
 
 func get_spawn_rotations(pattern:Pattern, ori_angle:float=0, bullet_angle:float=0):
@@ -689,14 +741,14 @@ func get_spawn_rotations(pattern:Pattern, ori_angle:float=0, bullet_angle:float=
 	var forced_angle = pattern.get("pattern_angle")
 	match pattern.resource_name:
 		"PatternCircle":
-			for i in pattern.nbr:
+			for i:int in pattern.nbr:
 				res.append(bullet_angle + ori_angle + get_spawn_angle_circle(pattern.angle_total, pattern.angle_decal, pattern.nbr-int(pattern.angle_total < 2*PI), i))
 		"PatternLine":
-			for i in pattern.nbr: res.append(bullet_angle + pattern.pattern_angle + ori_angle)
+			for i:int in pattern.nbr: res.append(bullet_angle + pattern.pattern_angle + ori_angle)
 		"PatternCustomShape","PatternCustomPoints":
-			for i in pattern.nbr: res.append(bullet_angle + pattern.angles[i] + ori_angle)
+			for i:int in pattern.nbr: res.append(bullet_angle + pattern.angles[i] + ori_angle)
 		"PatternCustomArea":
-			for i in pattern.nbr: res.append(bullet_angle + ori_angle)
+			for i:int in pattern.nbr: res.append(bullet_angle + ori_angle)
 	return res
 
 func get_spawn_angle_circle(angle_total:float, angle_decal:float, nbr:int, i:int):
@@ -719,6 +771,7 @@ func _stop_spawn(process_id:int, spawner, local_reset_counter:int):
 		return true
 	if spawner == null: return true
 	if local_reset_counter != global_reset_counter: return true
+	if poolBullets.size() >= cull_max_bullets: return true
 	return false
 
 func _pause_spawn(process_id:int):
@@ -730,51 +783,50 @@ func _pause_spawn(process_id:int):
 		return true
 	return false
 
+
+
 ### TRIGGER SPAWN ###
 
-func spawn_list(spawner:Array, id:PackedStringArray, loops:int=1, shared_area:Array[String]=["0"], process_id:int=-1, cust_bullet:Dictionary={}):
+func spawn_list(spawner:Array, id:PackedStringArray, loops:int=1, shared_area:Array[String]=["0"], process_id:int=-1, cust_bullet:String=""):
 	var local_reset_counter:int = global_reset_counter; var returned_stop = false
 	var loop_len:int = id.size(); var spawner_len:int = spawner.size()-1; var area_len:int = shared_area.size()-1
 	while loops != 0:
-		for i in loop_len:
+		for i:int in loop_len:
 			returned_stop = await spawn(spawner[min(i,spawner_len)], id[i], shared_area[min(i,area_len)], process_id, cust_bullet)
 			if returned_stop == true or _stop_spawn(process_id, spawner, local_reset_counter): return
 		if loops > 0: loops -= 1
 
 # spawner dict : {position, rotation, parent}
-func spawn(spawner, id:String, shared_area:String="0", process_id:int=-1, cust_bullet:Dictionary={}):
-	#spawn_thread.start(_thread_spawn.bind(spawner, id, shared_area))
-	#_thread_spawn(spawner, id, shared_area, process_id)
-#
-#func _thread_spawn(spawner, id:String, shared_area:String="0", process_id:int=-1):
-	assert(arrayPatterns.has(id))
-	assert(process_id != 0, "You set process to 0, which is forbidden")
-	process_counter += 1
-	var pattern:Pattern = arrayPatterns[id]
+func spawn(spawner, patternID:String, shared_area:String="0", process_id:int=-1, cust_bullet:String=""):
+	assert(arrayPatterns.has(patternID))
+	_init_spawn_process(process_id)
+	var pattern:Pattern = arrayPatterns[patternID]
 	if pattern.has_random == true:
-		_spawn_random(spawner, id, pattern, shared_area, process_id)
+		_spawn_random(spawner, patternID, pattern, shared_area, process_id)
 		return
 	var local_reset_counter:int = global_reset_counter
-	var bullets:Array
+	var bullets:Array[Dictionary]
 	var iter:int = pattern.iterations; var iter_nbr:int = 0
 	var shared_area_node = $SharedAreas.get_node(shared_area)
 
 	var skip_array:Array[PackedInt32Array]
 	if pattern.get("skip_array"): skip_array = pattern.skip_array
+	
+	var bulletID:String = cust_bullet if cust_bullet != "" else pattern.bullet;
 
-	var pos:Vector2; var ori_angle:float;
-	var bullet_props:Dictionary = cust_bullet; var skipped_bullet:int = 0
-	var is_object:bool; var is_bullet_node:bool; var queued_instance:Dictionary; var bID;
+	var pos:Vector2; var ori_angle:float; var has_col:bool;
+	var bullet_props:Dictionary = arrayProps[bulletID]; var skipped_bullet:int = 0; 
+	var is_object:bool; var is_bullet_node:bool; var queued_instance:Dictionary; var bID; var new_shape;
 	var tw_endpos:Vector2; var parent = spawner
 	while iter != 0:
 		if _stop_spawn(process_id, spawner, local_reset_counter):
-			process_counter -= 1
+			_end_spawn_process(pattern, patternID, bullet_props, bulletID, process_id)
 			return true
 		if _pause_spawn(process_id):
 			var pausing:int = 0
 			while pausing not in [-1, process_id]: pausing = await Spawning.resume_process
 		if spawner is Node2D:
-			ori_angle = spawner.rotation
+			ori_angle = spawner.rotation if spawner.use_local_rotation else spawner.global_rotation
 			pos = spawner.global_position
 		elif spawner is Dictionary:
 			pos = spawner["position"]
@@ -782,27 +834,40 @@ func spawn(spawner, id:String, shared_area:String="0", process_id:int=-1, cust_b
 			parent = spawner.get("parent", spawner)
 		else: push_error("spawner isn't a Node2D or a bullet RID")
 		
-		bullet_props = _set_bullet_props(pattern.bullet, bullet_props)
-
+		bullet_props = bullet_props if not bullet_props.get("has_random", true) else create_random_props(bullet_props)
+		
 		is_object = bullet_props.has("instance_id")
 		is_bullet_node = (is_object and bullet_props.has("speed"))
-		for i in pattern.nbr:
+		for i:int in pattern.nbr:
 			if skip_array and i in skip_array[iter_nbr%skip_array.size()]:
 				if pattern.skip_in_list: skipped_bullet += 1
 				continue
-			if cust_bullet.is_empty() and not pattern.bullet_list.is_empty():
-				bullet_props = _set_bullet_props(pattern.bullet_list[(i-skipped_bullet)%pattern.bullet_list.size()])
-
+			if cust_bullet == "" and not pattern.bullet_list.is_empty():
+				bulletID = pattern.bullet_list[(i-skipped_bullet)%pattern.bullet_list.size()]
+				bullet_props = arrayProps[bulletID]
+			has_col = !bullet_props.has("spec_no_collision")
+			
 			queued_instance = {}
 			queued_instance["shared_area"] = shared_area_node
 			queued_instance["props"] = bullet_props
 			queued_instance["source_node"] = parent
 			queued_instance["state"] = BState.Unactive
+			if has_col: 
+				new_shape = wake_from_pool(bullet_props, pattern.bullet, shared_area, pattern.nbr, is_object)
+				bID = new_shape
+			else:
+				bID = bullet_id_counter
+				bullet_id_counter += 1
 			if not is_object:
 				queued_instance["anim"] = arrayAnim[bullet_props["anim_idle"]]
 				queued_instance["culling_state"] = CULLINGSTATES.Onscreen
 				queued_instance["colID"] = queued_instance["anim"][ANIM.COLLISION]
 				queued_instance = create_bullet_instance_dict(queued_instance, bullet_props, pattern)
+				if bullet_props["z_index"] != z_index: get_node("Drawers/"+str(bullet_props["z_index"])).bullets.append(queued_instance)
+				if has_col:
+					bID = new_shape[0]
+					queued_instance["index"] = new_shape[1]
+					shared_area_node.get_meta("Bullets")[new_shape[1]] = queued_instance
 			elif is_bullet_node: queued_instance = create_bullet_instance_dict(queued_instance, bullet_props, pattern)
 
 			set_spawn_data(queued_instance, bullet_props, pattern, i, ori_angle, pos)
@@ -816,8 +881,8 @@ func spawn(spawner, id:String, shared_area:String="0", process_id:int=-1, cust_b
 				tw_endpos = queued_instance["spawn_pos"]+pos+Vector2(pattern.wait_tween_length, 0).rotated(PI+queued_instance["rotation"])
 				queued_instance["momentum_data"] = [pattern.wait_tween_momentum-1, tw_endpos, pattern.wait_tween_time]
 
-			bID = wake_from_pool(pattern.bullet, queued_instance, shared_area, is_object)
-			bullets.append(bID)
+			queued_instance["RID"] = bID
+			bullets.append(queued_instance)
 			poolBullets[bID] = queued_instance
 
 			if is_object: _object_init_groups(is_bullet_node, bID, queued_instance, bullet_props)
@@ -827,141 +892,141 @@ func spawn(spawner, id:String, shared_area:String="0", process_id:int=-1, cust_b
 		if iter > 0: iter -= 1
 		iter_nbr += 1
 		if pattern.max_layer > 0:
-			for v in pattern.cooldown_layers:
+			for v:Vector2 in pattern.cooldown_layers:
 				if iter_nbr%pattern.max_layer == v.x:
 					await get_tree().create_timer(v.y, false, true).timeout
 					break
 				elif iter_nbr < v.x: break
 		await get_tree().create_timer(pattern.cooldown_spawn, false, true).timeout
-		if process_get == process_id: process_infos = [spawner, pattern, id, bullet_props]
+		if process_id != -1: process_info.emit(process_id, spawner, patternID, bulletID, bullets)
+	# after all iterations, spawning ends
+	_end_spawn_process(pattern, patternID, bullet_props, bulletID, process_id)
+
+func _init_spawn_process(process_id:int):
+	assert(process_id != 0, "You set process to 0, which is forbidden")
+	process_counter += 1
+	if process_id != -1: process_list.append(process_id)
+	if process_id == -2:
+		process_id = process_next_id
+		process_next_id += 1
+
+func _end_spawn_process(pattern:Pattern, patternID:String, bullet_props:Dictionary, bulletID:String, process_id:int):
+	handle_temp_pattern(pattern, patternID)
+	handle_temp_props(bullet_props, bulletID)
 	process_counter -= 1
+	if process_id != -1: process_list.erase(process_id)
+
+func handle_temp_props(props, id, decr:int=1):
+	if props.get("temp_count", -1) > -1:
+		props.temp_count -= decr
+		if props.temp_count <= 0: arrayProps.erase(id)
+
+func handle_temp_pattern(pattern, id, decr:int=1):
+	if pattern.get("temp_count") > -1:
+		pattern.temp_count -= decr
+		if pattern.temp_count <= 0: arrayPatterns.erase(id)
 
 
-
-func _plan_spawning(pattern:Pattern, bullets:Array):
+func _plan_spawning(pattern:Pattern, bullets:Array[Dictionary]):
+	var to_shoot:Array[Dictionary] = bullets.duplicate()
 	if pattern.cooldown_next_spawn == 0:
 		_spawn(bullets)
 		if pattern.cooldown_stasis: return
-		var to_shoot = bullets.duplicate()
 		if pattern.cooldown_next_shoot == 0:
 			if pattern.cooldown_shoot == 0: _shoot(to_shoot, true) #no add pos
-			else: plan_shoot(to_shoot, pattern.cooldown_shoot)
+			else: _plan_queue(to_shoot, pattern.cooldown_shoot)
 		else:
-			var idx
-			for b in to_shoot:
+			var idx:int
+			for b:Dictionary in to_shoot:
 				idx = to_shoot.find(b)
 				if pattern.symmetric:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
-						SYMTYPE.ClosedShape: plan_shoot([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_shoot.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
-				else: plan_shoot([b], pattern.cooldown_shoot+idx*pattern.cooldown_next_shoot)
+						SYMTYPE.Line: _plan_queue([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
+						SYMTYPE.ClosedShape: _plan_queue([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_shoot.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
+				else: _plan_queue([b], pattern.cooldown_shoot+idx*pattern.cooldown_next_shoot)
 	else:
-		var idx
+		var idx:int
 		unactive_spawn(bullets)
-		var to_spawn = bullets.duplicate()
-		for b in to_spawn:
-			idx = to_spawn.find(b)
+		for b:Dictionary in to_shoot:
+			idx = to_shoot.find(b)
 			if pattern.symmetric:
 				match pattern.symmetry_type:
-					SYMTYPE.Line: plan_spawn([b], abs(pattern.center-idx)*pattern.cooldown_next_spawn)
+					SYMTYPE.Line: _plan_queue([b], abs(pattern.center-idx)*pattern.cooldown_next_spawn)
 					SYMTYPE.ClosedShape:
-						plan_spawn([b], min(idx-pattern.center,to_spawn.size()-(idx-pattern.center))*pattern.cooldown_next_spawn)
-			else: plan_spawn([b], idx*pattern.cooldown_next_spawn)
+						_plan_queue([b], min(idx-pattern.center,to_shoot.size()-(idx-pattern.center))*pattern.cooldown_next_spawn)
+			else: _plan_queue([b], idx*pattern.cooldown_next_spawn)
 
 		if pattern.cooldown_stasis: return
 		if pattern.cooldown_next_shoot == 0 and pattern.cooldown_shoot > 0:
-			plan_shoot(to_spawn, pattern.cooldown_next_spawn*(to_spawn.size())+pattern.cooldown_shoot)
+			_plan_queue(to_shoot, pattern.cooldown_next_spawn*(to_shoot.size())+pattern.cooldown_shoot)
 		elif pattern.cooldown_next_shoot == 0: #no add pos
-			for b in to_spawn:
-				idx = to_spawn.find(b)
+			for b:Dictionary in to_shoot:
+				idx = to_shoot.find(b)
 				if pattern.symmetric:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
-						SYMTYPE.ClosedShape: plan_shoot([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_spawn.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
-				else: plan_shoot([b], idx*pattern.cooldown_next_spawn)
+						SYMTYPE.Line: _plan_queue([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
+						SYMTYPE.ClosedShape: _plan_queue([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_shoot.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
+				else: _plan_queue([b], idx*pattern.cooldown_next_spawn)
 		elif pattern.cooldown_shoot == 0:
-			for b in to_spawn:
-				idx = to_spawn.find(b)
+			for b:Dictionary in to_shoot:
+				idx = to_shoot.find(b)
 				if pattern.symmetric:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
-						SYMTYPE.ClosedShape: plan_shoot([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_spawn.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
-				else: plan_shoot([b], idx*(pattern.cooldown_next_shoot+pattern.cooldown_next_spawn))
+						SYMTYPE.Line: _plan_queue([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
+						SYMTYPE.ClosedShape: _plan_queue([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_shoot.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
+				else: _plan_queue([b], idx*(pattern.cooldown_next_shoot+pattern.cooldown_next_spawn))
 		else:
-			for b in to_spawn:
-				idx = to_spawn.find(b)
+			for b:Dictionary in to_shoot:
+				idx = to_shoot.find(b)
 				if pattern.symmetric:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
-						SYMTYPE.ClosedShape: plan_shoot([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_spawn.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
-				else: plan_shoot([b], pattern.cooldown_next_spawn*(to_spawn.size())+pattern.cooldown_shoot+idx*pattern.cooldown_next_shoot)
-
+						SYMTYPE.Line: _plan_queue([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
+						SYMTYPE.ClosedShape: _plan_queue([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_shoot.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
+				else: _plan_queue([b], pattern.cooldown_next_spawn*(to_shoot.size())+pattern.cooldown_shoot+idx*pattern.cooldown_next_shoot)
+	
 	bullets.clear()
 
-func plan_spawn(bullets:Array, spawn_delay:float=0):
-	var timestamp = getKeyTime(spawn_delay)
-	var insert_index = poolTimes.bsearch(timestamp)
-	poolTimes.insert(insert_index, timestamp)
-	poolQueue.insert(insert_index, [ACTION_SPAWN, bullets])
+func _plan_queue(bullets:Array[Dictionary], spawn_delay:float=0):
+	var insert_index:int = poolTimes.bsearch(time+spawn_delay, false)
+	poolTimes.insert(insert_index, time+spawn_delay)
+	poolQueue.insert(insert_index, bullets)
 
-func plan_shoot(bullets:Array, shoot_delay:float=0):
-	for b in bullets:
-		if (not b is RID and not poolBullets[b]["props"].has("speed")): bullets.erase(b)
-
-	var timestamp = getKeyTime(shoot_delay)
-	var insert_index = poolTimes.bsearch(timestamp)
-	poolTimes.insert(insert_index, timestamp)
-	poolQueue.insert(insert_index, [ACTION_SHOOT, bullets])
-
-func getKeyTime(delay):
-	if loop_length < time+delay: return delay-(loop_length-time)
-	else: return time+delay
-
-func _spawn_and_shoot(to_spawn:Array, to_shoot:Array):
-	_spawn(to_spawn)
-	_shoot(to_shoot)
-
-func unactive_spawn(bullets:Array):
-	var B:Dictionary
-	for b in bullets:
-		assert(poolBullets.has(b))
-		B = poolBullets[b]
+func unactive_spawn(bullets:Array[Dictionary]):
+	for B:Dictionary in bullets:
+		#assert(poolBullets.has(b))
 		if B["state"] >= BState.Moving: continue
 		if B["source_node"] is RID: B["position"] = B["spawn_pos"] + poolBullets[B["source_node"]]["position"]
 		elif B["source_node"] is Dictionary: B["position"] = B["spawn_pos"] + B["source_node"]["position"]
 		else: B["position"] = B["spawn_pos"] + B["source_node"].global_position # warning: no idea what this case is
 
-func _spawn(bullets:Array):
-	var B:Dictionary
-	var props:Dictionary
-	for b in bullets:
+func _spawn(bullets:Array[Dictionary]):
+	var props:Dictionary; var b
+	for B:Dictionary in bullets:
+		b = B["RID"]
 		if not poolBullets.has(b):
 			push_error("Warning: Bullet of ID "+str(b)+" is missing.")
 			continue
-
-		B = poolBullets[b]
+		
 		if B["state"] >= BState.Moving: continue
 		if B["source_node"] is Dictionary: B["position"] = B["spawn_pos"] + B["source_node"]["position"]
 		elif not is_instance_valid(B["source_node"]):
-			_interrupt_bullet(B["interruption"], B, b)
+			_interrupt_bullet(B)
 			continue
 		else: B["position"] = B["spawn_pos"] + B["source_node"].global_position
-
+		
 		if b is Node2D: # scene spawning
 			_spawn_object(b, B)
-
+		
 		props = B["props"]
-		if b is RID or props.has("speed"):
-			if not change_animation(B,"spawn",b):
-				B["state"] = BState.Spawning
-			else:
-				B["state"] = BState.Spawned
+		if props.has("speed"):
+			B["state"] = BState.Spawning if not change_animation(B,"spawn") else BState.Spawned
 			if arrayAnim[props["anim_spawn"]][ANIM.SFX]: arrayAnim[props["anim_spawn"]][ANIM.SFX].play()
-
-			init_special_variables(B,b)
+			
+			init_special_variables(B)
 			if props.get("homing_select_in_group",-1) == GROUP_SELECT.Nearest_on_spawn:
 				target_from_options(B)
-		else: poolBullets.erase(b)
+		else:
+			poolBullets.erase(b)
 
 func _spawn_object(b:Node2D, B:Dictionary):
 	if b is CollisionObject2D:
@@ -979,43 +1044,40 @@ func _spawn_object(b:Node2D, B:Dictionary):
 func use_momentum(pos:Vector2, B:Dictionary):
 	B["position"] = pos
 
-func _shoot(bullets:Array, ignore_interrupt:bool=false):
-	var B:Dictionary
-	var props:Dictionary
-	for b in bullets:
+func _shoot(bullets:Array[Dictionary], ignore_interrupt:bool=false):
+	var props:Dictionary; var b
+	for B:Dictionary in bullets:
+		b = B["RID"]
 		if not poolBullets.has(b): continue
-		B = poolBullets[b]
-		if B["state"] == BState.Moving: continue
+		if B["state"] >= BState.Moving: continue
 		props = B["props"]
-		if (not b is RID and not props.has("speed")):
-			poolBullets.erase(b)
-			continue
 		if B.has("source_node") and not is_instance_valid(B["source_node"]):
-			_interrupt_bullet(B["interruption"], B, b)
+			_interrupt_bullet(B)
 			if not ignore_interrupt: continue
 
 		if B.has("momentum_data"):
 			var tween = get_tree().create_tween()
 			tween.tween_method(use_momentum.bind(B), B["position"], B["momentum_data"][1], B["momentum_data"][2]).set_trans(B["momentum_data"][0])
-
-		B["state"] = BState.Moving
+		
+		if not b is Node2D:
+			_switch_to_next_anim(B)
+			if arrayAnim[props["anim_shoot"]][ANIM.SFX]: arrayAnim[props["anim_shoot"]][ANIM.SFX].play()
+		elif not B["state"] in [BState.Spawning, BState.Shooting]: B["state"] = BState.Moving
 
 		if B.get("follows_parent", 0) > LATENCE.No: B.erase("follows_parent")
 		if not props.has("curve"): B.erase("spawn_pos")
 		else: B["spawn_pos"] = B["position"]
 
-		if props.has("homing_target") or props.has("node_homing"):
-			if props.get("homing_time_start",0) > 0:
-				get_tree().create_timer(props["homing_time_start"], false).connect("timeout",Callable(self,"_on_Homing_timeout").bind(B))
-			else: _on_Homing_timeout(B)
-		if props.get("homing_select_in_group",-1) == GROUP_SELECT.Nearest_on_shoot:
-			target_from_options(B)
+func _setup_homing(props:Dictionary, B:Dictionary):
+	if props.has("homing_target") or props.has("node_homing"):
+		if props.get("homing_time_start",0) > 0:
+			get_tree().create_timer(props["homing_time_start"], false).connect("timeout",Callable(self,"_on_Homing_timeout").bind(B))
+		else: _on_Homing_timeout(B)
+	if props.get("homing_select_in_group",-1) == GROUP_SELECT.Nearest_on_shoot:
+		target_from_options(B)
 
-		if not change_animation(B,"shoot",b):
-			B["state"] = BState.Shooting
-		if arrayAnim[props["anim_shoot"]][ANIM.SFX]: arrayAnim[props["anim_shoot"]][ANIM.SFX].play()
 
-func init_special_variables(b:Dictionary, rid):
+func init_special_variables(b:Dictionary):
 	var bp = b["props"]
 	if bp.has("a_speed_multi_iterations"):
 		b['speed_multi_iter'] = bp["a_speed_multi_iterations"]
@@ -1036,8 +1098,8 @@ func init_special_variables(b:Dictionary, rid):
 	if bp.has("homing_list"):
 		b["homing_counter"] = int(0)
 	if bp.get("homing_imprecision", Vector2(0,0)) != Vector2(0,0):
-		b["homing_offset"] = Vector2(randf_range(-bp["homing_imprecision"].x,bp["homing_imprecision"].x), \
-									randf_range(-bp["homing_imprecision"].y,bp["homing_imprecision"].y))
+		b["homing_offset"] = Vector2(RAND.randf_range(-bp["homing_imprecision"].x,bp["homing_imprecision"].x), \
+									RAND.randf_range(-bp["homing_imprecision"].y,bp["homing_imprecision"].y))
 	if bp.has("curve"):
 		b["curve_counter"] = float(0.0)
 		if bp["a_curve_movement"] in [CURVE_TYPE.LoopFromStart,CURVE_TYPE.LoopFromEnd]:
@@ -1046,17 +1108,15 @@ func init_special_variables(b:Dictionary, rid):
 	if bp.has("trigger_container"):
 		b['trig_container'] = container(bp["trigger_container"])
 		b["trigger_counter"] = int(0)
-		var trig_types = b['trig_container'].getCurrentTriggers(b, rid)
+		var trig_types = b['trig_container'].getCurrentTriggers(b)
 		b['trig_types'] = trig_types
 		b['trig_iter'] = {}
 		if trig_types.has("TrigCol"): b["trig_collider"] = null
-#		if trig_types.has("TrigPos"): b["trig_collider"] = null
 		if trig_types.has("TrigSig"): b["trig_signal"] = null
-		if trig_types.has("TrigTime"): b["trig_timeout"] = false
+		if trig_types.has("TrigTime"): b["trigger_timeout"] = false
 	if bp.has("depth_active"):
 		b["depth"] = bp["depth_spawn"]
 		b["depth_speed"] = bp["depth_speed"]
-
 
 
 func create_minimal_bullet(bp:Dictionary, pattern:Pattern):
@@ -1069,7 +1129,7 @@ func create_minimal_bullet(bp:Dictionary, pattern:Pattern):
 	if Gravity != Vector2.ZERO:
 		b["gravity"] = Gravity
 		b["acc"] = Vector2.ZERO
-	
+
 	if bp.has("a_speed_multi_iterations"):
 		b['speed_multi_iter'] = bp["a_speed_multi_iterations"]
 	b['speed_interpolate'] = float(0)
@@ -1086,12 +1146,12 @@ func get_trajectory_preview(props:BulletProps, pattern:Pattern, length:int, dela
 	if props.homing_type == props.TARGET_TYPE.ListNodes or props.homing_target:
 		push_warning("Can't preview homing bullets.")
 		return
-	
+
 	var res:Array[Array]
-	var p:Dictionary = sanitize_bulletprops(props, "", null)
+	var p:Dictionary = sanitize_bulletprops(props, "", null, true)
 	var baseB:Dictionary; var B:Dictionary;
 	baseB = create_minimal_bullet(p, pattern)
-	for j in pattern.nbr:
+	for j:int in pattern.nbr:
 		res.append([])
 		B = baseB.duplicate()
 		set_spawn_data(B, p, pattern, j, origin.rotation, origin.global_position)
@@ -1099,40 +1159,40 @@ func get_trajectory_preview(props:BulletProps, pattern:Pattern, length:int, dela
 		if not p.get("fixed_rotation", false):
 			set_angle(pattern, origin.global_position, B)
 		else: B["rotation"] = 0
-		
-		for i in length+1:
+
+		for i:int in length+1:
 			B["speed_interpolate"] = delay*i
-			move_speed(B, p, null)
+			move_speed(B, p)
 			#B['curveDir_index'] = delay*i*(B["speed"]/100)
 			move_equation(B, p, delay*i)
 			move_gravity(B, p, 0.016, i*delay)
 			move_impulse(B, i*delay)
 			B["curve_counter"] = delay*i
-			if props.get("curve"): move_curve(B, p, null)
+			if props.get("curve"): move_curve(B, p)
 			else:
 				B["vel"] = Vector2(B["speed"], B.get("curve",0)).rotated(B["rotation"])
 				B["position"] += B["vel"]*0.016*i*delay
 			res[j].append(B["position"])
 	return res
-	
+
 func get_BulletPattern_with_id(id:String, check_node:Node = get_tree().edited_scene_root):
-	for n in check_node.get_children():
+	for n:Node in check_node.get_children():
 		if n is BulletPattern and n.id == id: return n
-		for next in n.get_children():
+		for next:Node in n.get_children():
 			var res = get_BulletPattern_with_id(id, n)
 			if res != null: return res
-	
+
 func get_SpawnPattern_with_id(id:String, check_node:Node = get_tree().edited_scene_root):
-	for n in check_node.get_children():
+	for n:Node in check_node.get_children():
 		if n is SpawnPattern and n.id == id: return n
-		for next in n.get_children():
+		for next:Node in n.get_children():
 			var res = get_SpawnPattern_with_id(id, n)
 			if res != null: return res
-	
+
 func get_TriggerContainer_with_id(id:String, check_node:Node = get_tree().edited_scene_root):
-	for n in check_node.get_children():
+	for n:Node in check_node.get_children():
 		if n is TriggerContainer and n.id == id: return n
-		for next in n.get_children():
+		for next:Node in n.get_children():
 			var res = get_TriggerContainer_with_id(id, n)
 			if res != null: return res
 
@@ -1160,7 +1220,7 @@ func move_trail(B:Dictionary, props:Dictionary):
 	if not B.has("trail_counter"): return
 	var _trailTotalDurance:float = props["spec_trail_length"]/B["speed"]
 	var _trailNumSegments:float = _trailTotalDurance / props["spec_trail_smooth"]
-	
+
 	B["trail_counter"] += _delta
 	if B["trail_counter"] >= props["spec_trail_smooth"]:
 		B["trail_counter"] = 0
@@ -1168,7 +1228,7 @@ func move_trail(B:Dictionary, props:Dictionary):
 			B["trail"].pop_back()
 		B["trail"].insert(0, B["position"])
 
-func move_speed(B:Dictionary, props:Dictionary, b):
+func move_speed(B:Dictionary, props:Dictionary):
 	if B.get("speed_multi_iter",0) == 0: return
 
 	B["speed_interpolate"] += _delta
@@ -1177,7 +1237,7 @@ func move_speed(B:Dictionary, props:Dictionary, b):
 		B["speed_multi_iter"] -= 1
 		B["speed_interpolate"] = 0
 
-	if abs(B["speed"]) < props.get("death_speed_under", 0): delete_bullet(b)
+	if abs(B["speed"]) < props.get("death_speed_under", 0): delete_bullet(B)
 
 func move_equation(B:Dictionary, props:Dictionary, eq_scale:float=1):
 	if props.get("a_direction_equation","") == "" and props.get("a_angular_equation","") == "": return
@@ -1240,7 +1300,7 @@ func move_homing(B:Dictionary, props:Dictionary):
 	B["vel"] += ((target_pos-B["position"])*B["speed"]-B["vel"]).normalized() * props["homing_steer"] * _delta
 	B["rotation"] = B["vel"].angle()
 
-func move_curve(B:Dictionary, props:Dictionary, b):
+func move_curve(B:Dictionary, props:Dictionary):
 	var curve_length:float = props["curve"].get_baked_length()
 	if B["curve_counter"]*B["speed"] >= curve_length: return
 
@@ -1253,7 +1313,7 @@ func move_curve(B:Dictionary, props:Dictionary, b):
 		CURVE_TYPE.LoopFromEnd:
 			B["curve_counter"] = 0
 			B["spawn_pos"] = B["position"]
-		CURVE_TYPE.OnceThenDie: delete_bullet(b)
+		CURVE_TYPE.OnceThenDie: delete_bullet(B)
 		CURVE_TYPE.OnceThenStay:
 			B["rotation"] = props["curve"].sample_baked_with_rotation(curve_length).get_rotation()
 			B.erase("curve_counter")
@@ -1270,28 +1330,28 @@ func move_impulse(B:Dictionary, time_sample:float=1):
 	B["speed"] -= 1*time_sample
 	if B["impulse"] <= 0: B.erase("impulse")
 
-func move_depth(B:Dictionary, props:Dictionary, b):
+func move_depth(B:Dictionary, props:Dictionary):
 	if not B.has("depth"): return
 	B["depth"] += B["depth_speed"]*_delta
-	
+
 	if B["depth"] < props["depth_min_max"].x or B["depth"] > props["depth_min_max"].y:
 		if props["depth_bounce"]: B["depth_speed"] = -B["depth_speed"]
-		else: delete_bullet(b)
+		else: delete_bullet(B)
 
-func _interrupt_bullet(type:int, B, b):
-	match type:
+func _interrupt_bullet(B):
+	match B["interruption"]:
 		INTERRUPT.Continue: B.erase("follows_parent")
-		INTERRUPT.Shoot: _shoot([b])
-		INTERRUPT.Destroy: delete_bullet(b)
+		INTERRUPT.Shoot: _shoot([B])
+		INTERRUPT.Destroy: delete_bullet(B)
 
-func wait_behavior(B:Dictionary, b):
+func wait_behavior(B:Dictionary):
 	var source = B["source_node"]
 	if not source is Dictionary and not is_instance_valid(source):
-		_interrupt_bullet(B["interruption"], B, b)
+		_interrupt_bullet(B)
 		return
-	
+
 	if B.get("follows_parent", 0) == LATENCE.No: return
-	var rot:float; 
+	var rot:float;
 	if B["follows_parent"] == LATENCE.Rotation: rot = source.rotation
 	#elif B["follows_parent"] == LATENCE.Spin:
 		#B["rotation"] #TODO
@@ -1302,47 +1362,53 @@ func wait_behavior(B:Dictionary, b):
 		else: B["position"] = source.global_position + B["spawn_pos"]
 	# follows rotation
 	else:
-		if source is Dictionary: B["position"] = B["spawn_pos"].rotated(rot) + source["position"]
-		else: B["position"] = B["spawn_pos"].rotated(rot) + source.global_position
+		B["position"] = B["spawn_pos"].rotated(rot) + source["position"] if source is Dictionary \
+					else B["spawn_pos"].rotated(rot) + source.global_position
 
-func _update_culling(delta:float):
+func _update_culling():
 	can_cull = false
-	_cull_rate += delta
+	_cull_rate += _delta
 	if _cull_rate > cull_culling_rate:
 		can_cull = true
 		_cull_rate = 0
 
-func bullet_movement(b, B:Dictionary, props:Dictionary):
+# code: -1=nothing 0=draw but don't move 1=both
+func _state_check(B:Dictionary, props:Dictionary):
 	# handle bullet states
-	if B["state"] == BState.Unactive: return false
-	if B["state"] == BState.Deleting: return true
-	#props = B["props"]
-	if B["state"] == BState.QueuedFree:
-		_apply_movement(B, b, props)
-		return false
+	if B["state"] == BState.Unactive: return -1
+	elif B["state"] == BState.QueuedFree:
+		_apply_movement(B, props)
+		return -1
 
 	# kill bullet after time
 	if B.has("death_counter"):
 		B["death_counter"] += _delta
 		if B["death_counter"] >= props["death_after_time"]:
-			delete_bullet(b)
-			_apply_movement(B, b, props)
-			return false
+			delete_bullet(B)
+			_apply_movement(B, props)
+			return -1
+	if props.has("death_outside_box") and not props["death_outside_box"].has_point(B["position"]):
+		delete_bullet(B)
+		_apply_movement(B, props)
+		return -1
 	# check for culling offscreen bullets
-	if can_cull:
-		if check_bullet_culling(B, b) == CULLINGSTATES.Culled: return false
+	if not B["RID"] is Node2D and can_cull and check_bullet_culling(B) == CULLINGSTATES.Culled: return -1
+	return 1
+
+func bullet_movement(B:Dictionary, props:Dictionary):
+	if B["state"] == BState.Deleting: return 0
 	# spin
 	if B.has("rot_index"): B["rot_index"] += props["spec_rotating_speed"]
 
 	#scale curve
 	move_scale(B, props)
 
-	if B["state"] == BState.Spawned: wait_behavior(B, b)
+	if B["state"] == BState.Spawned: wait_behavior(B)
 	elif B["state"] == BState.Moving:
 		# trails
 		move_trail(B, props)
 		# speed curve
-		move_speed(B, props, b)
+		move_speed(B, props)
 		# direction from math equation
 		move_equation(B, props)
 		# homing
@@ -1352,9 +1418,9 @@ func bullet_movement(b, B:Dictionary, props:Dictionary):
 		# impulse
 		move_impulse(B)
 		# depth
-		move_depth(B, props, b)
+		move_depth(B, props)
 		# follow path2D
-		if B.has("curve_counter"): move_curve(B, props, b)
+		if B.has("curve_counter"): move_curve(B, props)
 		else:
 			B["vel"] = Vector2(B["speed"], B.get("curve",0)).rotated(B["rotation"])
 			B["position"] += B["vel"]*_delta
@@ -1365,17 +1431,17 @@ func bullet_movement(b, B:Dictionary, props:Dictionary):
 	if B.has("trig_container") and B["trig_types"].has("TrigPos") \
 		and (B["state"] == BState.Moving or not props["trigger_wait_for_shot"]) \
 		and not check_trig_culling(B):
-			B["trig_container"].checkTriggers(B,b)
+			B["trig_container"].checkTriggers(B)
 
 	# homing on nearest anywhen
 	if props.get("homing_select_in_group",-1) == GROUP_SELECT.Nearest_anywhen:
 		target_from_options(B)
 
-	if not b is RID: _apply_node_movement(B, b, props)
+	if B["RID"] is Node2D: _apply_node_movement(B, B["RID"], props)
 	else:
 		detect_bullet_approaching(B)
-		_apply_movement(B, b, props)
-	return true
+		_apply_movement(B, props)
+		
 
 func _apply_node_movement(B:Dictionary, b, props:Dictionary):
 	if b.base_scale == null: b.base_scale = b.scale
@@ -1384,19 +1450,29 @@ func _apply_node_movement(B:Dictionary, b, props:Dictionary):
 	b.rotation = B["rotation"]
 	b.scale = b.base_scale * B.get("scale", Vector2(props["scale"], props["scale"]))
 
-func _apply_movement(B:Dictionary, b:RID, props:Dictionary):
-	if B.get("state", BState.Unactive) == BState.Unactive or B.is_empty(): return
-
+func _apply_movement(B:Dictionary, props:Dictionary):
+	if B.get("state", BState.Unactive) in [BState.Unactive, BState.Paused] or B.is_empty(): return
+	if B["RID"] is Node2D: return
+	elif B["RID"] is int:
+		if B["state"] == BState.QueuedFree:
+			poolBullets.erase(B["RID"])
+			if props["z_index"] != z_index:
+				get_node("Drawers/"+str(props["z_index"])).bullets.erase(B)
+		return
+	
 	var shared_rid:RID = B["shared_area"].get_rid()
-	var bullet_index:int = shape_indexes.get(b, -1)
+	var bullet_index:int = B["index"]
 	if bullet_index == -1: return
 	# erase destroyed bullets
 	if B["state"] == BState.QueuedFree:
 		Phys.area_set_shape_disabled(shared_rid, bullet_index, true)
-		poolBullets.erase(b)
+		poolBullets.erase(B["RID"])
+		if props["z_index"] != z_index:
+			get_node("Drawers/"+str(props["z_index"])).bullets.erase(B)
 		return
+	
 	# freeze offscreen bullets
-	if B.get("Frozen", false) == false and B["culling_state"] in [CULLINGSTATES.Frozen, CULLINGSTATES.Fake]:
+	if B.get("frozen", false) == false and B["culling_state"] in [CULLINGSTATES.Frozen, CULLINGSTATES.Fake]:
 		Phys.area_set_shape_disabled(shared_rid, bullet_index, true)
 		B["frozen"] = true
 		return
@@ -1405,84 +1481,63 @@ func _apply_movement(B:Dictionary, b:RID, props:Dictionary):
 		Phys.area_set_shape_disabled(shared_rid, bullet_index, false)
 		B["culling_state"] = CULLINGSTATES.Onscreen
 		B["frozen"] = false
-		
 
 	# move shapes
-	if not props.get("spec_no_collision", false):
-		var transform_rotation:float = B["rotation"]
-		if props.has("no_rotation"):
-			transform_rotation = 0
-		elif not props.has("spec_spin_only_sprite"): transform_rotation += B.get("rot_index", 0)
-		Phys.area_set_shape_transform(shared_rid, bullet_index, \
-										Transform2D(transform_rotation, \
-													B.get("scale",Vector2(props["scale"],props["scale"])), \
-													props.get("skew",0), \
-													B["position"]))
-	
+	var transform_rotation:float = B["rotation"]
+	if props.has("no_rotation"):
+		transform_rotation = 0
+	elif not props.has("spec_spin_only_sprite"): transform_rotation += B.get("rot_index", 0)
+	Phys.area_set_shape_transform(shared_rid, bullet_index, \
+									Transform2D(transform_rotation, \
+												B.get("scale",Vector2(props["scale"],props["scale"])), \
+												props.get("skew",0), \
+												B["position"]))
 	if B["shape_disabled"]:
-		if props.get("spec_no_collision", false): return
 		# handles depths
-		if B.has("depth"): 
+		if B.has("depth"):
 			var active:bool = (B["depth"] < props["depth_active"].x and B["depth"] > props["depth_active"].y)
-			if B["shape_disabled"] and active: Phys.area_set_shape_disabled(shared_rid, shape_indexes[b], false)
-			if not B["shape_disabled"] and not active: Phys.area_set_shape_disabled(shared_rid, shape_indexes[b], true)
+			if B["shape_disabled"] and active: Phys.area_set_shape_disabled(shared_rid, B["index"], false)
+			if not B["shape_disabled"] and not active: Phys.area_set_shape_disabled(shared_rid, B["index"], true)
 			B["shape_disabled"] = !active
 		# active collision for new bullets
 		else:
-			Phys.area_set_shape_disabled(shared_rid, shape_indexes[b], false)
+			Phys.area_set_shape_disabled(shared_rid, B["index"], false)
 			B["shape_disabled"] = false
-
-func _calculate_bullets_index(from_index:int=-1):
-	var shared_rid:RID; var Brid:RID; var B:Dictionary;
-	if from_index == -1:
-		for area in $SharedAreas.get_children():
-			shared_rid = area.get_rid()
-			for b_index in area.get_meta("ShapeCount"):
-				Brid = get_RID_from_index(shared_rid,b_index)
-				_update_shape_indexes(Brid, b_index, B["shared_area"].name)
-#	else: # TODO : add optimisation
-#		for index in shape_indexes.values():
-#			if
-
-func _update_shape_indexes(rid, index:int, area:String):
-	shape_indexes[rid] = index
-	if not shape_rids.has(area):
-		shape_rids[area] = {}
-	shape_rids[area][index] = rid
-
-
-
-
-
+			
 
 #§§§§§§§§§§§§§ DRAW BULLETS §§§§§§§§§§§§§
 
-func get_texture_frame(b:Dictionary, B, spriteframes:SpriteFrames=textures):
-	if not b.has("anim_counter"): return spriteframes.get_frame_texture(b["anim"][ANIM.TEXTURE], 0)
-	else:
+func _switch_to_next_anim(b:Dictionary):
+	var new_anim_instant:bool
+	if b["state"] == BState.Spawning:
+		b["state"] = BState.Spawned
+		new_anim_instant = change_animation(b, "waiting")
+	elif b["state"] == BState.Spawned:
+		b["state"] = BState.Shooting
+		new_anim_instant = change_animation(b, "shoot")
+		if new_anim_instant: new_anim_instant = _switch_to_next_anim(b)
+	elif b["state"] == BState.Shooting:
+		b["state"] = BState.Moving
+		new_anim_instant = change_animation(b, "idle")
+		_setup_homing(b["props"], b)
+	elif b["state"] == BState.Deleting:
+		back_to_grave(b)
+	# loop if needed
+	return new_anim_instant
+
+func get_texture_frame(b:Dictionary, spriteframes:SpriteFrames=textures):
+	# get the bullet texture to draw
+	if not b.has("anim_counter"): # no animation
+		return spriteframes.get_frame_texture(b["anim"][ANIM.TEXTURE], 0)
+	else: # animation playing
 		b["anim_counter"] += _delta
-		if b["anim_counter"] >= 1/b["anim_speed"]:
+		if b["anim_counter"] >= 1/b["anim_speed"]: # reached next frame
 			b["anim_counter"] = 0
 			b["anim_frame"] += 1
-			if b["anim_frame"] >= b["anim_length"]:
-				if b["state"] == BState.Shooting:
-					b["state"] = BState.Moving
-					change_animation(b, "idle", B)
-				elif b["state"] == BState.Spawning:
-					b["state"] = BState.Spawned
-					change_animation(b, "waiting", B)
-					if change_animation(b, "waiting", B):
-						b["state"] = BState.Shooting
-						if change_animation(b, "shoot", B):
-							change_animation(b, "idle", B)
-				elif b["state"] == BState.Spawned:
-					b["state"] = BState.Shooting
-					change_animation(b, "shoot", B)
-				elif b["state"] == BState.Deleting:
-					back_to_grave(b["props"]["__ID__"], B, b)
-				
-				if b.get("anim_loop", true): b["anim_frame"] = 0
-				else: b["anim_frame"] = b["anim_length"]-1
+			if b["anim_frame"] >= b["anim_length"]: # reached anim end
+				if _switch_to_next_anim(b): # next anim is single framed
+					return spriteframes.get_frame_texture(b["anim"][ANIM.TEXTURE], 0)
+				else: b["anim_frame"] = 0 if b.get("anim_loop") else b["anim_length"]-1
 		return spriteframes.get_frame_texture(b["anim"][ANIM.TEXTURE], b.get("anim_frame"))
 
 func modulate_bullet(b:Dictionary, texture:Texture, depth_scale:float=1):
@@ -1493,18 +1548,25 @@ func modulate_bullet(b:Dictionary, texture:Texture, depth_scale:float=1):
 		if b["modulate_index"] >= 1: b["modulate_index"] = 0
 	else: draw_color = draw_color.get_color(0)
 	draw_color.a = depth_scale
-	
+
 	draw_texture(texture,-texture.get_size()/2,draw_color)
+
 
 func _draw():
 	if Engine.is_editor_hint(): return
 
-	var B:Dictionary; var props:Dictionary
-	for b in poolBullets.keys():
-		B = poolBullets[b]
+	for drawer:Node2D in $Drawers.get_children():
+		if drawer.name == str(z_index): continue
+		drawer.queue_redraw()
+
+	var props:Dictionary; var i:int = 0;
+	for B:Dictionary in poolBullets.values():
+		i += 1
 		props = B["props"]
-		if not bullet_movement(b, B, props): continue
-		_draw_bullet(b, B, props)
+		if _state_check(B, props) == -1: continue
+		bullet_movement(B, props)
+		_draw_bullet(B, props)
+		
 
 func draw_trail(B:Dictionary, props:Dictionary):
 	var _alphaSteps:float = 0; var _widthSteps:float = 0; var segments:float = B["trail"].size(); var grad:bool = false
@@ -1512,61 +1574,58 @@ func draw_trail(B:Dictionary, props:Dictionary):
 	var _originalTrailWidth:float = props["spec_trail_width"]
 	if props.has("spec_trail_gradient"): grad = true
 	if grad: _originalModulate = props.get("spec_trail_gradient").sample(0)
-	
+
 	draw_set_transform_matrix(Transform2D(0,B["position"]))
 	draw_line(Vector2.ZERO, B["trail"][0]-B["position"], _originalModulate, _originalTrailWidth)
-	
+
 	if props.has("spec_trail_fade_out"): _alphaSteps = _originalModulate.a/segments
 	if props.has("spec_trail_thin_out"): _widthSteps = _originalTrailWidth/segments
-	
-	for l in segments-1:
+
+	for l:float in segments-1:
 		if grad:
 			_originalModulate = props.get("spec_trail_gradient").sample((1/segments)*(l+1))
 		_originalModulate.a -= _alphaSteps
 		_originalTrailWidth -= _widthSteps
 		draw_line(B["trail"][l]-B["position"], B["trail"][l+1]-B["position"], _originalModulate, _originalTrailWidth)
 
-func _draw_bullet(b, B:Dictionary, props:Dictionary):
+func _draw_bullet(B:Dictionary, props:Dictionary):
+	if props.get("z_index", z_index) != z_index: return
 	if B.get("culling_state", CULLINGSTATES.Onscreen) > CULLINGSTATES.Onscreen and B.get("culling_state") != CULLINGSTATES.Fake:
 		return
 	# handles trails
 	if B.has("trail"): draw_trail(B, props)
-	
+
 	var depth_scale:float = 1
 	if B.has("depth"):# and (props["depth_scaling"] or props["depth_fading"]):
 		if B["depth"] < props["depth_active"].x:
 			depth_scale = 1-((props["depth_active"].x-B["depth"])/(props["depth_active"].x-props["depth_min_max"].x))
 		elif B["depth"] > props["depth_active"].y:
 			depth_scale = 1-((B["depth"]-props["depth_active"].y)/(props["depth_min_max"].y-props["depth_active"].y))
-	
-	
+
 	# bullet nodes don't need to be drawn, they can use sprites
-	if b is Node2D:
+	if B["RID"] is Node2D:
 		#if props.has("depth_scaling"): b.scale = props.get("depth_scaling")
 		#if props.has("depth_fading"): b.modulate.a = props.get("depth_fading")
-		if props.has("speed"): b.queue_redraw()
+		#if props.has("speed"): B["RID"].queue_redraw() #todo
 		return
-	
+
 	if (B["state"] < BState.Spawning) \
 		or (props.has("spec_modulate") and props.has("spec_modulate_loop") and \
 		props["spec_modulate"].get_color(0).a == 0):
 			return
 
-	var texture:Texture = get_texture_frame(B, b)
-	var draw_rotation:float
-	if props.has("no_rotation"): draw_rotation = 0
-	else: draw_rotation = B["rotation"]+B.get("rot_index",0)
+	var texture:Texture = get_texture_frame(B)
+	var draw_rotation:float = 0 if props.has("no_rotation") else B["rotation"]+B.get("rot_index",0)
 	draw_set_transform_matrix(Transform2D(draw_rotation, \
 								B.get("scale", Vector2(props["scale"]*B["anim"][ANIM.SCALE], props["scale"]*B["anim"][ANIM.SCALE]))*depth_scale, \
 								B["anim"][ANIM.SKEW], B["position"]))
-	
+
 	if props.has("spec_modulate"):
 		modulate_bullet(B, texture, depth_scale)
 	else: draw_texture(texture,-texture.get_size()/2, Color(1,1,1,depth_scale))
 
 # type = "idle","spawn","waiting","delete"
-func change_animation(b:Dictionary, type:String, B):
-	if B is Node2D: return true
+func change_animation(b:Dictionary, type:String):
 	var instantly:bool = false
 	var anim_state:Array
 	if type in ["spawn","shoot","idle","waiting","delete"]:
@@ -1579,27 +1638,28 @@ func change_animation(b:Dictionary, type:String, B):
 
 	b["anim"] = anim_state
 	var frame_count:int = textures.get_frame_count(anim_id)
-	if frame_count > 1:
+	if frame_count > 1: # new anim has multiple frames
 		b["anim_length"] = frame_count
 		b["anim_counter"] = 0
 		b["anim_frame"] = 0
 		b["anim_loop"] = textures.get_animation_loop(anim_id)
 		b["anim_speed"] = textures.get_animation_speed(anim_id)
-	elif b.has("anim_frame"):
-		b.erase("anim_length")
-		b.erase("anim_counter")
-		#b.erase("anim_frame")
-		b.erase("anim_loop")
-		b.erase("anim_speed")
+	elif b.has("anim_frame"): # new anim has a single frame and previous anim had multiple
+		for p in ["anim_length", "anim_counter", "anim_loop", "anim_speed", "anim_frame"]:
+			b.erase(p)
 		instantly = true
-
+	# change collision shape if needed
 	var col_id:Array = anim_state[ANIM.COLLISION]
-	if not col_id.is_empty() and col_id != b["colID"]:
+	if not b["RID"] is int and not col_id.is_empty() and col_id != b.get("colID", col_id):
 		b["colID"] = col_id
-		var new_rid:RID = create_shape(b["shared_area"].get_rid(), b["colID"])
+		var shared:Area2D
+		var new_rid:RID = create_shape(shared, b["colID"]) # TODO cause shape accumulation ?
+		b["RID"] = new_rid
 		poolBullets[new_rid] = b
-		_update_shape_indexes(new_rid, Phys.area_get_shape_count(b["shared_area"].get_rid())-1, b["shared_area"].name)
-		back_to_grave(b["props"]["__ID__"], B, b)
+		shared.get_meta("Bullets").erase(b["index"])
+		shared.get_meta("Bullets")[shared.get_meta("ShapeCount")-1] = b
+		b["index"] = shared.get_meta("ShapeCount")-1
+		back_to_grave(b)
 
 	return instantly
 
@@ -1608,12 +1668,20 @@ func change_animation(b:Dictionary, type:String, B):
 
 
 
-#§§§§§§§§§§§§§ USEFUL FUCNTIONS / API §§§§§§§§§§§§§
+#§§§§§§§§§§§§§ USEFUL FUNCTIONS / API §§§§§§§§§§§§§
+
 
 ### BULLETS
 
 func instant_shoot(bullets:Array):
 	_shoot(bullets)
+
+func rid_to_bullet(rid):
+	return poolBullets[rid]
+
+func get_RID_from_index(source_area:RID, index:int) -> RID:
+	return Phys.area_get_shape(source_area, index)
+
 
 ## Gravity
 
@@ -1626,93 +1694,108 @@ func change_gravity(B:Dictionary, gravity:Vector2=Vector2.ZERO):
 		B.erase("gravity")
 		B.erase("acc")
 	B["gravity"] = gravity
-	B["acc"] = 0
+	B["acc"] = Vector2.ZERO
 
 ## CLEAR
 
 func clear_all_bullets():
-	for b in poolBullets.keys(): delete_bullet(b, true)
+	for b:Dictionary in poolBullets.values(): delete_bullet(b, true)
 
 # target_pos radius group, group_whitelist random
 func clear_bullets_advanced(filters:Dictionary, shadow_clearing:bool=false):
-	for b in poolBullets.keys():
-		if filter_bullet(poolBullets[b], filters):
-			delete_bullet(b, shadow_clearing)
+	for b:Dictionary in poolBullets.values():
+		if not filter_bullet(b, filters): continue
+		delete_bullet(b, shadow_clearing)
 
 func clear_random_bullets(percent:int=50, shadow_clearing:bool=false):
-	for b in poolBullets.keys():
-		if randi()%100 < percent: delete_bullet(b, shadow_clearing)
+	for b:Dictionary in poolBullets.values():
+		if not RAND.randi()%100 < percent: continue
+		delete_bullet(b, shadow_clearing)
 
 # TODO counts radius or not
 func clear_bullets_within_dist(target_pos, shadow_clearing:bool=false, radius:float=STANDARD_BULLET_RADIUS):
-	for b in poolBullets.keys():
-		if poolBullets[b]["position"].distance_to(target_pos) < radius:
-			delete_bullet(b, shadow_clearing)
+	for b:Dictionary in poolBullets.values():
+		if not b["position"].distance_to(target_pos) < radius: continue
+		delete_bullet(b, shadow_clearing)
 
 func clear_all_offscreen_bullets():
-	for b in poolBullets.keys():
-		if poolBullets[b].get("culling_state", CULLINGSTATES.Onscreen) != CULLINGSTATES.Onscreen:
-			delete_bullet(b, true)
+	for b:Dictionary in poolBullets.values():
+		if b.get("culling_state", CULLINGSTATES.Onscreen) == CULLINGSTATES.Onscreen: continue
+		delete_bullet(b, true)
 
 func clear_bullets_in_group(group:String, whitelist:bool=false, shadow_clearing:bool=false):
-	if !whitelist:
-		for b in poolBullets.keys():
-			if group in poolBullets[b]["groups"]: delete_bullet(b, shadow_clearing)
-	else:
-		for b in poolBullets.keys():
-			if not group in poolBullets[b]["groups"]: delete_bullet(b, shadow_clearing)
+	for b:Dictionary in poolBullets.values():
+		if (group in b["groups"]) == whitelist: continue
+		delete_bullet(b, shadow_clearing)
 
 func clear_bullets_in_groups(groups:Array[String], whitelist:bool=false, shadow_clearing:bool=false):
-	for g in groups: clear_bullets_in_group(g, whitelist, shadow_clearing)
+	for g:String in groups: clear_bullets_in_group(g, whitelist, shadow_clearing)
 
 func clear_bullet_queue():
 	poolTimes.clear()
 	poolQueue.clear()
 
-func delete_bullet(b, shadow_clearing:bool=false):
-	if not poolBullets.has(b): return
-	var B = poolBullets[b]
+func delete_bullet(B:Dictionary, shadow_clearing:bool=false):
+	#if not poolBullets.has(b): return #todo
 	if !shadow_clearing and arrayAnim[B["props"]["anim_delete"]][ANIM.SFX]:
 		arrayAnim[B["props"]["anim_delete"]][ANIM.SFX].play()
-	
-	if shadow_clearing or change_animation(B, "delete", b):
-		back_to_grave(B["props"]["__ID__"],b, B)
+
+	if shadow_clearing or change_animation(B, "delete"):
+		back_to_grave(B)
 	else: B["state"] = BState.Deleting
 
+## GET
+
 func get_bullets_in_radius(origin:Vector2, radius:float):
-	var res:Array
-	for b in poolBullets.keys():
-		if poolBullets[b]["position"].distance_to(origin) < radius:
-			res.append(b)
+	var res:Array[Dictionary]
+	for b:Dictionary in poolBullets.values():
+		if not b["position"].distance_to(origin) < radius: continue
+		res.append(b)
 	return res
 
-func filter_bullets(filters:Dictionary, use_rid:bool=false):
-	var res:Array[Dictionary]; var B:Dictionary
-	for b in poolBullets.keys():
-		B = poolBullets[b]
-		if filter_bullet(B, filters):
-			if use_rid:res.append(b)
-			else: res.append(B)
+func filter_bullets(filters:Dictionary, list:Array=poolBullets.values(), use_rid:bool=false):
+	var res:Array[Dictionary]
+	for B:Dictionary in list:
+		if not filter_bullet(B, filters): continue
+		if use_rid: res.append(B["RID"])
+		else: res.append(B)
 	return res
 
 func filter_bullet(B:Dictionary, filters:Dictionary):
+	# returns false if the filter isn't met
 	if filters.has("shared_area") and B["shared_area"] != filters["shared_area"]: return false
 	if filters.has("state") and B["state"] != filters["state"]: return false
 	if filters.has("target_pos") and B["position"].distance_to(filters["target_pos"]) > filters["radius"]:
 		return false
 	if filters.has("group"):
-		if filters["group"] in B["groups"] and filters.has("whitelist"): return false
-	if filters.has("percent") and randi()%100 < filters["percent"]: return false
+		if filters["group"] in B.get("groups", []) and filters.has("whitelist"): return false
+	if filters.has("percent") and RAND.randi()%100 < filters["percent"]: return false
+	if filters.has("offscreen") and (B["culling_state"] != CULLINGSTATES.Onscreen) != filters["offscreen"]: return false
 	return true
 
 func get_random_bullet():
-	return poolBullets[randi()%poolBullets.size()]
+	return poolBullets.values().pick_random()
 
 func get_random_bullet_set(size:int):
 	var res:Array[Dictionary]
-	for i in size:
+	for i:int in size:
 		res.append(get_random_bullet())
 	return res
+
+func get_all_bullets():
+	return poolBullets.values()
+
+func get_offscreen_bullets():
+	var res:Array[Dictionary]
+	for b:Dictionary in poolBullets.values():
+		if b.get("culling_state", CULLINGSTATES.Onscreen) == CULLINGSTATES.Onscreen: continue
+		res.append(b)
+	return res
+
+func get_bullets_in_shared_area(shared_area:String):
+	return get_shared_area(shared_area).get_meta("Bullets")
+
+## Bullet Properties ##
 
 func change_bullet_speed(B:Dictionary, speed:float):
 	B["speed"] = speed
@@ -1722,49 +1805,6 @@ func change_bullet_bounces(B:Dictionary, bounces:int):
 
 func change_bullet_imprecision(B:Dictionary, offset:Vector2):
 	B["homing_offset"] = offset
-
-### GROUPS ###
-
-func add_group_to_bullet(b:Dictionary, group:String):
-	if b.has("groups"): b["groups"].append(group)
-	else: b["groups"] = [group]
-
-func remove_group_from_bullet(b:Dictionary, group:String):
-	if not b.has("groups"): return
-	b["groups"].erase(group)
-
-func clear_groups_from_bullet(b:Dictionary):
-	b.erase("groups")
-
-func is_bullet_in_group(b:Dictionary, group:String):
-	if not b.has("groups"): return false
-	return b["groups"].has(group)
-
-func is_bullet_in_grouptype(b:Dictionary, grouptype:String):
-	if not b.has("groups"): return false
-	for g in b["groups"]:
-		if not grouptype in g: continue
-		return true
-
-### SHARED AREA ###
-
-func get_shared_area_rid(shared_area_name:String):
-	return $SharedAreas.get_node(shared_area_name).get_rid()
-
-func get_shared_area(shared_area_name:String):
-	return $SharedAreas.get_node(shared_area_name)
-
-func change_shared_area(b:Dictionary, rid:RID, idx:int, new_area:Area2D):
-	Phys.area_remove_shape(b["shared_area"].get_rid(),idx)
-	Phys.area_add_shape(new_area.get_rid(), rid)
-	b["shared_area"] = new_area
-	_calculate_bullets_index()
-
-func rid_to_bullet(rid):
-	return poolBullets[rid]
-
-func get_RID_from_index(source_area:RID, index:int) -> RID:
-	return Phys.area_get_shape(source_area, index)
 
 func change_property(type:String, id:String, prop:String, new_value):
 	var res = call(type, id)
@@ -1776,9 +1816,69 @@ func switch_property_of_bullet(b:Dictionary, new_props_id:String):
 	b["props"] = bullet(new_props_id)
 
 func switch_property_of_all(replaceby_id:String, replaced_id:String="__ALL__"):
-	for b in poolBullets.values():
+	for b:Dictionary in poolBullets.values():
 		if not (replaced_id == "__ALL__" or b["props"].hash() == bullet(replaced_id).hash()): continue
 		b["props"] = bullet(replaceby_id)
+
+### GROUPS ###
+
+func add_group_to_bullet(b:Dictionary, group:String):
+	b.get("groups", []).append(group)
+
+func remove_group_from_bullet(b:Dictionary, group:String):
+	b.get("groups", []).erase(group)
+
+func clear_groups_from_bullet(b:Dictionary):
+	b.erase("groups")
+
+func is_bullet_in_group(b:Dictionary, group:String):
+	return b.get("groups", []).has(group)
+
+func is_bullet_in_grouptype(b:Dictionary, grouptype:String):
+	for g:String in b.get("groups", []):
+		if not grouptype in g: continue
+		return true
+	return false
+
+### SHARED AREA ###
+
+func create_shared_area(id:String, layers:int, masks:int):
+	var new_area:Area2D = Area2D.new()
+	new_area.name = id
+	new_area.collision_layer = layers
+	new_area.collision_mask = masks
+	$SharedAreas.add_child(new_area, true)
+
+func get_shared_area_rid(shared_area_name:String):
+	return $SharedAreas.get_node(shared_area_name).get_rid()
+
+func get_shared_area(shared_area_name:String):
+	return $SharedAreas.get_node(shared_area_name)
+
+func change_shared_area(B:Dictionary, new_area:Area2D):
+	# remove from old area
+	var old_area:Area2D = B["shared_area"]
+	var index:int = B["index"]
+	var count:int = old_area.get_meta("ShapeCount")
+	var old_bullets:Dictionary = old_area.get_meta("Bullets")
+	Phys.area_remove_shape(old_area.get_rid(), index)
+	old_area.set_meta("ShapeCount", count-1)
+
+	# update shape indexes in old area
+	var Brid:RID
+	for i:int in count-(index+1):
+		Brid = get_RID_from_index(old_area.get_rid(), index+1+i)
+		poolBullets[Brid]["index"] -= 1
+		old_bullets[index+i] = old_bullets[index+i+1]
+	old_bullets.erase(count)
+
+	# add to new area
+	Phys.area_add_shape(new_area.get_rid(), B["RID"])
+	count = new_area.get_meta("ShapeCount")
+	B["index"] = count
+	new_area.set_meta("ShapeCount", count+1)
+	B["shared_area"] = new_area
+	new_area.get_meta("Bullets")[count] = B
 
 ### RANDOMISATION ###
 
@@ -1798,6 +1898,49 @@ func random_set(type:String, id:String, value:bool):
 		"pattern": res.has_random = value
 		"bullet": res["has_random"] = value
 
+### Spawn Processes ###
+
+func get_process_list(reduced:bool=false):
+	if not reduced: return process_list
+	var dict:Dictionary
+	for i in process_list: dict[i] = 0
+	return dict.keys()
+
+func process_kill(process:int):
+	assert(process != 0, "You set process to 0, which is forbidden")
+	if process in process_stop:
+		push_warning("process "+str(process)+" already queued for stopping.")
+		return
+	process_stop.append(process)
+
+func process_kill_list(processes:Array[int]):
+	for p:int in processes: process_kill(p)
+
+func process_kill_all():
+	process_stop_all = true
+
+func pause_process(process:int):
+	assert(process != 0, "You set process to 0, which is forbidden")
+	if process in process_pause:
+		push_warning("process "+str(process)+" already queued for pausing.")
+		return
+	process_pause.append(process)
+
+func pause_process_list(processes:Array[int]):
+	for p:int in processes: pause_process(p)
+
+func pause_all_processes():
+	process_pause_all = true
+
+#func process_get_infos(process:int):
+	#assert(process != 0, "You set process to 0, which is forbidden")
+	#while process_get != 0: continue
+	#process_infos.clear()
+	#process_get = process
+	#while process_infos.is_empty(): continue
+	#process_get = 0
+	#return process_infos
+
 ### HOMING ###
 
 func edit_special_target(var_name:String, path:Node2D):
@@ -1812,56 +1955,11 @@ func stop_homing(B:Dictionary):
 func start_homing(group:String):
 	start_homing_group.append(group)
 
-### Spawn Processes ###
-
-func process_kill(process:int):
-	assert(process != 0, "You set process to 0, which is forbidden")
-	if process in process_stop:
-		push_warning("process "+str(process)+" already queued for stopping.")
-		return
-	process_stop.append(process)
-
-func process_kill_list(processes:Array[int]):
-	for p in processes: process_kill(p)
-
-func process_kill_all():
-	process_stop_all = true
-
-func pause_process(process:int):
-	assert(process != 0, "You set process to 0, which is forbidden")
-	if process in process_pause:
-		push_warning("process "+str(process)+" already queued for pausing.")
-		return
-	process_pause.append(process)
-	
-func pause_process_list(processes:Array[int]):
-	for p in processes: pause_process(p)
-
-func pause_all_processes():
-	process_pause_all = true
-
-func process_get_infos(process:int):
-	assert(process != 0, "You set process to 0, which is forbidden")
-	while process_get != 0: continue
-	process_infos.clear()
-	process_get = process
-	while process_infos.is_empty(): continue
-	process_get = 0
-	return process_infos
-
-
-
-
-
-
-
-#§§§§§§§§§§§§§ HOMING §§§§§§§§§§§§§
-
 func _on_Homing_timeout(B:Dictionary):
 	var props = B["props"]
 	if not props.has("homing_mouse"):
-		if props.has("homing_target") or props.has("node_homing"): B["homing_target"] = props["node_homing"]
-		else: B["homing_target"] = props["homing_position"]
+		B["homing_target"] = props["node_homing"] if props.has("homing_target") or props.has("node_homing") \
+						else props["homing_position"]
 	if props["homing_duration"] > 0:
 		get_tree().create_timer(props["homing_duration"], false).connect("timeout",Callable(self,"stop_homing").bind(B))
 	if props.get("homing_select_in_group",-1) == GROUP_SELECT.Nearest_on_homing:
@@ -1879,12 +1977,13 @@ func target_from_options(B:Dictionary, random:bool=false):
 	elif B["props"].has("homing_mouse"): B["homing_target"] = get_global_mouse_position()
 
 func target_from_group(B:Dictionary, random:bool=false):
-	var all_nodes = get_tree().get_nodes_in_group(B["props"]["homing_group"])
+	var all_nodes:Array[Node] = get_tree().get_nodes_in_group(B["props"]["homing_group"])
+	if all_nodes.is_empty(): return
 	if random:
-		B["homing_target"] = all_nodes[randi()%all_nodes.size()]
+		B["homing_target"] = all_nodes[RAND.randi()%all_nodes.size()]
 		return
 	var res:Node2D; var smaller_dist = INF; var curr_dist;
-	for node in all_nodes:
+	for node:Node in all_nodes:
 		curr_dist = B["position"].distance_to(node.global_position)
 		if curr_dist < smaller_dist:
 			smaller_dist = curr_dist
@@ -1893,10 +1992,10 @@ func target_from_group(B:Dictionary, random:bool=false):
 
 func target_from_segments(B:Dictionary, random:bool=false):
 	var dist:float = INF; var res:Vector2; var new_res:Vector2; var new_dist:float
-	for p in B["homing_surface"].size():
+	for p:int in B["homing_surface"].size():
 		new_res = Geometry2D.get_closest_point_to_segment(B["position"], B["homing_surface"][p], B["homing_surface"][(p+1)%B["homing_surface"].size()])
 		new_dist = B["position"].distance_to(new_res)
-		if new_dist < dist or (random and randi()%2 == 0):
+		if new_dist < dist or (random and RAND.randi()%2 == 0):
 			dist = new_dist
 			res = new_res
 	B["homing_target"] = res
@@ -1905,89 +2004,97 @@ func target_from_list(B:Dictionary, do:bool=true):
 	if not do: return
 	B["homing_target"] = B["props"]["homing_list"][B["homing_counter"]]
 
-func trig_timeout(b, rid):
+func trig_timeout(b):
 	if b == null: return
 	if b is Node: b.trigger_timeout = true
 	else:
 		if check_trig_culling(b): return
-		b["trig_timeout"] = true
-	b.get("trig_container").checkTriggers(b,rid)
+		b["trigger_timeout"] = true
+	b.get("trig_container").checkTriggers(b)
+
+
+
+
+
+
 
 
 
 
 #§§§§§§§§§§§§§ COLLISIONS §§§§§§§§§§§§§
 
+func laser_collide(col_pos:Vector2, collider:Node, normal:Vector2, full_length:float, laser:LaserBeam):
+	call_custom("laser_collide", [col_pos, collider, normal, full_length, laser])
+
 func bullet_collide_area(area_rid:RID,area:Area2D,area_shape_index:int,local_shape_index:int,shared_area:Area2D) -> void:
 	############## go to CUSTOM if you want to implement custom behavior
 	CUSTOM.bullet_collide_area(area_rid, area, area_shape_index, local_shape_index, shared_area)
 
 func bullet_collide_body(body_rid:RID,body:Node,body_shape_index:int,local_shape_index:int,shared_area:Area2D) -> void:
-	var rid = shape_rids.get(shared_area.name, {}).get(local_shape_index)
-	if not poolBullets.has(rid):
-		rid = shared_area
-		if not poolBullets.has(rid): return
-	var B = poolBullets[rid]
+	var B:Dictionary = shared_area.get_meta("Bullets")[local_shape_index] if shared_area.get_parent() == $SharedAreas \
+				else poolBullets[shared_area]
 
-#	if B["props"].has("spec_angle_no_collision"):
-#		var angle:float = B["position"].angle_to_point(body.global_position)
-	
 	############## go to CUSTOM if you want to implement custom behavior
-	CUSTOM.bullet_collide_body(body_rid, body, body_shape_index, local_shape_index, shared_area, B, rid)
+	if not CUSTOM.bullet_collide_body(body_rid, body, body_shape_index, local_shape_index, shared_area, B): return
 
 	bullet_collided_body.emit(body, body_shape_index, B, local_shape_index, shared_area)
 
 	if B.get("trig_types", []).has("TrigCol"):
 		B["trig_collider"] = body
-		B["trig_container"].checkTriggers(B, rid)
-	
-	if Gravity != Vector2.ZERO: B["acc"] = 0
-	
+		B["trig_container"].checkTriggers(B)
+
+	if Gravity != Vector2.ZERO: B["acc"] = Vector2.ZERO
+
 	if B.get("bounces",0) != 0:
 		bounce(B, shared_area)
-		B["bounces"] = B["bounces"]-1
 		return
-	elif body.is_in_group(GROUP_BOUNCE):
-		bounce(B, shared_area)
-		return
+	else:
+		for group:String in GROUP_BOUNCE:
+			if not body.is_in_group(group): continue
+			bounce(B, shared_area)
+			return
 
 	if body.is_in_group("Player"):
-		delete_bullet(rid)
+		delete_bullet(B)
 	elif B["props"]["death_from_collision"]:
-		delete_bullet(rid)
+		delete_bullet(B)
 
 
-# part of the bouncing code was written by Sentrie, a plugin user. Thx.
 var bounce_index:int = 0
+var bounce_queue:Array = []
 func bounce(B:Dictionary, shared_area:Area2D):
-	if not B.has("colID"): return #TODO support custom bullet nodes
-	
-	var bouncy_node = get_node("Bouncy/" + str(bounce_index))
-	var bouncy_shape = bouncy_node.get_node("CollisionShape2D")
-	
-	bouncy_shape.call_deferred("set", "shape", B["colID"][0])
+	#if not B["RID"] is RID: return #TODO support custom bullet nodes
+	bounce_queue.append([B, shared_area, 0])
+
+func _process_bounce(B:Dictionary, shared_area:Area2D, tries:int=0):
+	var bouncy_node:CharacterBody2D = get_node("Bouncy/" + str(bounce_index))
+	var bouncy_shape:CollisionShape2D = bouncy_node.get_node("CollisionShape2D")
+	# if this fails, it's because you BulletNode doesn't have a CollisionShape2D named CollisionShape2D,
+	# which is required to handle bounces
+	bouncy_shape.shape = B["colID"][0] if B["RID"] is RID else shared_area.get_node("CollisionShape2D").shape
 	bouncy_node.collision_layer = shared_area.collision_layer
 	bouncy_node.collision_mask = shared_area.collision_mask
 	bouncy_node.global_position = B["position"]
 	
-	var current_index = bounce_index
-	bounce_index = (bounce_index + 1) % $Bouncy.get_child_count()
-	call_deferred("_handle_bounce_collision", B, current_index)
-	
-func _handle_bounce_collision(B: Dictionary, index: int):
-	var bouncy_node = get_node("Bouncy/" + str(index))
-	var collision = bouncy_node.move_and_collide(Vector2(0, 0))
-	
+	var current_index:int = bounce_index
+	bounce_index = (bounce_index+1)%$Bouncy.get_child_count()
+	_handle_bounce_collision(B, current_index, shared_area)
+
+func _handle_bounce_collision(B:Dictionary, index:int, shared_area:Area2D, tries:int=0):
+	var bouncy_node:CharacterBody2D = get_node("Bouncy/" + str(index))
+	var collision:KinematicCollision2D = bouncy_node.move_and_collide(Vector2(0,0), true)
+
 	if collision:
 		B["vel"] = B["vel"].bounce(collision.get_normal())
 		B["rotation"] = B["vel"].angle()
-	
-	var bouncy_shape = bouncy_node.get_node("CollisionShape2D")
-	bouncy_shape.shape = null
+		B["bounces"] = B["bounces"]-1
+	elif tries < 5: bounce_queue.append([B, shared_area, tries])
+
+	bouncy_node.get_node("CollisionShape2D").shape = null
 	bouncy_node.global_position = UNACTIVE_ZONE
 
 func reset_bounce():
-	for i in $Bouncy.get_children(): i.global_position = UNACTIVE_ZONE
+	for i:CharacterBody2D in $Bouncy.get_children(): i.global_position = UNACTIVE_ZONE
 
 
 
@@ -1997,20 +2104,20 @@ func reset_bounce():
 
 func update_viewport():
 	_viewport_refresher = 0
-	#if cull_fixed_screen: return
-	var c_trans = get_canvas_transform()
+	var c_trans:Transform2D = get_canvas_transform()
 	viewrect = Rect2(-c_trans.get_origin()/c_trans.get_scale(), get_viewport_rect().size/c_trans.get_scale()).grow(cull_margin)
 
 func detect_offscreen_bullet(bullet:Dictionary) -> bool:
 	return not viewrect.has_point(bullet["position"])
 
 func detect_bullet_approaching(bullet:Dictionary):
+	if bullet["RID"] is int: return false
 	if not (int(cull_faking_dist) > 0 and int(cull_unfaking_dist)): return false
 	if not bullet["culling_state"] in [CULLINGSTATES.Onscreen, CULLINGSTATES.Fake]: return false
 	if interest_list.is_empty(): return false
 
 	var dist:float; var faraway_counter:int = 0
-	for node in interest_list:
+	for node:Node in interest_list:
 		if not is_instance_valid(node): continue
 		dist = bullet["position"].distance_to(node.global_position)
 		if dist > cull_faking_dist: faraway_counter += 1
@@ -2021,23 +2128,18 @@ func detect_bullet_approaching(bullet:Dictionary):
 		bullet["culling_state"] = CULLINGSTATES.Fake
 	return false
 
-func check_bullet_culling(B:Dictionary, rid):
-	if not rid is RID: return
-	var bcull = B["props"].get("death_culling_overwrite", CULLINGLVL.Full)
-	#if bcull == CULLINGLVL.Anim or (bcull == CULLINGLVL.Inherit and cull_technique == CULLINGLVL.Anim):
-		#return CULLINGLVL.Anim
-
-	var offscreen = detect_offscreen_bullet(B)
+func check_bullet_culling(B:Dictionary):
+	var bcull:int = B["props"].get("death_culling_overwrite", CULLINGLVL.Full)
+	var offscreen:bool = detect_offscreen_bullet(B)
 	if not offscreen:
 		if B["culling_state"] == CULLINGSTATES.Frozen:
 			B["culling_state"] = CULLINGSTATES.UnFrozen
 			return CULLINGSTATES.UnFrozen
 		return CULLINGSTATES.Onscreen
-
-	if bcull == CULLINGLVL.Inherit: B["culling_state"] = cull_technique
-	else: B["culling_state"] = bcull
-	if B["culling_state"] == CULLINGLVL.Full:
-		delete_bullet(rid, true)
+	
+	B["culling_state"] = cull_technique if bcull == CULLINGLVL.Inherit else bcull
+	if B["culling_state"] == CULLINGLVL.Full or poolBullets.size() > cull_increase_at:
+		delete_bullet(B, true)
 		return CULLINGSTATES.Culled
 	return B["culling_state"]
 
@@ -2053,11 +2155,30 @@ func check_trig_culling(B:Dictionary):
 
 #§§§§§§§§§§§§§ RANDOMISATION §§§§§§§§§§§§§
 
+func rng_setup(rng:RandomNumberGenerator, state:int=-1):
+	assert(rng.seed != 1, "RandomNumberGenerator with seed -1 is forbidden")
+	RAND = rng
+	RAND_SEED = RAND.seed
+	if state != -1: RAND.state = state
+
+func rng_edit(seed:int=0, state:int=-1):
+	if seed == -1: RAND.randomize()
+	elif seed != 0:
+		RAND.seed = seed
+		RAND_SEED = seed
+	if state != -1: RAND.state = state
+
+func seed_set(value:int):
+	if RAND == null: RAND_SEED = value
+	else: rng_edit(value)
+
+### getters ###
+
 func random_get_chances(target_value:float):
-	return randf_range(0,1) < target_value
+	return RAND.randf_range(0,1) < target_value
 
 func random_get_choice(choice:Array):
-	return choice[randi()%choice.size()]
+	return choice[RAND.randi()%choice.size()]
 
 # call : random_get_variation(base_prop value, v.x, v.y, v.z)
 func random_get_variation(mean:float, variance:float, limit_down=0, limit_up=0):
@@ -2068,12 +2189,10 @@ func random_get_variation(mean:float, variance:float, limit_down=0, limit_up=0):
 	else: return RAND.randfn(mean,variance)
 
 func reroll(pattern:Pattern, prop:String, curr_value):
-	if not pattern.random.get(prop+"_reroll"): return curr_value
-	return r_get(pattern, prop)
+	return curr_value if not pattern.random.get(prop+"_reroll") else r_get(pattern, prop)
 
 func r_get(pattern:Pattern, prop:String):
 	var res = pattern.get(prop)
-	#if prop in ["offset_x", "offset_y"]: res = pattern.get("offset")
 	if res == null: return 0
 	var random_prop = pattern.random.get(prop+"_chances")
 	# test if prop has a random chance of happening
@@ -2094,22 +2213,21 @@ func r_get(pattern:Pattern, prop:String):
 	return res
 
 
-
 func create_random_props(original:Dictionary) -> Dictionary:
 	var r_name:String; var res:Dictionary;
 	var choice:Array; var variation:Vector3;
 
-	for p in original.keys():
+	for p:String in original.keys():
 		r_name = match_rand_prop(p)
 		if original.has(r_name+"_choice"):
 			choice = original[r_name+"_choice"]
 			variation = original.get(r_name+"_variation",Vector3(0,0,0))
-			res[p] = random_get_variation(choice[randi()%choice.size()],variation.x,variation.y,variation.z)
+			res[p] = random_get_variation(choice[RAND.randi()%choice.size()],variation.x,variation.y,variation.z)
 		elif original.has(r_name+"_variation"):
 			variation = original.get(r_name+"_variation",Vector3(0,0,0))
 			res[p] = random_get_variation(original[p],variation.x,variation.y,variation.z)
 		elif original.has(r_name+"_chance"):
-			pass#res[p] = random_get_chances()
+			pass
 		else: res[p] = original.get(p)
 	return res
 
@@ -2145,14 +2263,14 @@ func match_rand_prop(original:String) -> String:
 
 ############# random version of spawn functions #############
 
-func _spawn_random(spawner, id:String, pattern:Pattern, shared_area:String="0", process_id:int=-1):
+func _spawn_random(spawner, patternID:String, pattern:Pattern, shared_area:String="0", process_id:int=-1):
 	var local_reset_counter:int = global_reset_counter
-	var bullets:Array
+	var bullets:Array[Dictionary]
 	var iter:int = r_get(pattern, "iterations"); var iter_nbr:int = 0
 	var shared_area_node = $SharedAreas.get_node(shared_area)
 
 	var pos:Vector2; var ori_angle:float; var is_object:bool; var is_bullet_node:bool
-	var bullet_props:Dictionary; var queued_instance:Dictionary; var bID;
+	var bullet_props:Dictionary; var queued_instance:Dictionary; var bID; var new_shape
 
 	var r_props_id:String = r_get(pattern, "bullet"); var r_nbr:int = r_get(pattern, "nbr");
 	var r_center:int = r_get(pattern, "center"); var r_cooldown:float = r_get(pattern, "cooldown_spawn");
@@ -2161,11 +2279,17 @@ func _spawn_random(spawner, id:String, pattern:Pattern, shared_area:String="0", 
 	var r_offx:float = r_get(pattern, "offset_x"); var r_offy:float = r_get(pattern, "offset_y");
 	var r_sym:bool = r_get(pattern, "symmetry"); var r_cd_sh:float = r_get(pattern, "cooldown_shoot");
 	var r_cd_n_sh:float = r_get(pattern, "cooldown_next_shoot"); var r_cd_n_sp:float = r_get(pattern, "cooldown_next_spawn");
+	process_counter += 1
 
 	while iter != 0:
-		if _stop_spawn(process_id, spawner, local_reset_counter): return
+		if _stop_spawn(process_id, spawner, local_reset_counter):
+			_end_spawn_process(pattern, patternID, bullet_props, pattern.bullet, process_id)
+			return true
+		if _pause_spawn(process_id):
+			var pausing:int = 0
+			while pausing not in [-1, process_id]: pausing = await Spawning.resume_process
 		if spawner is Node2D:
-			ori_angle = spawner.rotation
+			ori_angle = spawner.rotation if spawner.use_local_rotation else spawner.global_rotation
 			pos = spawner.global_position
 		elif spawner is Dictionary:
 			pos = spawner["position"]
@@ -2179,7 +2303,7 @@ func _spawn_random(spawner, id:String, pattern:Pattern, shared_area:String="0", 
 		r_cd_sh = reroll(pattern, "cooldown_shoot", r_cd_sh)
 		r_cd_n_sp = reroll(pattern, "cooldown_next_spawn", r_cd_n_sp)
 		r_cd_n_sh = reroll(pattern, "cooldown_next_shoot", r_cd_n_sh)
-		r_angle = reroll(pattern, "angle", r_angle)
+		r_angle = reroll(pattern, "forced_angle", r_angle)
 		r_radius = reroll(pattern, "radius", r_radius)
 		r_angle_total = reroll(pattern, "angle_total", r_angle_total)
 		r_angle_decal = reroll(pattern, "angle_decal", r_angle_decal)
@@ -2191,19 +2315,24 @@ func _spawn_random(spawner, id:String, pattern:Pattern, shared_area:String="0", 
 
 		is_object = bullet_props.has("instance_id")
 		is_bullet_node = (is_object and bullet_props.has("speed"))
-		for i in r_nbr:
+		for i:int in r_nbr:
 			queued_instance = {}
 			queued_instance["shared_area"] = shared_area_node
 			queued_instance["props"] = bullet_props
 			queued_instance["source_node"] = spawner
 			queued_instance["state"] = BState.Unactive
+			new_shape = wake_from_pool(bullet_props, r_props_id, shared_area, pattern.nbr, is_object)
+			bID = new_shape
 			if not is_object:
+				bID = new_shape[0]
+				queued_instance["index"] = new_shape[1]
 				queued_instance["anim"] = arrayAnim[bullet_props["anim_idle"]]
 				queued_instance["culling_state"] = CULLINGSTATES.Onscreen
-				queued_instance["colID"] = queued_instance["anim"][ANIM.COLLISION]#bullet_props["first_collision"]
+				queued_instance["colID"] = queued_instance["anim"][ANIM.COLLISION]
 				queued_instance = create_bullet_instance_dict_random(queued_instance, bullet_props, pattern)
-			elif is_bullet_node:
-				queued_instance = create_bullet_instance_dict_random(queued_instance, bullet_props, pattern)
+				if bullet_props["z_index"] != z_index: get_node("Drawers/"+str(bullet_props["z_index"])).bullets.append(queued_instance)
+				shared_area_node.get_meta("Bullets")[new_shape[1]] = queued_instance
+			elif is_bullet_node: queued_instance = create_bullet_instance_dict_random(queued_instance, bullet_props, pattern)
 
 			set_spawn_data_random(r_nbr, r_center, queued_instance, bullet_props, pattern, i, ori_angle, \
 									r_angle, r_radius, r_angle_total, r_angle_decal, r_offx, r_offy)
@@ -2213,20 +2342,20 @@ func _spawn_random(spawner, id:String, pattern:Pattern, shared_area:String="0", 
 			else: queued_instance["rotation"] = 0
 
 			if pattern.wait_tween_momentum > 0:
-				var tw_endpos = queued_instance["spawn_pos"]+pos+Vector2(pattern.wait_tween_length, 0).rotated(PI+queued_instance["rotation"])
+				var tw_endpos:Vector2 = queued_instance["spawn_pos"]+pos+Vector2(pattern.wait_tween_length, 0).rotated(PI+queued_instance["rotation"])
 				queued_instance["momentum_data"] = [pattern.wait_tween_momentum-1, tw_endpos, pattern.wait_tween_time]
 
-			bID = wake_from_pool(r_props_id, queued_instance, shared_area, is_object)
-			bullets.append(bID)
+			queued_instance["RID"] = bID
+			bullets.append(queued_instance)
 			poolBullets[bID] = queued_instance
 
 			if is_object:
 				if is_bullet_node: bID.b = queued_instance
 
 				if bullet_props.has("overwrite_groups"):
-					for g in bID.get_groups():
+					for g:String in bID.get_groups():
 						bID.remove_group(g)
-				for g in bullet_props.get("groups", []):
+				for g:String in bullet_props.get("groups", []):
 					bID.add_to_group(g)
 
 		_plan_spawning_random(r_center, pattern, bullets, r_sym, r_cd_sh, r_cd_n_sh, r_cd_n_sp)
@@ -2234,28 +2363,33 @@ func _spawn_random(spawner, id:String, pattern:Pattern, shared_area:String="0", 
 		if iter > 0: iter -= 1
 		iter_nbr += 1
 		if pattern.max_layer > 0:
-			for v in pattern.cooldown_layers:
+			for v:Vector2 in pattern.cooldown_layers:
 				if iter_nbr%pattern.max_layer == v.x:
 					await get_tree().create_timer(v.y, false, true).timeout
 					break
 				elif iter_nbr < v.x: break
 		await get_tree().create_timer(r_cooldown, false, true).timeout
-		#if local_reset_counter != global_reset_counter: return
-		if process_get == process_id: process_infos = [spawner, pattern, id, bullet_props]
+		if process_id != -1: process_info.emit(process_id, spawner, patternID, r_props_id, bullets)
+		#if process_get == process_id: process_infos = [spawner, pattern, patternID, bullet_props]
+	# finsihed spawning
+	process_counter -= 1
+	if process_id != 1: process_list.erase(process_id)
+	handle_temp_props(pattern, patternID)
+	handle_temp_pattern(bullet_props, r_props_id)
+	
 
 func set_angle_random(pattern:Pattern, pos:Vector2, queued_instance:Dictionary):
 	if r_get(pattern, "forced_target") != NodePath():
-		if pattern.forced_pattern_lookat: queued_instance["rotation"] = pos.angle_to_point(pattern.node_target.global_position)
-		else: queued_instance["rotation"] = (pattern.node_target.global_position-queued_instance["spawn_pos"]).angle()
+		queued_instance["rotation"] = pos.angle_to_point(pattern.node_target.global_position) if pattern.forced_pattern_lookat \
+								else (pattern.node_target.global_position-queued_instance["spawn_pos"]).angle()
 	elif pattern.forced_lookat_mouse:
-		if pattern.forced_pattern_lookat: queued_instance["rotation"] = pos.angle_to_point(get_global_mouse_position())
-		else: queued_instance["rotation"] = (pos+queued_instance["spawn_pos"]).angle_to_point(get_global_mouse_position())
+		queued_instance["rotation"] = pos.angle_to_point(get_global_mouse_position()) if pattern.forced_pattern_lookat \
+								else (pos+queued_instance["spawn_pos"]).angle_to_point(get_global_mouse_position())
 	elif r_get(pattern, "forced_angle") != 0.0:
 		queued_instance["rotation"] = r_get(pattern, "forced_angle")
 
 func create_bullet_instance_dict_random(queued_instance:Dictionary, bullet_props:Dictionary, pattern:Pattern):
 	queued_instance["shape_disabled"] = true
-	#if r_props_id in no_culling_for: queued_instance["no_culling"] = true
 	queued_instance["speed"] = bullet_props.speed
 	queued_instance["vel"] = Vector2()
 	if bullet_props.has("groups"): queued_instance["groups"] = bullet_props.get("groups")
@@ -2266,17 +2400,12 @@ func set_spawn_data_random(r_nbr:int, r_center:int, queued_instance:Dictionary, 
 							pattern:Pattern, i:int, ori_angle:float, r_angle:float, r_radius:float, \
 							r_angle_total:float, r_angle_decal:float, r_offx:float, r_offy:float):
 	var angle:float
-	#var r_angle:float = r_get(pattern, "pattern_angle")
 	match pattern.resource_name:
 		"PatternCircle":
-			#var r_radius:float = r_get(pattern, "radius")
 			angle = get_spawn_angle_circle(r_angle_total, r_angle_decal, r_nbr-int(r_angle_total < 2*PI), i)
-			#angle = (r_angle_total/r_nbr)*i + r_angle_decal
 			queued_instance["spawn_pos"] = get_spawn_pos_circle(angle, r_angle, r_radius)
 			queued_instance["rotation"] = angle + bullet_props.angle + ori_angle
 		"PatternLine":
-			#var r_offx:float = r_get(pattern, "offset_x")
-			#var r_offy:float = r_get(pattern, "offset_y")
 			queued_instance["spawn_pos"] = get_spawn_pos_line(Vector2(r_offx, r_offy), r_center, r_angle, r_nbr, i)
 			queued_instance["rotation"] = bullet_props.angle + r_angle + ori_angle
 		"PatternOne":
@@ -2286,67 +2415,66 @@ func set_spawn_data_random(r_nbr:int, r_center:int, queued_instance:Dictionary, 
 			queued_instance["spawn_pos"] = pattern.pos[i]
 			queued_instance["rotation"] = bullet_props.angle + pattern.angles[i] + ori_angle
 		"PatternCustomArea":
-			queued_instance["spawn_pos"] = pattern.pos[randi()%pattern.pooling][i]
+			queued_instance["spawn_pos"] = pattern.pos[RAND.randi()%pattern.pooling][i]
 			queued_instance["rotation"] = bullet_props.angle + ori_angle
 
 #r_get(pattern, "")
-func _plan_spawning_random(r_center:int, pattern:Pattern, bullets:Array, \
+func _plan_spawning_random(r_center:int, pattern:Pattern, bullets:Array[Dictionary], \
 							r_sym:bool, r_cd_sh:float, r_cd_n_sh:float, r_cd_n_sp:float):
+	var to_shoot:Array[Dictionary] = bullets.duplicate()
 	if r_cd_n_sp == 0:
 		_spawn(bullets)
 		if pattern.cooldown_stasis: return
-		var to_shoot = bullets.duplicate()
 		if r_cd_n_sh == 0:
 			if r_cd_sh == 0: _shoot(to_shoot) #no add pos
-			else: plan_shoot(to_shoot, r_cd_sh)
+			else: _plan_queue(to_shoot, r_cd_sh)
 		else:
-			var idx
-			for b in to_shoot:
+			var idx:int
+			for b:Dictionary in to_shoot:
 				idx = to_shoot.find(b)
 				if r_sym:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
-						SYMTYPE.ClosedShape: plan_shoot([b], r_cd_sh+(min(idx-r_center,to_shoot.size()-(idx-r_center)))*r_cd_n_sh)
-				else: plan_shoot([b], r_cd_sh+idx*r_cd_n_sh)
+						SYMTYPE.Line: _plan_queue([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
+						SYMTYPE.ClosedShape: _plan_queue([b], r_cd_sh+(min(idx-r_center,to_shoot.size()-(idx-r_center)))*r_cd_n_sh)
+				else: _plan_queue([b], r_cd_sh+idx*r_cd_n_sh)
 	else:
-		var idx
+		var idx:int
 		unactive_spawn(bullets)
-		var to_spawn = bullets.duplicate()
-		for b in to_spawn:
-			idx = to_spawn.find(b)
+		if pattern.cooldown_stasis: return
+		for b:Dictionary in to_shoot:
+			idx = to_shoot.find(b)
 			if r_sym:
 				match pattern.symmetry_type:
-					SYMTYPE.Line: plan_spawn([b], abs(r_center-idx)*r_cd_n_sp)
+					SYMTYPE.Line: _plan_queue([b], abs(r_center-idx)*r_cd_n_sp)
 					SYMTYPE.ClosedShape:
-						plan_spawn([b], min(idx-r_center,to_spawn.size()-(idx-r_center))*r_cd_n_sp)
-			else: plan_spawn([b], idx*r_cd_n_sp)
-
-		if pattern.cooldown_stasis: return
+						_plan_queue([b], min(idx-r_center,to_shoot.size()-(idx-r_center))*r_cd_n_sp)
+			else: _plan_queue([b], idx*r_cd_n_sp)
+		
 		if r_cd_n_sh == 0 and r_cd_sh > 0:
-			plan_shoot(to_spawn, r_cd_n_sp*(to_spawn.size())+r_cd_sh)
+			_plan_queue(to_shoot, r_cd_n_sp*(to_shoot.size())+r_cd_sh)
 		elif r_cd_n_sh == 0: #no add pos
-			for b in to_spawn:
-				idx = to_spawn.find(b)
+			for b:Dictionary in to_shoot:
+				idx = to_shoot.find(b)
 				if r_sym:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
-						SYMTYPE.ClosedShape: plan_shoot([b], r_cd_sh+(min(idx-r_center,to_spawn.size()-(idx-r_center)))*r_cd_n_sh)
-				else: plan_shoot([b], idx*r_cd_n_sp)
+						SYMTYPE.Line: _plan_queue([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
+						SYMTYPE.ClosedShape: _plan_queue([b], r_cd_sh+(min(idx-r_center,to_shoot.size()-(idx-r_center)))*r_cd_n_sh)
+				else: _plan_queue([b], idx*r_cd_n_sp)
 		elif r_cd_sh == 0:
-			for b in to_spawn:
-				idx = to_spawn.find(b)
+			for b:Dictionary in to_shoot:
+				idx = to_shoot.find(b)
 				if r_sym:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
-						SYMTYPE.ClosedShape: plan_shoot([b], r_cd_sh+(min(idx-r_center,to_spawn.size()-(idx-r_center)))*r_cd_n_sh)
-				else: plan_shoot([b], idx*(r_cd_n_sh+r_cd_n_sp))
+						SYMTYPE.Line: _plan_queue([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
+						SYMTYPE.ClosedShape: _plan_queue([b], r_cd_sh+(min(idx-r_center,to_shoot.size()-(idx-r_center)))*r_cd_n_sh)
+				else: _plan_queue([b], idx*(r_cd_n_sh+r_cd_n_sp))
 		else:
-			for b in to_spawn:
-				idx = to_spawn.find(b)
+			for b:Dictionary in to_shoot:
+				idx = to_shoot.find(b)
 				if r_sym:
 					match pattern.symmetry_type:
-						SYMTYPE.Line: plan_shoot([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
-						SYMTYPE.ClosedShape: plan_shoot([b], r_cd_sh+(min(idx-r_center,to_spawn.size()-(idx-r_center)))*r_cd_n_sh)
-				else: plan_shoot([b], r_cd_n_sp*(to_spawn.size())+r_cd_sh+idx*r_cd_n_sh)
-
+						SYMTYPE.Line: _plan_queue([b], r_cd_sh+(abs(r_center-idx))*r_cd_n_sh)
+						SYMTYPE.ClosedShape: _plan_queue([b], r_cd_sh+(min(idx-r_center,to_shoot.size()-(idx-r_center)))*r_cd_n_sh)
+				else: _plan_queue([b], r_cd_n_sp*(to_shoot.size())+r_cd_sh+idx*r_cd_n_sh)
+	
 	bullets.clear()

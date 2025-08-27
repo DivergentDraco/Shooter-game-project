@@ -74,6 +74,7 @@ color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(176, -32, 422, -15, 413, 336, 242, 341, 243, 0, -2, 0, -2, 339, -190, 324, -180, -38)
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("1_ddoy4")]
+visible = false
 offset_left = 164.0
 
 [node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
