@@ -1,88 +1,66 @@
 extends Area2D
 
-#set signal
-signal shield_changed()
-signal died()
-#set variables
+signal shield_changed
+signal died
+
 @export var speed = 150
 @export var cooldown = 0.06
-@export var max_shield = 1
 @export var bullet_scene : PackedScene
+@export var max_shield = 1
+var shield = max_shield:
+	set = set_shield
 
-#onready variables and nodes
-@onready var ship = $Node2D1/Ship
-@onready var boosters = $Node2D1/Ship/Boosters
-@onready var shiftind = $Node2D1/ShiftInd
+var can_shoot = true
 
 @onready var screensize = get_viewport_rect().size
-#adding array variable for storing player positions
-var array = PackedVector2Array()
-
-#declare variable shield
-var shield = max_shield
-
-#declare variable can_shoot
-var can_shoot = true
-# bullet mode: 0 = straight, 1 = spiral
-var bullet_mode = 0
-
-#
 func _ready():
-	array.resize(10)
 	start()
 
 func start():
 	show()
 	set_process(true)
-	position = Vector2(screensize.x/2, screensize.y)
-	$Node2D1/GunCooldown.wait_time = cooldown
+	position = Vector2(285, screensize.y - 64)
+	shield = max_shield
+	$GunCooldown.wait_time = cooldown
 	
 func _process(delta):
-#Move key
+	
 	var input = Input.get_vector("left", "right", "up", "down")
 	if input.x > 0:
-		ship.frame = 2
-		boosters.animation = "right"
+		$Ship.frame = 2
+		$Ship/Boosters.animation = "right"
 	elif input.x < 0:
-		ship.frame = 0
-		boosters.animation = "left"
+		$Ship.frame = 0
+		$Ship/Boosters.animation = "left"
 	else:
-		ship.frame = 1
-		boosters.animation = "forward"
-#Shift key
+		$Ship.frame = 1
+		$Ship/Boosters.animation = "forward"
+		
 	if Input.is_action_pressed("focus"):
 		speed = 75
-		shiftind.visible = true
+		$ShiftInd.visible = true
 	else:
 		speed = 150
-		shiftind.visible = false
-#calculate speed and position
+		$ShiftInd.visible = false
+		
 	position += input * speed * delta
-
-#Store positions into arrays
-	# print(array)
-	if $Node2D1.position != array[0]:
-		array.insert(0, $Node2D1.position)
-	array.resize(20)
-#Select the 10th position stored in the array
-	$Node2D2.position = array[10]
+	screensize.x = 240
 	position = position.clamp(Vector2(8, 8)+Vector2(165,0), screensize - Vector2(8, 8)+Vector2(165,0))
-	
-	if Input.is_action_pressed("shoot") and can_shoot:
+	if Input.is_action_pressed("shoot"):
 		shoot()
-
-	if Input.is_action_just_pressed("switch"):
-		bullet_mode = 1 - bullet_mode # toggle between 0 and 1
-
+		
 func shoot():
+	if not can_shoot:
+		return
 	can_shoot = false
-	$Node2D1/GunCooldown.start()
-	$Node2D1/AudioStreamPlayer.play()
+	$GunCooldown.start()
 	var b = bullet_scene.instantiate()
+	$AudioStreamPlayer.play()
 	get_tree().root.add_child(b)
-	b.start(position, bullet_mode)
-	await get_tree().create_timer(0.045).timeout
-	can_shoot = true
+	b.start(position + Vector2(0, -8))
+	var tween = create_tween().set_parallel(false)
+	tween.tween_property($Ship, "position:y", 1, 0.1)
+	tween.tween_property($Ship, "position:y", 0, 0.05)
 
 func set_shield(value):
 	shield = min(max_shield, value)
@@ -92,6 +70,10 @@ func set_shield(value):
 		hide()
 		#emits died() signal for main.gd to detect
 		died.emit()
+		
+func _on_gun_cooldown_timeout():
+	can_shoot = true
+
 
 func _on_area_entered(area):
 	if area.is_in_group("enemies"):

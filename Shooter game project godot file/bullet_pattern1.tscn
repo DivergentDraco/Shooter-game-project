@@ -1,12 +1,12 @@
 [gd_scene load_steps=14 format=3 uid="uid://dhxltfpmxiqep"]
 
-[ext_resource type="Script" uid="uid://duik6mnuviyhd" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_jnsdx"]
-[ext_resource type="Script" uid="uid://h5rw6b6xhjgx" path="res://bullet_pattern1.gd" id="1_vn3n3"]
-[ext_resource type="Script" uid="uid://cxc325lsu21hd" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="2_ilh12"]
-[ext_resource type="Script" uid="uid://dk6iqdpc7n1tw" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="3_66y4q"]
-[ext_resource type="Script" uid="uid://t0gcuhiw4ua7" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="3_dydfv"]
-[ext_resource type="Script" uid="uid://tnd8up867va5" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="4_1ttpo"]
-[ext_resource type="Script" uid="uid://3tim1te65sv7" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="6_1i5no"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_jnsdx"]
+[ext_resource type="Script" path="res://bullet_pattern1.gd" id="1_vn3n3"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="2_ilh12"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="3_66y4q"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="3_dydfv"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="4_1ttpo"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="6_1i5no"]
 
 [sub_resource type="Curve2D" id="Curve2D_v1s8e"]
 
@@ -115,7 +115,7 @@ offset = Vector2(0, 0)
 center = 1
 symmetric = true
 bullet = "1"
-nbr = 4
+nbr = 1
 iterations = 10
 cooldown_spawn = 0.1
 cooldown_shoot = 0.0
@@ -164,7 +164,6 @@ collision_mask = 3
 script = ExtResource("6_1i5no")
 auto_pattern_id = "two"
 pool_amount = 100
-auto_start_after_time = 0.3
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""

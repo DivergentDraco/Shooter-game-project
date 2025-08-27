@@ -4,9 +4,10 @@ signal died
 
 var start_pos = Vector2.ZERO
 var speed = 100
+var bullet_scene = preload("res://enemy_bullet.tscn")
 var anchor
 var follow_anchor = false
-@export var hp = 26
+var hp = 26
 
 @onready var screensize  = get_viewport_rect().size
 @onready var hit_flash_anim_player = $HitFlashAnimationPlayer

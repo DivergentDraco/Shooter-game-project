@@ -1,14 +1,14 @@
 [gd_scene load_steps=21 format=3 uid="uid://djo3ijb7gjubd"]
 
-[ext_resource type="Script" uid="uid://cj5ujbs6k748y" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_tunqa"]
-[ext_resource type="Script" uid="uid://t0gcuhiw4ua7" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_rnco7"]
-[ext_resource type="Script" uid="uid://yblokyebybpm" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="3_38vvj"]
-[ext_resource type="Script" uid="uid://vj06duyw0oge" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="4_aw2fd"]
-[ext_resource type="Script" uid="uid://tnd8up867va5" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="5_aoj3g"]
-[ext_resource type="Script" uid="uid://duik6mnuviyhd" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="6_3yoqa"]
-[ext_resource type="Script" uid="uid://dk6iqdpc7n1tw" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="7_en8qh"]
-[ext_resource type="Script" uid="uid://cxc325lsu21hd" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="8_i2ptx"]
-[ext_resource type="Script" uid="uid://3tim1te65sv7" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="9_svjcx"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_tunqa"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_rnco7"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="3_38vvj"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="4_aw2fd"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="5_aoj3g"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="6_3yoqa"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="7_en8qh"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="8_i2ptx"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="9_svjcx"]
 
 [sub_resource type="Curve2D" id="Curve2D_u3j77"]
 
@@ -51,7 +51,6 @@ radius = 150.0
 angle_total = 6.28319
 angle_decal = 0.0
 center = 0
-perspective = 1.0
 symmetric = false
 bullet = "2"
 nbr = 4

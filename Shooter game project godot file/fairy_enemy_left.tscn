@@ -1,7 +1,7 @@
 [gd_scene load_steps=22 format=3 uid="uid://bd4qvrtrmfs8n"]
 
-[ext_resource type="Script" uid="uid://b1yqnb2sejpg6" path="res://path2d.gd" id="1_huwtt"]
-[ext_resource type="Script" uid="uid://bm4aekbina6r2" path="res://FairyEnemyLeft.gd" id="2_3h3ju"]
+[ext_resource type="Script" path="res://path2d.gd" id="1_huwtt"]
+[ext_resource type="Script" path="res://FairyEnemyLeft.gd" id="2_3h3ju"]
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="3_wf3p0"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_orhbo"]
 [ext_resource type="Texture2D" uid="uid://cdyc8xsgux0u1" path="res://Sprites and Animations/fairy_left.png" id="5_1si7e"]
@@ -13,27 +13,27 @@ _data = {
 }
 point_count = 1
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mu0dm"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
 atlas = ExtResource("4_orhbo")
 region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bfail"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
 atlas = ExtResource("4_orhbo")
 region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_entqb"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
 atlas = ExtResource("4_orhbo")
 region = Rect2(32, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lmw5e"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
 atlas = ExtResource("4_orhbo")
 region = Rect2(48, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1xtbo"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
 atlas = ExtResource("4_orhbo")
 region = Rect2(64, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rfe7l"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
 atlas = ExtResource("4_orhbo")
 region = Rect2(80, 0, 16, 16)
 
@@ -49,26 +49,26 @@ region = Rect2(36, 0, 36, 24)
 atlas = ExtResource("5_1si7e")
 region = Rect2(72, 0, 36, 24)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_sf5y7"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_87myr"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mu0dm")
+"texture": SubResource("AtlasTexture_ap1v4")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bfail")
+"texture": SubResource("AtlasTexture_dab0p")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_entqb")
+"texture": SubResource("AtlasTexture_om7ce")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lmw5e")
+"texture": SubResource("AtlasTexture_s5xor")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1xtbo")
+"texture": SubResource("AtlasTexture_gwnqv")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rfe7l")
+"texture": SubResource("AtlasTexture_3mtu0")
 }],
 "loop": false,
 "name": &"explode",
@@ -89,10 +89,10 @@ animations = [{
 "speed": 4.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhny0"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_csg2p"]
 size = Vector2(18, 22)
 
-[sub_resource type="Animation" id="Animation_p2oou"]
+[sub_resource type="Animation" id="Animation_jemjn"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -107,7 +107,7 @@ tracks/0/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_yk7wh"]
+[sub_resource type="Animation" id="Animation_iryfb"]
 resource_name = "hit_flash"
 length = 0.1
 tracks/0/type = "value"
@@ -123,10 +123,10 @@ tracks/0/keys = {
 "values": [true, false]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_b88dx"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-&"RESET": SubResource("Animation_p2oou"),
-&"hit_flash": SubResource("Animation_yk7wh")
+"RESET": SubResource("Animation_jemjn"),
+"hit_flash": SubResource("Animation_iryfb")
 }
 
 [node name="FairyEnemyLeftPath" type="Path2D"]
@@ -143,17 +143,17 @@ script = ExtResource("2_3h3ju")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PathFollow2D/FairyEnemyLeft"]
 material = ExtResource("3_wf3p0")
-sprite_frames = SubResource("SpriteFrames_sf5y7")
+sprite_frames = SubResource("SpriteFrames_87myr")
 animation = &"new_animation"
 autoplay = "new_animation"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/FairyEnemyLeft"]
-shape = SubResource("RectangleShape2D_qhny0")
+shape = SubResource("RectangleShape2D_csg2p")
 
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="PathFollow2D/FairyEnemyLeft"]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-&"": SubResource("AnimationLibrary_b88dx")
+"": SubResource("AnimationLibrary_ymajm")
 }
 
 [node name="ShootTimer" type="Timer" parent="PathFollow2D/FairyEnemyLeft"]

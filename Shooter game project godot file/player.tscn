@@ -1,14 +1,11 @@
 [gd_scene load_steps=15 format=3 uid="uid://b32476hejmrnj"]
 
-[ext_resource type="Script" uid="uid://dguggtughrf1x" path="res://player.gd" id="1_4pouc"]
+[ext_resource type="Script" path="res://player.gd" id="1_4pouc"]
 [ext_resource type="PackedScene" uid="uid://ce2sbgdju6rp7" path="res://bullet.tscn" id="2_6pkbm"]
 [ext_resource type="Texture2D" uid="uid://v3py8ibv6t5b" path="res://Sprites and Animations/hitbox dot.png" id="3_pxxpu"]
 [ext_resource type="Texture2D" uid="uid://6endaft5f6sd" path="res://Sprites and Animations/ship.png" id="4_wk375"]
 [ext_resource type="Texture2D" uid="uid://da7qkd04gabgm" path="res://Sprites and Animations/thruster.png" id="5_kajnu"]
 [ext_resource type="AudioStream" uid="uid://dcv1ybqjnx2ph" path="res://SFX/laserShoot (1).wav" id="7_4v7vv"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_3oajm"]
-radius = 13.0384
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hokd4"]
 atlas = ExtResource("5_kajnu")
@@ -70,71 +67,42 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3oajm"]
+radius = 1.0
+
 [node name="Player" type="Area2D" groups=["players"]]
 z_index = 1
 script = ExtResource("1_4pouc")
 bullet_scene = ExtResource("2_6pkbm")
-metadata/_edit_lock_ = true
+
+[node name="ShiftInd" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(5.96046e-08, 5.96046e-08)
+scale = Vector2(0.713542, 0.713542)
+texture = ExtResource("3_pxxpu")
+
+[node name="Ship" type="Sprite2D" parent="."]
+light_mask = 2
+texture = ExtResource("4_wk375")
+hframes = 3
+frame = 1
+
+[node name="Boosters" type="AnimatedSprite2D" parent="Ship"]
+position = Vector2(0, 8)
+sprite_frames = SubResource("SpriteFrames_p6f8n")
+animation = &"right"
+autoplay = "forward"
 
 [node name="PlayerCollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_3oajm")
 
-[node name="Node2D1" type="Node2D" parent="."]
-position = Vector2(5.96046e-08, 5.96046e-08)
-scale = Vector2(0.713542, 0.713542)
-metadata/_edit_lock_ = true
-
-[node name="ShiftInd" type="Sprite2D" parent="Node2D1"]
-z_index = 1
-texture = ExtResource("3_pxxpu")
-metadata/_edit_lock_ = true
-
-[node name="Ship" type="Sprite2D" parent="Node2D1"]
-light_mask = 2
-position = Vector2(-8.35334e-08, -8.35334e-08)
-scale = Vector2(1.40146, 1.40146)
-texture = ExtResource("4_wk375")
-hframes = 3
-frame = 1
-metadata/_edit_lock_ = true
-
-[node name="Boosters" type="AnimatedSprite2D" parent="Node2D1/Ship"]
-position = Vector2(0, 8)
-sprite_frames = SubResource("SpriteFrames_p6f8n")
-animation = &"right"
-autoplay = "forward"
-metadata/_edit_lock_ = true
-
-[node name="GunCooldown" type="Timer" parent="Node2D1"]
+[node name="GunCooldown" type="Timer" parent="."]
 wait_time = 0.032
 one_shot = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D1"]
-stream = ExtResource("7_4v7vv")
-volume_db = -5.122
-
-[node name="Node2D2" type="Node2D" parent="."]
-
-[node name="Ship2" type="Sprite2D" parent="Node2D2"]
-light_mask = 2
-texture = ExtResource("4_wk375")
-hframes = 3
-frame = 1
-
-[node name="Boosters" type="AnimatedSprite2D" parent="Node2D2/Ship2"]
-position = Vector2(0, 8)
-sprite_frames = SubResource("SpriteFrames_p6f8n")
-animation = &"right"
-autoplay = "forward"
-
-[node name="GunCooldown2" type="Timer" parent="Node2D2"]
-wait_time = 0.032
-one_shot = true
-
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node2D2"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_4v7vv")
 volume_db = -5.122
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="timeout" from="Node2D1/GunCooldown" to="." method="_on_gun_cooldown_timeout"]
-[connection signal="timeout" from="Node2D2/GunCooldown2" to="." method="_on_gun_cooldown_timeout"]
+[connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]

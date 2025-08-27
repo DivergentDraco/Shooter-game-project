@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://buv1055nhydxp"]
 
-[ext_resource type="Script" uid="uid://cup6q5avyhe2y" path="res://enemy.gd" id="1_uugm3"]
+[ext_resource type="Script" path="res://enemy.gd" id="1_uugm3"]
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="2_wp72c"]
 [ext_resource type="Texture2D" uid="uid://bfvjqpdy1yspp" path="res://Outsourced asset/Mini Pixel Pack 3/Enemies/Bon_Bon (16 x 16).png" id="3_x1pdb"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_1tl8h"]
@@ -143,9 +143,9 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rfrsa"]
 _data = {
-&"RESET": SubResource("Animation_suct1"),
-&"bounce": SubResource("Animation_ad1l1"),
-&"explode": SubResource("Animation_jorl6")
+"RESET": SubResource("Animation_suct1"),
+"bounce": SubResource("Animation_ad1l1"),
+"explode": SubResource("Animation_jorl6")
 }
 
 [sub_resource type="Animation" id="Animation_jemjn"]
@@ -181,8 +181,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-&"RESET": SubResource("Animation_jemjn"),
-&"hit_flash": SubResource("Animation_iryfb")
+"RESET": SubResource("Animation_jemjn"),
+"hit_flash": SubResource("Animation_iryfb")
 }
 
 [node name="Enemy" type="Area2D" groups=["enemies"]]
@@ -198,7 +198,7 @@ shape = SubResource("RectangleShape2D_j7632")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_rfrsa")
+"": SubResource("AnimationLibrary_rfrsa")
 }
 autoplay = "bounce"
 
@@ -211,7 +211,7 @@ one_shot = true
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite2D")
 libraries = {
-&"": SubResource("AnimationLibrary_ymajm")
+"": SubResource("AnimationLibrary_ymajm")
 }
 
 [node name="ExplodeSFX" type="AudioStreamPlayer" parent="."]

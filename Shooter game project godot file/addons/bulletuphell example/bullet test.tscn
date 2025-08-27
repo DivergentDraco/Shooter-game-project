@@ -1,18 +1,18 @@
 [gd_scene load_steps=14 format=3 uid="uid://cjwfaivji1uy2"]
 
-[ext_resource type="Script" uid="uid://duik6mnuviyhd" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_yje1n"]
-[ext_resource type="Script" uid="uid://dk6iqdpc7n1tw" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="2_56skk"]
-[ext_resource type="Script" uid="uid://cxc325lsu21hd" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="3_v6lta"]
-[ext_resource type="Script" uid="uid://t0gcuhiw4ua7" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="4_b1bdv"]
-[ext_resource type="Script" uid="uid://vj06duyw0oge" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="5_x8ofc"]
-[ext_resource type="Script" uid="uid://cghhupo1pf7b4" path="res://addons/Rotor Node/Rotor.gd" id="6_7yadl"]
-[ext_resource type="Script" uid="uid://3tim1te65sv7" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_qlbbf"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_yje1n"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="2_56skk"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="3_v6lta"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="4_b1bdv"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="5_x8ofc"]
+[ext_resource type="Script" path="res://addons/Rotor Node/Rotor.gd" id="6_7yadl"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_qlbbf"]
 
 [sub_resource type="Curve2D" id="Curve2D_v1s8e"]
 
-[sub_resource type="Curve" id="Curve_nhmq5"]
+[sub_resource type="Curve" id="Curve_aknj0"]
 
-[sub_resource type="Curve" id="Curve_c1rks"]
+[sub_resource type="Curve" id="Curve_vf2ig"]
 
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_72xe0"]
 script = ExtResource("3_v6lta")
@@ -41,7 +41,7 @@ a_angular_equation = ""
 a_curve_movement = 0
 a_speed_multi_iterations = 0
 a_speed_multi_scale = 0.0
-a_speed_multiplier = SubResource("Curve_nhmq5")
+a_speed_multiplier = SubResource("Curve_aknj0")
 depth_active = Vector2(0, 0)
 depth_spawn = 0.0
 depth_speed = 100.0
@@ -53,7 +53,7 @@ spec_rotating_speed = 0.0
 spec_only_spin_sprite = true
 spec_weight = 1.0
 scale_multi_iterations = 0
-scale_multiplier = SubResource("Curve_c1rks")
+scale_multiplier = SubResource("Curve_vf2ig")
 scale_multi_scale = 1.0
 trigger_container = ""
 trigger_wait_for_shot = true
