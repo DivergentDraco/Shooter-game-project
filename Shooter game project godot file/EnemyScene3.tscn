@@ -1,18 +1,18 @@
 [gd_scene load_steps=44 format=3 uid="uid://dho30yobd33m8"]
 
-[ext_resource type="Script" path="res://UFO_path_follow_2d.gd" id="1_xsrsm"]
-[ext_resource type="Script" path="res://UFOEnemy.gd" id="2_ik5sw"]
+[ext_resource type="Script" uid="uid://d0yx13aal1x7y" path="res://UFO_path_follow_2d.gd" id="1_xsrsm"]
+[ext_resource type="Script" uid="uid://cmgkfl60a5wid" path="res://UFOEnemy.gd" id="2_ik5sw"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_maf4u"]
 [ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="3_unjno"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_8x6f1"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="5_qlgjx"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="6_daamr"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="8_fs5ts"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="9_wubvn"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_oxqoo"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="11_qdmh1"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="12_6vw4v"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="14_ny3bb"]
+[ext_resource type="Script" uid="uid://dcgggjlg7ts6s" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="8_fs5ts"]
+[ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="9_wubvn"]
+[ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_oxqoo"]
+[ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="11_qdmh1"]
+[ext_resource type="Script" uid="uid://cfg5vce6oxtyb" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="12_6vw4v"]
+[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="14_ny3bb"]
 
 [sub_resource type="Curve2D" id="Curve2D_sfs1t"]
 _data = {
@@ -52,8 +52,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ve51y"]
 _data = {
-"RESET": SubResource("Animation_kcb6x"),
-"new_animation": SubResource("Animation_yvjex")
+&"RESET": SubResource("Animation_kcb6x"),
+&"new_animation": SubResource("Animation_yvjex")
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jdcfm"]
@@ -207,8 +207,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-"RESET": SubResource("Animation_jemjn"),
-"hit_flash": SubResource("Animation_iryfb")
+&"RESET": SubResource("Animation_jemjn"),
+&"hit_flash": SubResource("Animation_iryfb")
 }
 
 [sub_resource type="Curve2D" id="Curve2D_v1s8e"]
@@ -359,16 +359,16 @@ rotates = false
 loop = false
 script = ExtResource("1_xsrsm")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="UFOPath2D/PathFollow2D"]
-root_node = NodePath("../..")
-libraries = {
-"": SubResource("AnimationLibrary_ve51y")
-}
-autoplay = "new_animation"
-
 [node name="UFOEnemy" type="Area2D" parent="UFOPath2D/PathFollow2D" groups=["enemies"]]
 rotation = -1.5708
 script = ExtResource("2_ik5sw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
+root_node = NodePath("../../..")
+libraries = {
+&"": SubResource("AnimationLibrary_ve51y")
+}
+autoplay = "new_animation"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
 material = SubResource("ShaderMaterial_jdcfm")
@@ -383,7 +383,7 @@ shape = SubResource("RectangleShape2D_csg2p")
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-"": SubResource("AnimationLibrary_ymajm")
+&"": SubResource("AnimationLibrary_ymajm")
 }
 
 [node name="MoveTimer" type="Timer" parent="UFOPath2D/PathFollow2D/UFOEnemy"]
