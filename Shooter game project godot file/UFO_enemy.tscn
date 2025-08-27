@@ -1,6 +1,6 @@
 [gd_scene load_steps=25 format=3 uid="uid://cod2ree4u3iep"]
 
-[ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://fairy_enemy.gd" id="2_in01f"]
+[ext_resource type="Script" path="res://fairy_enemy.gd" id="2_in01f"]
 [ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="3_dron8"]
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="3_em4nk"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_lpi5k"]
@@ -152,8 +152,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-&"RESET": SubResource("Animation_jemjn"),
-&"hit_flash": SubResource("Animation_iryfb")
+"RESET": SubResource("Animation_jemjn"),
+"hit_flash": SubResource("Animation_iryfb")
 }
 
 [node name="UFOEnemy" type="Area2D" groups=["enemies"]]
@@ -172,7 +172,7 @@ shape = SubResource("RectangleShape2D_csg2p")
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-&"": SubResource("AnimationLibrary_ymajm")
+"": SubResource("AnimationLibrary_ymajm")
 }
 
 [node name="MoveTimer" type="Timer" parent="."]

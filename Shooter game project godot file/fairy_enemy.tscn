@@ -1,9 +1,9 @@
 [gd_scene load_steps=22 format=3 uid="uid://brr06le18oxho"]
 
-[ext_resource type="Script" uid="uid://cwtv80ecqaato" path="res://path2d.gd" id="1_0whpa"]
+[ext_resource type="Script" path="res://path2d.gd" id="1_0whpa"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="1_brf0a"]
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="1_ughro"]
-[ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://fairy_enemy.gd" id="1_xcsrf"]
+[ext_resource type="Script" path="res://fairy_enemy.gd" id="1_xcsrf"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="2_rcxsq"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="3_wi5ge"]
 
@@ -125,8 +125,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-&"RESET": SubResource("Animation_jemjn"),
-&"hit_flash": SubResource("Animation_iryfb")
+"RESET": SubResource("Animation_jemjn"),
+"hit_flash": SubResource("Animation_iryfb")
 }
 
 [node name="FairyEnemyPath" type="Path2D"]
@@ -151,7 +151,7 @@ shape = SubResource("RectangleShape2D_csg2p")
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="PathFollow2D/FairyEnemy"]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-&"": SubResource("AnimationLibrary_ymajm")
+"": SubResource("AnimationLibrary_ymajm")
 }
 
 [node name="MoveTimer" type="Timer" parent="PathFollow2D/FairyEnemy"]

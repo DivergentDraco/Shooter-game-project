@@ -1,21 +1,20 @@
-[gd_scene load_steps=22 format=3 uid="uid://b8exv6qda8frv"]
+[gd_scene load_steps=21 format=3 uid="uid://b8exv6qda8frv"]
 
-[ext_resource type="Script" uid="uid://dcdeapts4kmx5" path="res://main.gd" id="1_21msh"]
+[ext_resource type="Script" path="res://main.gd" id="1_21msh"]
 [ext_resource type="PackedScene" uid="uid://b54c7ad6cogrm" path="res://ui.tscn" id="1_ddoy4"]
 [ext_resource type="Texture2D" uid="uid://cr7usmfo6apt8" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/GAME_OVER (72 x 8).png" id="2_ts3fu"]
 [ext_resource type="Texture2D" uid="uid://o6gwbftsnc8c" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/START (48 x 8).png" id="3_osiot"]
 [ext_resource type="Texture2D" uid="uid://cwuy4b17rh7ql" path="res://Outsourced asset/Mini Pixel Pack 3/Space_BG (2 frames) (64 x 64).png" id="4_k3sy0"]
 [ext_resource type="PackedScene" uid="uid://b32476hejmrnj" path="res://player.tscn" id="5_7bpry"]
-[ext_resource type="Script" uid="uid://c1285ppnh3i5a" path="res://Camera2D.gd" id="6_nnvno"]
+[ext_resource type="Script" path="res://Camera2D.gd" id="6_nnvno"]
 [ext_resource type="AudioStream" uid="uid://c0jwdsbpivhtp" path="res://BALATRO [N163].mp3" id="8_hg1lf"]
 [ext_resource type="PackedScene" uid="uid://duqc75liklrf" path="res://EnemyScene1.tscn" id="9_wm16j"]
 [ext_resource type="PackedScene" uid="uid://cnud3hfcvjbhe" path="res://EnemyScene2.tscn" id="10_sdxdr"]
 [ext_resource type="PackedScene" uid="uid://dho30yobd33m8" path="res://EnemyScene3.tscn" id="11_00o35"]
 [ext_resource type="PackedScene" uid="uid://cndyogclaw7wd" path="res://EnemyScene4.tscn" id="12_bsm36"]
-[ext_resource type="PackedScene" uid="uid://b3ttyl06lqteh" path="res://EnemyScene6.tscn" id="13_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="13_vdhg6"]
 [ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://fairy_enemy_right.tscn" id="14_8246c"]
-[ext_resource type="Script" uid="uid://6p5volrgiora" path="res://screen_area.gd" id="15_hrtit"]
+[ext_resource type="Script" path="res://screen_area.gd" id="15_hrtit"]
 
 [sub_resource type="Animation" id="Animation_frim2"]
 length = 0.001
@@ -51,8 +50,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d33qh"]
 _data = {
-&"RESET": SubResource("Animation_frim2"),
-&"new_animation": SubResource("Animation_lmpjc")
+"RESET": SubResource("Animation_frim2"),
+"new_animation": SubResource("Animation_lmpjc")
 }
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uf0tv"]
@@ -67,7 +66,6 @@ script = ExtResource("1_21msh")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="CanvasLayer"]
-visible = false
 top_level = true
 position = Vector2(164, 0)
 color = Color(0, 0, 0, 1)
@@ -105,7 +103,7 @@ region_rect = Rect2(2.08165e-12, 2.08165e-12, 240, 320)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_d33qh")
+"": SubResource("AnimationLibrary_d33qh")
 }
 autoplay = "new_animation"
 
@@ -121,7 +119,7 @@ stream = ExtResource("8_hg1lf")
 volume_db = 1.417
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("EnemyScene1", "EnemyScene2", "EnemyScene3", "EnemyScene4", "EnemyScene6", "fairy_enemy", "fairy_enemy_right"), [ExtResource("9_wm16j"), ExtResource("10_sdxdr"), ExtResource("11_00o35"), ExtResource("12_bsm36"), ExtResource("13_2cqfq"), ExtResource("13_vdhg6"), ExtResource("14_8246c")]]
+resources = [PackedStringArray("EnemyScene1", "EnemyScene2", "EnemyScene3", "EnemyScene4", "fairy_enemy", "fairy_enemy_right"), [ExtResource("9_wm16j"), ExtResource("10_sdxdr"), ExtResource("11_00o35"), ExtResource("12_bsm36"), ExtResource("13_vdhg6"), ExtResource("14_8246c")]]
 
 [node name="ScreenArea" type="Area2D" parent="."]
 position = Vector2(120, 160)

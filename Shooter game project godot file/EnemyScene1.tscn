@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="1_ybym5"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_ndhw5"]
 [ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="3_oglmg"]
-[ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://fairy_enemy.gd" id="4_ac6l7"]
+[ext_resource type="Script" path="res://fairy_enemy.gd" id="4_ac6l7"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="5_hee8e"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="6_or8kk"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="7_el8he"]
@@ -54,8 +54,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_upjx4"]
 _data = {
-&"RESET": SubResource("Animation_81gsa"),
-&"ease": SubResource("Animation_mnlve")
+"RESET": SubResource("Animation_81gsa"),
+"ease": SubResource("Animation_mnlve")
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
@@ -170,8 +170,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ymajm"]
 _data = {
-&"RESET": SubResource("Animation_jemjn"),
-&"hit_flash": SubResource("Animation_iryfb")
+"RESET": SubResource("Animation_jemjn"),
+"hit_flash": SubResource("Animation_iryfb")
 }
 
 [node name="Node2D" type="Node2D"]
@@ -191,7 +191,7 @@ material = SubResource("ShaderMaterial_echkn")
 
 [node name="AnimationPlayer" parent="FairyEnemyPath" index="1"]
 libraries = {
-&"": SubResource("AnimationLibrary_upjx4")
+"": SubResource("AnimationLibrary_upjx4")
 }
 autoplay = "ease"
 
@@ -221,7 +221,7 @@ shape = SubResource("RectangleShape2D_csg2p")
 [node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
 root_node = NodePath("../AnimatedSprite2D")
 libraries = {
-&"": SubResource("AnimationLibrary_ymajm")
+"": SubResource("AnimationLibrary_ymajm")
 }
 
 [node name="MoveTimer" type="Timer" parent="FairyEnemyPath2/PathFollow2D/FairyEnemy"]
@@ -241,7 +241,7 @@ max_polyphony = 10
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="FairyEnemyPath2"]
 libraries = {
-&"": SubResource("AnimationLibrary_upjx4")
+"": SubResource("AnimationLibrary_upjx4")
 }
 autoplay = "ease"
 
