@@ -1,12 +1,12 @@
 [gd_scene load_steps=14 format=3 uid="uid://cjwfaivji1uy2"]
 
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_yje1n"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="2_56skk"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="3_v6lta"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="4_b1bdv"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="5_x8ofc"]
-[ext_resource type="Script" path="res://addons/Rotor Node/Rotor.gd" id="6_7yadl"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_qlbbf"]
+[ext_resource type="Script" uid="uid://dcgggjlg7ts6s" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="1_yje1n"]
+[ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="2_56skk"]
+[ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="3_v6lta"]
+[ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="4_b1bdv"]
+[ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="5_x8ofc"]
+[ext_resource type="Script" uid="uid://baax1bbxnbegr" path="res://addons/Rotor Node/Rotor.gd" id="6_7yadl"]
+[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_qlbbf"]
 
 [sub_resource type="Curve2D" id="Curve2D_v1s8e"]
 
@@ -17,7 +17,7 @@
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_72xe0"]
 script = ExtResource("3_v6lta")
 damage = 1.0
-speed = 50.0
+speed = 200.0
 scale = 0.3
 angle = 0.0
 groups = PackedStringArray()
@@ -166,13 +166,6 @@ speed = 3
 script = ExtResource("7_qlbbf")
 auto_pattern_id = "one"
 pool_amount = 100
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -183,10 +176,3 @@ script = ExtResource("7_qlbbf")
 auto_pattern_id = "one"
 rotating_speed = 0.05
 pool_amount = 100
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)

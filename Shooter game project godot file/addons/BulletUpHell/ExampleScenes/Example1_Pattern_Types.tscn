@@ -1,17 +1,17 @@
 [gd_scene load_steps=27 format=3 uid="uid://cvx1mnumf2p38"]
 
-[ext_resource type="Script" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_3jldb"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_ah2t8"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="3_d681h"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="4_3qlmj"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="5_vvcng"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomPoints.gd" id="6_gcika"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomShape.gd" id="7_aiav0"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomArea.gd" id="8_ky438"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="9_x0nxu"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="10_cop2r"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_tkfof"]
-[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="11_iv1jv"]
+[ext_resource type="Script" uid="uid://c6h0yvvtpnxmd" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_3jldb"]
+[ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_ah2t8"]
+[ext_resource type="Script" uid="uid://bnjpl1xed5t3d" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="3_d681h"]
+[ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="4_3qlmj"]
+[ext_resource type="Script" uid="uid://cfg5vce6oxtyb" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="5_vvcng"]
+[ext_resource type="Script" uid="uid://de2qipi4dxv0s" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomPoints.gd" id="6_gcika"]
+[ext_resource type="Script" uid="uid://drrm2d85otkrf" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomShape.gd" id="7_aiav0"]
+[ext_resource type="Script" uid="uid://vjjy0ftkr4pf" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomArea.gd" id="8_ky438"]
+[ext_resource type="Script" uid="uid://dcgggjlg7ts6s" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="9_x0nxu"]
+[ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="10_cop2r"]
+[ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="10_tkfof"]
+[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="11_iv1jv"]
 
 [sub_resource type="Curve2D" id="Curve2D_u3j77"]
 _data = {
@@ -399,73 +399,31 @@ position = Vector2(86, 58)
 script = ExtResource("11_iv1jv")
 auto_pattern_id = "one"
 rotating_speed = 1.0
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="SpawnPoint2" type="Node2D" parent="SpawnPoints"]
 position = Vector2(86, 307)
 script = ExtResource("11_iv1jv")
 auto_pattern_id = "circle"
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="SpawnPoint3" type="Node2D" parent="SpawnPoints"]
 position = Vector2(83, 510)
 script = ExtResource("11_iv1jv")
 auto_pattern_id = "line"
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="SpawnPoint4" type="Node2D" parent="SpawnPoints"]
 position = Vector2(746, 119)
 script = ExtResource("11_iv1jv")
 auto_pattern_id = "points"
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="SpawnPoint5" type="Node2D" parent="SpawnPoints"]
 position = Vector2(748, 271)
 script = ExtResource("11_iv1jv")
 auto_pattern_id = "shape"
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="SpawnPoint6" type="Node2D" parent="SpawnPoints"]
 position = Vector2(746, 465)
 script = ExtResource("11_iv1jv")
 auto_pattern_id = "area"
-r_active_chances = 1.0
-r_rotating_variation = Vector3(0, 0, 0)
-r_pattern_choice = ""
-r_start_time_choice = ""
-r_start_time_variation = Vector3(0, 0, 0)
-r_start_distance_choice = ""
-r_start_distance_variation = Vector3(0, 0, 0)
 
 [node name="Walls" type="StaticBody2D" parent="."]
 collision_layer = 17
