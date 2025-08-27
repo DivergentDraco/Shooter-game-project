@@ -144,7 +144,7 @@ script = ExtResource("2_hbsow")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PathFollow2D/FairyEnemyRight"]
 material = ExtResource("2_aq8sw")
 sprite_frames = SubResource("SpriteFrames_87myr")
-animation = &"new_animation"
+animation = &"explode"
 autoplay = "new_animation"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/FairyEnemyRight"]

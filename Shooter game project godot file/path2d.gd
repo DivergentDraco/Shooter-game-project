@@ -7,3 +7,5 @@ var speed = 100
 	
 func _process(delta: float) -> void:
 	pathfollow.progress += speed * delta
+	
+	

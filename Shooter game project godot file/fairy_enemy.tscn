@@ -164,13 +164,11 @@ one_shot = true
 stream = ExtResource("3_wi5ge")
 volume_db = -12.329
 max_polyphony = 10
-bus = &"New Bus"
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="PathFollow2D/FairyEnemy"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
-[connection signal="area_exited" from="PathFollow2D/FairyEnemy" to="PathFollow2D/FairyEnemy" method="_on_area_exited"]
 [connection signal="timeout" from="PathFollow2D/FairyEnemy/MoveTimer" to="PathFollow2D/FairyEnemy" method="_on_timer_timeout"]
 [connection signal="timeout" from="PathFollow2D/FairyEnemy/ShootTimer" to="PathFollow2D/FairyEnemy" method="_on_shoot_timer_timeout"]
 [connection signal="screen_exited" from="PathFollow2D/FairyEnemy/VisibleOnScreenNotifier2D" to="PathFollow2D/FairyEnemy" method="_on_visible_on_screen_notifier_2d_screen_exited"]
