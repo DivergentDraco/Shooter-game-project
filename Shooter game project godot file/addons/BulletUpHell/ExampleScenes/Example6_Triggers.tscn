@@ -1,19 +1,19 @@
 [gd_scene load_steps=34 format=3 uid="uid://c2hg81bw5ptq"]
 
-[ext_resource type="Script" uid="uid://trmxaject3ci" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_y1qmf"]
-[ext_resource type="Script" uid="uid://bys0wyok1mxhu" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_8fi2v"]
-[ext_resource type="Script" uid="uid://dxigtgvpvn1a2" path="res://addons/BulletUpHell/Nodes/BuHTriggerContainer.gd" id="2_fwqwm"]
-[ext_resource type="Script" uid="uid://cmyqk20fxq8g8" path="res://addons/BulletUpHell/Triggers/Trigger.gd" id="3_0u88o"]
-[ext_resource type="Script" uid="uid://bc8kpxh0y16ox" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="3_3syup"]
-[ext_resource type="Script" uid="uid://d2mt6lpsua4eg" path="res://addons/BulletUpHell/Triggers/TriggerTime.gd" id="3_gs7vq"]
-[ext_resource type="Script" uid="uid://bneq7nurp8dx5" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="4_801jc"]
-[ext_resource type="Script" uid="uid://bd63krn2kgtho" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="4_wpn57"]
-[ext_resource type="Script" uid="uid://75wnp4omekml" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="5_i6mox"]
-[ext_resource type="Script" uid="uid://cfdri7hyottf0" path="res://addons/BulletUpHell/Triggers/TriggerCollision.gd" id="5_y0hpv"]
-[ext_resource type="Script" uid="uid://jn7e5b2vvy3r" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="6_4dtj3"]
-[ext_resource type="Script" uid="uid://cogvp7fvmuos1" path="res://addons/BulletUpHell/Triggers/TriggerPos.gd" id="6_qjh5j"]
-[ext_resource type="Script" uid="uid://dbms3wp0aw20j" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="11_gf3um"]
-[ext_resource type="Texture2D" uid="uid://cci0qi8oibvs1" path="res://addons/BulletUpHell/Sprites/NodeIcons5.png" id="12_n1q54"]
+[ext_resource type="Script" uid="uid://c6h0yvvtpnxmd" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_y1qmf"]
+[ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_8fi2v"]
+[ext_resource type="Script" uid="uid://218f1pl5h1ih" path="res://addons/BulletUpHell/Nodes/BuHTriggerContainer.gd" id="2_fwqwm"]
+[ext_resource type="Script" uid="uid://badb2sayqig8m" path="res://addons/BulletUpHell/Triggers/Trigger.gd" id="3_0u88o"]
+[ext_resource type="Script" uid="uid://bnjpl1xed5t3d" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="3_3syup"]
+[ext_resource type="Script" uid="uid://sa52r4wi334a" path="res://addons/BulletUpHell/Triggers/TriggerTime.gd" id="3_gs7vq"]
+[ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="4_801jc"]
+[ext_resource type="Script" uid="uid://dcgggjlg7ts6s" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="4_wpn57"]
+[ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="5_i6mox"]
+[ext_resource type="Script" uid="uid://bhevbwa6bmsox" path="res://addons/BulletUpHell/Triggers/TriggerCollision.gd" id="5_y0hpv"]
+[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="6_4dtj3"]
+[ext_resource type="Script" uid="uid://cmsulfn3tyonr" path="res://addons/BulletUpHell/Triggers/TriggerPos.gd" id="6_qjh5j"]
+[ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="11_gf3um"]
+[ext_resource type="Texture2D" uid="uid://bn3bylu0n121i" path="res://addons/BulletUpHell/Sprites/NodeIcons5.png" id="12_n1q54"]
 
 [sub_resource type="RichTextEffect" id="RichTextEffect_4ye41"]
 script = ExtResource("3_gs7vq")
@@ -57,6 +57,7 @@ forced_pattern_lookat = true
 impulse = 0
 bullet_list = Array[String]([])
 skip_step = 0
+skip_amount = 0
 skip_list = Array[PackedInt32Array]([])
 skip_in_list = true
 temp_count = -1
@@ -104,6 +105,7 @@ forced_pattern_lookat = true
 impulse = 0
 bullet_list = Array[String]([])
 skip_step = 0
+skip_amount = 0
 skip_list = Array[PackedInt32Array]([])
 skip_in_list = true
 temp_count = 0
@@ -136,6 +138,7 @@ forced_pattern_lookat = true
 impulse = 0
 bullet_list = Array[String]([])
 skip_step = 0
+skip_amount = 0
 skip_list = Array[PackedInt32Array]([])
 skip_in_list = true
 temp_count = 0
@@ -168,6 +171,7 @@ forced_pattern_lookat = true
 impulse = 0
 bullet_list = Array[String]([])
 skip_step = 0
+skip_amount = 0
 skip_list = Array[PackedInt32Array]([])
 skip_in_list = true
 temp_count = 0

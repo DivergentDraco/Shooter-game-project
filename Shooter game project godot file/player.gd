@@ -83,7 +83,7 @@ func shoot():
 	$Node2D1/AudioStreamPlayer.play()
 	var b = bullet_scene.instantiate()
 	get_tree().root.add_child(b)
-	var bullet_offset = Vector2(159, 0) # half bullet size
+	var bullet_offset = Vector2(-2, 0) # half bullet size
 	b.start(position + bullet_offset, bullet_mode)
 	await get_tree().create_timer(0.045).timeout
 	can_shoot = true
@@ -94,10 +94,8 @@ func set_shield(value):
 	if shield == 0:
 		set_process(false)
 		hide()
-		#emits died() signal for main.gd to detect
 		died.emit()
 
-func _on_area_entered(area):
-	if area.is_in_group("enemies"):
-		area.explode()
-		shield -= max_shield / 2.0
+func _on_body_entered(body):
+	if body.is_in_group("enemies"):
+		body.explode()
