@@ -1,3 +1,5 @@
-res://default_bus_layout.tres
-res://bullet_pattern1.tscn
+res://main menu.tscn
 res://hitflash effect/hitflash.tres
+res://main.tscn
+res://main.gd
+res://stage_manager.gd

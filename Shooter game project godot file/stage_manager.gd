@@ -5,6 +5,8 @@ var wave_index := 0
 var wave_active := false
 var pending_spawns := 0
 
+var stage_started := false
+
 var wave_order = [
 	"wave_1",
 	"wave_2",
@@ -12,6 +14,9 @@ var wave_order = [
 ]
 
 func _process(_delta: float) -> void:
+	if not stage_started:
+		return
+	
 	if not wave_active:
 		start_next_wave()
 		return
@@ -20,6 +25,13 @@ func _process(_delta: float) -> void:
 
 	if enemies_container.get_child_count() == 0 and pending_spawns == 0:
 		wave_active = false
+		
+func start_stage() -> void:
+	if stage_started:
+		return
+
+	stage_started = true
+	print("Stage started")
 		
 func start_next_wave() -> void:
 	if wave_index >= wave_order.size():

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Wave" format=3 uid="uid://dqwhin3n1uwcc"]
 
 [ext_resource type="Script" uid="uid://dt2e40w0qn5vb" path="res://enemy_sequence.gd" id="1_t00qx"]
-[ext_resource type="Script" uid="uid://mp2p7smf7ulj" path="res://StageManager.gd" id="2_fplq2"]
+[ext_resource type="Script" uid="uid://mp2p7smf7ulj" path="res://stage_manager.gd" id="2_fplq2"]
 
 [sub_resource type="Resource" id="Resource_t00qx"]
 script = ExtResource("1_t00qx")
