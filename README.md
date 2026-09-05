@@ -15,3 +15,5 @@ TO DO LIST:
 - Make a title screen / UI rework
 - Effect rework (Probably going with Balatro style)
 - Integrating Boss systems
+
+Bullet pattern library was made with Bullethell Engine : BulletUpHell by Dark Peace
