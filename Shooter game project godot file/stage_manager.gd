@@ -8,9 +8,10 @@ var pending_spawns := 0
 var stage_started := false
 
 var wave_order = [
-	"wave_1",
+	"wave_3",
 	"wave_2",
 	"wave_1",
+	"wave_2",
 ]
 
 func _process(_delta: float) -> void:
@@ -46,6 +47,7 @@ func start_next_wave() -> void:
 	wave_active = true
 
 const FAIRY = preload("res://Enemy/Fairy Enemy/fairy_enemy.tscn")
+const MAID = preload("res://Enemy/Maid Enemy/maid_enemy.tscn")
 
 var waves = {
 	"wave_1": [
@@ -300,18 +302,12 @@ var waves = {
 	],
 	
 	"wave_3": [
-		{"enemy": FAIRY, 
-		"pos": Vector2(150, 50), 
-		"movement_pattern": MovementPattern.Pattern.NO_PATTERN, 
-		"speed": 150,
-		"acceleration": 50,
-		"delay":0,
-		},
-		{"enemy": FAIRY, 
-		"pos": Vector2(120, 50), 
-		"movement_pattern": MovementPattern.Pattern.NO_PATTERN, 
-		"speed": 150,
-		"acceleration": 50,
+		{"enemy": MAID, 
+		"pos": Vector2(122, 0), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 250,
+		"acceleration": -300,
+		"min_speed": 0,
 		"delay":0,
 		},
 	]

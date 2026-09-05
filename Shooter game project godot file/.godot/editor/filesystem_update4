@@ -7,3 +7,5 @@ res://Enemy/Fairy Enemy/fairy_enemy.tscn
 res://hitflash effect/shadermaterial.tres
 res://homing.gd
 res://Enemy/Fairy Enemy/fairy_enemy.gd
+res://Enemy/Maid Enemy/maid_enemy.tscn
+res://Enemy/Maid Enemy/maid_enemy.gd

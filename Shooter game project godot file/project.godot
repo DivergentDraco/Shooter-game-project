@@ -47,6 +47,10 @@ folder_colors={
 "res://Sprites and Animations/": "teal"
 }
 
+[global_group]
+
+enemies=""
+
 [input]
 
 left={

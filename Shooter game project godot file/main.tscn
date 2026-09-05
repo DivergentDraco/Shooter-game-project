@@ -34,7 +34,7 @@
 [ext_resource type="Script" uid="uid://dwc4tcowrt4db" path="res://boss.gd" id="30_wnkbs"]
 [ext_resource type="Texture2D" uid="uid://3wujfv5lmrwv" path="res://Sprites and Animations/funsies.png" id="31_f6a44"]
 [ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="32_0cbny"]
-[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/MaidEnemy.gd" id="33_hrvbo"]
+[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/maid_enemy.gd" id="33_hrvbo"]
 [ext_resource type="Texture2D" uid="uid://bmtoxk0xu36po" path="res://Sprites and Animations/maid_idle.png" id="34_uypp3"]
 
 [sub_resource type="Curve2D" id="Curve2D_xuqvo"]
