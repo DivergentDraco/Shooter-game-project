@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://gixop20d1d75"]
+[gd_scene load_steps=23 format=3 uid="uid://gixop20d1d75"]
 
 [ext_resource type="Script" uid="uid://c7hqxdv30fyj0" path="res://addons/BulletUpHell/BuHSpawner.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cd6cgr3kffdfm" path="res://addons/BulletUpHell/Bullet/Sprites/Bullet_3.png" id="2_3slxn"]
 [ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="2_ai2re"]
 [ext_resource type="Texture2D" uid="uid://cv7jl5y1wjsa7" path="res://addons/BulletUpHell/Bullet/Sprites/Bullet_06.png" id="3_6fafs"]
 [ext_resource type="Texture2D" uid="uid://b151o05ir5qwv" path="res://addons/BulletUpHell/Bullet/Sprites/Bullet_11.png" id="4_gntuv"]
+[ext_resource type="Texture2D" uid="uid://hwnvgel50qrp" path="res://Sprites and Animations/fun bullets.png" id="4_vcv82"]
 [ext_resource type="AudioStream" uid="uid://d3amsh6xky23b" path="res://addons/BulletUpHell/Bullet/Hit Hurt.wav" id="5_rada6"]
 [ext_resource type="Script" uid="uid://c7npuw27soxd" path="res://addons/BulletUpHell/Drawer.gd" id="8_pebki"]
 
@@ -53,6 +54,34 @@ SFX = ""
 tex_scale = 1.0
 tex_skew = 0.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_78yhu"]
+atlas = ExtResource("4_vcv82")
+region = Rect2(0, 0, 35, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmrcn"]
+atlas = ExtResource("4_vcv82")
+region = Rect2(41, 0, 35, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7kntm"]
+atlas = ExtResource("4_vcv82")
+region = Rect2(82, 0, 35, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekyys"]
+atlas = ExtResource("4_vcv82")
+region = Rect2(123, 0, 35, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nuj4b"]
+atlas = ExtResource("4_vcv82")
+region = Rect2(164, 0, 35, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6f7cb"]
+atlas = ExtResource("4_vcv82")
+region = Rect2(205, 0, 35, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ostyn"]
+atlas = ExtResource("4_vcv82")
+region = Rect2(246, 0, 35, 36)
+
 [sub_resource type="SpriteFrames" id="1"]
 animations = [{
 "frames": [],
@@ -66,6 +95,32 @@ animations = [{
 }],
 "loop": true,
 "name": &"0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_78yhu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hmrcn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7kntm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekyys")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nuj4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6f7cb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ostyn")
+}],
+"loop": true,
+"name": &"1",
 "speed": 5.0
 }, {
 "frames": [{
@@ -124,7 +179,7 @@ monitorable = false
 [node name="ShapeManager" type="AnimatedSprite2D" parent="."]
 texture_filter = 3
 sprite_frames = SubResource("1")
-animation = &"0"
+animation = &"1"
 
 [node name="0" type="CollisionShape2D" parent="ShapeManager"]
 shape = SubResource("RectangleShape2D_fi84t")

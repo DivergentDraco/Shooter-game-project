@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bohse28cgjyr0"
+path="res://.godot/imported/30. Black Knife (DELTARUNE Chapter 34 Soundtrack) - Toby Fox.mp3-57f0a5c1fab9640ceb7f0ed43a1a6e12.mp3str"
+
+[deps]
+
+source_file="res://SFX/Music/30. Black Knife (DELTARUNE Chapter 34 Soundtrack) - Toby Fox.mp3"
+dest_files=["res://.godot/imported/30. Black Knife (DELTARUNE Chapter 34 Soundtrack) - Toby Fox.mp3-57f0a5c1fab9640ceb7f0ed43a1a6e12.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

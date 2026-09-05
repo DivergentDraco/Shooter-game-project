@@ -1,10 +1,75 @@
-[gd_scene load_steps=14 format=3 uid="uid://buv1055nhydxp"]
+[gd_scene format=3 uid="uid://mknbehdap856"]
 
-[ext_resource type="Script" uid="uid://b3gn844jbtgc8" path="res://enemy.gd" id="1_uugm3"]
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="2_wp72c"]
 [ext_resource type="Texture2D" uid="uid://bfvjqpdy1yspp" path="res://Outsourced asset/Mini Pixel Pack 3/Enemies/Bon_Bon (16 x 16).png" id="3_x1pdb"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_1tl8h"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_ddd6i"]
+
+[sub_resource type="GDScript" id="GDScript_iifgy"]
+script/source = "extends Area2D
+
+signal died 
+
+var start_pos = Vector2.ZERO
+var speed = 0
+var bullet_scene = preload(\"res://enemy_bullet.tscn\")
+var anchor
+var follow_anchor = false
+var hp = 3
+
+@onready var screensize  = get_viewport_rect().size
+@onready var hit_flash_anim_player = $HitFlashAnimationPlayer
+
+func start(pos):
+	follow_anchor = false
+	speed = 0
+	position = Vector2(pos.x, -pos.y)
+	start_pos = pos
+	await get_tree().create_timer(randf_range(0.25, 0.55)).timeout
+	var tw = create_tween().set_trans(Tween.TRANS_BACK)
+	tw.tween_property(self, \"position:y\", start_pos.y, 1.4)
+	await tw.finished
+	follow_anchor = true
+	$MoveTimer.wait_time = randf_range(5, 20)
+	$MoveTimer.start()
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+	
+func _process(delta):
+	if follow_anchor:
+		position = start_pos + anchor.position
+	position.y += speed * delta
+	if position.y > screensize.y + 32:
+		start(start_pos)
+
+func explode():
+	if hp > 0:
+		hp -= 1
+		hit_flash_anim_player.play(\"hit_flash\")
+		
+	else: 
+		speed = 0
+		$AnimationPlayer.play(\"explode\")
+		set_deferred(\"monitorable\", false)
+		died.emit(5)
+		$ExplodeSFX.play()
+		await $AnimationPlayer.animation_finished
+		
+		queue_free()
+		
+	
+
+func _on_timer_timeout():
+	speed = randf_range(75, 100)
+	follow_anchor = false
+
+func _on_shoot_timer_timeout():
+	var b = bullet_scene.instantiate()
+	get_tree().root.add_child(b)
+	b.start(position)
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j7632"]
 size = Vector2(16, 10)
@@ -185,36 +250,32 @@ _data = {
 &"hit_flash": SubResource("Animation_iryfb")
 }
 
-[node name="Enemy" type="Area2D" groups=["enemies"]]
-script = ExtResource("1_uugm3")
+[node name="Enemy" type="Area2D" unique_id=427686913 groups=["enemies"]]
+script = SubResource("GDScript_iifgy")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=505284828]
 material = ExtResource("2_wp72c")
 texture = ExtResource("3_x1pdb")
 hframes = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1100576845]
 shape = SubResource("RectangleShape2D_j7632")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_rfrsa")
-}
-autoplay = "bounce"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1050040360]
+libraries/ = SubResource("AnimationLibrary_rfrsa")
+autoplay = &"bounce"
 
-[node name="MoveTimer" type="Timer" parent="."]
+[node name="MoveTimer" type="Timer" parent="." unique_id=831307391]
 one_shot = true
 
-[node name="ShootTimer" type="Timer" parent="."]
+[node name="ShootTimer" type="Timer" parent="." unique_id=1555271963]
 one_shot = true
 
-[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="." unique_id=421773598]
 root_node = NodePath("../Sprite2D")
-libraries = {
-&"": SubResource("AnimationLibrary_ymajm")
-}
+libraries/ = SubResource("AnimationLibrary_ymajm")
 
-[node name="ExplodeSFX" type="AudioStreamPlayer" parent="."]
+[node name="ExplodeSFX" type="AudioStreamPlayer" parent="." unique_id=1414903690]
 stream = ExtResource("5_ddd6i")
 volume_db = -12.329
 max_polyphony = 10

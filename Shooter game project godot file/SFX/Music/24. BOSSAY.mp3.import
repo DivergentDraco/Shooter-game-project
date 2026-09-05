@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bqod1ammb5y1e"
+path="res://.godot/imported/24. BOSSAY.mp3-03eb70e04fd21d48c0d6ab1cde63ee10.mp3str"
+
+[deps]
+
+source_file="res://SFX/Music/24. BOSSAY.mp3"
+dest_files=["res://.godot/imported/24. BOSSAY.mp3-03eb70e04fd21d48c0d6ab1cde63ee10.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

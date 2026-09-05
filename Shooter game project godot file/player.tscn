@@ -1,7 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://b32476hejmrnj"]
+[gd_scene format=3 uid="uid://b32476hejmrnj"]
 
 [ext_resource type="Script" uid="uid://b53i6a8acw50h" path="res://player.gd" id="1_4pouc"]
-[ext_resource type="PackedScene" uid="uid://ce2sbgdju6rp7" path="res://bullet.tscn" id="2_6pkbm"]
+[ext_resource type="PackedScene" uid="uid://ce2sbgdju6rp7" path="res://player bullet/bullet.tscn" id="2_6pkbm"]
 [ext_resource type="Texture2D" uid="uid://v3py8ibv6t5b" path="res://Sprites and Animations/hitbox dot.png" id="3_pxxpu"]
 [ext_resource type="Texture2D" uid="uid://6endaft5f6sd" path="res://Sprites and Animations/ship.png" id="4_wk375"]
 [ext_resource type="Texture2D" uid="uid://da7qkd04gabgm" path="res://Sprites and Animations/thruster.png" id="5_kajnu"]
@@ -40,7 +40,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mrqj6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"forward",
 "speed": 10.0
 }, {
@@ -51,7 +51,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cxeqe")
 }],
-"loop": true,
+"loop": 1,
 "name": &"left",
 "speed": 10.0
 }, {
@@ -62,7 +62,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pwp8w")
 }],
-"loop": true,
+"loop": 1,
 "name": &"right",
 "speed": 10.0
 }]
@@ -70,43 +70,44 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_3oajm"]
 radius = 1.0
 
-[node name="Player" type="Area2D" groups=["players"]]
+[node name="Player" type="Area2D" unique_id=2076489632 groups=["players"]]
 z_index = 1
 script = ExtResource("1_4pouc")
 bullet_scene = ExtResource("2_6pkbm")
 
-[node name="Node2D1" type="Node2D" parent="."]
+[node name="Node2D1" type="Node2D" parent="." unique_id=251011976]
 
-[node name="ShiftInd" type="Sprite2D" parent="Node2D1"]
+[node name="ShiftInd" type="Sprite2D" parent="Node2D1" unique_id=1933468395]
 z_index = 1
 position = Vector2(5.96046e-08, 5.96046e-08)
 scale = Vector2(0.713542, 0.713542)
 texture = ExtResource("3_pxxpu")
 
-[node name="Ship" type="Sprite2D" parent="Node2D1"]
+[node name="Ship" type="Sprite2D" parent="Node2D1" unique_id=66551384]
 light_mask = 2
 texture = ExtResource("4_wk375")
 hframes = 3
 frame = 1
 
-[node name="Boosters" type="AnimatedSprite2D" parent="Node2D1/Ship"]
+[node name="Boosters" type="AnimatedSprite2D" parent="Node2D1/Ship" unique_id=380508854]
 position = Vector2(0, 8)
 sprite_frames = SubResource("SpriteFrames_p6f8n")
 animation = &"right"
 autoplay = "forward"
 
-[node name="GunCooldown" type="Timer" parent="Node2D1"]
+[node name="GunCooldown" type="Timer" parent="Node2D1" unique_id=712823248]
 wait_time = 0.032
 one_shot = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D1"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D1" unique_id=1203977771]
 stream = ExtResource("7_4v7vv")
-volume_db = -5.122
+volume_db = -6.0
+bus = &"SFX"
 
-[node name="PlayerCollisionShape" type="CollisionShape2D" parent="."]
+[node name="PlayerCollisionShape" type="CollisionShape2D" parent="." unique_id=960571324]
 shape = SubResource("CircleShape2D_3oajm")
 
-[node name="Node2D2" type="Node2D" parent="."]
+[node name="Node2D2" type="Node2D" parent="." unique_id=1772559412]
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Node2D1/GunCooldown" to="." method="_on_gun_cooldown_timeout"]
