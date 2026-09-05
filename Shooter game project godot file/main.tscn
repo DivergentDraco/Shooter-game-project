@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dcdeapts4kmx5" path="res://main.gd" id="1_21msh"]
 [ext_resource type="PackedScene" uid="uid://b54c7ad6cogrm" path="res://ui.tscn" id="1_ddoy4"]
 [ext_resource type="Texture2D" uid="uid://cr7usmfo6apt8" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/GAME_OVER (72 x 8).png" id="2_ts3fu"]
-[ext_resource type="Script" uid="uid://mp2p7smf7ulj" path="res://StageManager.gd" id="3_074og"]
+[ext_resource type="Script" uid="uid://mp2p7smf7ulj" path="res://stage_manager.gd" id="3_074og"]
 [ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="3_d13ii"]
 [ext_resource type="Texture2D" uid="uid://o6gwbftsnc8c" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/START (48 x 8).png" id="3_osiot"]
 [ext_resource type="Script" uid="uid://bnjpl1xed5t3d" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="4_d13ii"]
@@ -14,10 +14,10 @@
 [ext_resource type="Script" uid="uid://c1285ppnh3i5a" path="res://Camera2D.gd" id="6_nnvno"]
 [ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="7_a6jrf"]
 [ext_resource type="AudioStream" uid="uid://bqod1ammb5y1e" path="res://SFX/Music/24. BOSSAY.mp3" id="10_074og"]
-[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="13_vdhg6"]
+[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://Enemy/Fairy Enemy/fairy_enemy.tscn" id="13_vdhg6"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="16_4k2k6"]
 [ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="17_0rl1p"]
-[ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://fairy_enemy.gd" id="18_ok6jj"]
+[ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://Enemy/Fairy Enemy/fairy_enemy.gd" id="18_ok6jj"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="19_facbu"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="20_b1qrp"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="21_come4"]
@@ -25,16 +25,16 @@
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="23_facbu"]
 [ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="23_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://cegbjppyb37gg" path="res://Sprites and Animations/fairy_right.png" id="24_b1qrp"]
-[ext_resource type="Script" uid="uid://d0yx13aal1x7y" path="res://UFO_path_follow_2d.gd" id="25_0cp0l"]
+[ext_resource type="Script" uid="uid://d0yx13aal1x7y" path="res://Enemy/UFO enemy/UFO_path_follow_2d.gd" id="25_0cp0l"]
 [ext_resource type="Texture2D" uid="uid://cdyc8xsgux0u1" path="res://Sprites and Animations/fairy_left.png" id="26_come4"]
-[ext_resource type="Script" uid="uid://cmgkfl60a5wid" path="res://UFOEnemy.gd" id="26_d2t1y"]
+[ext_resource type="Script" uid="uid://cmgkfl60a5wid" path="res://Enemy/UFO enemy/UFOEnemy.gd" id="26_d2t1y"]
 [ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="27_gngh3"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="28_0n3wm"]
 [ext_resource type="Script" uid="uid://cfg5vce6oxtyb" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="29_qnost"]
 [ext_resource type="Script" uid="uid://dwc4tcowrt4db" path="res://boss.gd" id="30_wnkbs"]
 [ext_resource type="Texture2D" uid="uid://3wujfv5lmrwv" path="res://Sprites and Animations/funsies.png" id="31_f6a44"]
 [ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="32_0cbny"]
-[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://MaidEnemy.gd" id="33_hrvbo"]
+[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/maid_enemy.gd" id="33_hrvbo"]
 [ext_resource type="Texture2D" uid="uid://bmtoxk0xu36po" path="res://Sprites and Animations/maid_idle.png" id="34_uypp3"]
 
 [sub_resource type="Curve2D" id="Curve2D_xuqvo"]
@@ -45,6 +45,29 @@ script = ExtResource("4_d13ii")
 bullet = "2"
 cooldown_spawn = 0.1
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
+
+[sub_resource type="Curve2D" id="Curve2D_ok6jj"]
+
+[sub_resource type="Resource" id="Resource_0rl1p"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+radius = 10.0
+angle_total = 1.9992048449894249
+angle_decal = 0.5235987755982988
+bullet = "3"
+nbr = 3
+cooldown_spawn = 0.0
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_b1qrp"]
+
+[sub_resource type="Resource" id="Resource_yf5fn"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+bullet = "4"
+nbr = 10
+iterations = 2
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
 
 [sub_resource type="Curve2D" id="Curve2D_qsp4k"]
 
@@ -59,6 +82,126 @@ scale = 0.5
 custom_data = {}
 a_speed_multiplier = SubResource("Curve_kq58d")
 scale_multiplier = SubResource("Curve_seu75")
+homing_type = 0
+homing_target = NodePath("../../CanvasLayer/CenterContainer/Player")
+homing_steer = 0.1
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_facbu"]
+
+[sub_resource type="Curve" id="Curve_b1qrp"]
+
+[sub_resource type="Curve" id="Curve_come4"]
+
+[sub_resource type="Resource" id="Resource_h8e4i"]
+script = ExtResource("7_a6jrf")
+scale = 0.5
+custom_data = {}
+a_speed_multiplier = SubResource("Curve_b1qrp")
+scale_multiplier = SubResource("Curve_come4")
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_come4"]
+
+[sub_resource type="Curve" id="Curve_h8e4i"]
+
+[sub_resource type="Curve" id="Curve_4lmeg"]
+
+[sub_resource type="Resource" id="Resource_0cp0l"]
+script = ExtResource("7_a6jrf")
+scale = 0.5
+custom_data = {}
+a_speed_multiplier = SubResource("Curve_h8e4i")
+scale_multiplier = SubResource("Curve_4lmeg")
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -1798,11 +1941,39 @@ id = "2"
 pattern = SubResource("Resource_0rfb8")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
+[node name="SpawnPattern2" type="Path2D" parent="BulletPatternManager" unique_id=1880144049]
+curve = SubResource("Curve2D_ok6jj")
+script = ExtResource("3_d13ii")
+id = "3"
+pattern = SubResource("Resource_0rl1p")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="SpawnPattern3" type="Path2D" parent="BulletPatternManager" unique_id=887814348]
+curve = SubResource("Curve2D_b1qrp")
+script = ExtResource("3_d13ii")
+id = "4"
+pattern = SubResource("Resource_yf5fn")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
 [node name="BulletPattern" type="Path2D" parent="BulletPatternManager" unique_id=2027436251]
 curve = SubResource("Curve2D_qsp4k")
 script = ExtResource("5_0odxb")
 id = "2"
 props = SubResource("Resource_htxhm")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="BulletPattern2" type="Path2D" parent="BulletPatternManager" unique_id=578255860]
+curve = SubResource("Curve2D_facbu")
+script = ExtResource("5_0odxb")
+id = "3"
+props = SubResource("Resource_h8e4i")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="BulletPattern3" type="Path2D" parent="BulletPatternManager" unique_id=790335450]
+curve = SubResource("Curve2D_come4")
+script = ExtResource("5_0odxb")
+id = "4"
+props = SubResource("Resource_0cp0l")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
 [node name="StageManager" type="Node" parent="." unique_id=1113581236]
@@ -1837,10 +2008,17 @@ position = Vector2(123, 240)
 layout_mode = 2
 texture = ExtResource("2_ts3fu")
 
-[node name="Start" type="TextureButton" parent="CanvasLayer/CenterContainer" unique_id=1050205384]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer" unique_id=1336570326]
+layout_mode = 2
+
+[node name="Start" type="TextureButton" parent="CanvasLayer/CenterContainer/VBoxContainer" unique_id=1050205384]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("3_osiot")
+
+[node name="Label" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer" unique_id=965981428]
+layout_mode = 2
+text = "Press Z to start"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=578740909]
 texture_repeat = 2
@@ -1889,4 +2067,4 @@ position = Vector2(120, 160)
 shape = SubResource("WorldBoundaryShape2D_6f8o3")
 
 [connection signal="died" from="CanvasLayer/CenterContainer/Player" to="." method="_on_player_died"]
-[connection signal="pressed" from="CanvasLayer/CenterContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]

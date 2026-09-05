@@ -1,4 +1,4 @@
-class_name Fairy
+class_name Maid
 extends CharacterBody2D
 
 signal died 
@@ -12,7 +12,7 @@ signal died
 }
 
 var bullet_scene = preload("res://enemy_bullet.tscn")
-var hp = 1
+var hp = 100
 
 func _physics_process(delta: float) -> void:
 	velocity = movement_pattern.get_velocity(delta)

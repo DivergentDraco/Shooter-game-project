@@ -1,7 +1,6 @@
 extends Node2D
 @onready var raycast = $RayCast2D
 @onready var players = get_tree().get_nodes_in_group("players")
-@onready var bullet_spawn = $RayCast2D/SpawnPoint
 var velocity = Vector2.ZERO
 
 func _process(_delta):

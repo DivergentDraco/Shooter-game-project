@@ -4,15 +4,8 @@
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_113q0"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nvhxi"]
-bg_color = Color(0.839047, 0.500108, 0.347601, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_frop6"]
+[sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
+font_size = 9
 
 [node name="MainMenu" type="Control" unique_id=699864986]
 layout_mode = 3
@@ -23,6 +16,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ahs0v")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1424640424]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
 [node name="Panel" type="Panel" parent="." unique_id=870330922]
 layout_mode = 1
 anchors_preset = 15
@@ -32,6 +34,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_113q0")
 
+[node name="Label" type="Label" parent="." unique_id=2030701437]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -66.5
+offset_top = 127.0
+offset_right = 66.5
+offset_bottom = 150.0
+grow_horizontal = 2
+text = "Bullethell project"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=245733160]
 layout_mode = 1
 anchors_preset = 8
@@ -39,52 +53,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -73.5
-offset_top = -18.0
-offset_right = 73.5
-offset_bottom = 59.0
+offset_left = -55.5
+offset_top = 7.0
+offset_right = 60.5
+offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="VBoxContainer" unique_id=437105097]
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1547750309]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxFlat_nvhxi")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_frop6")
-text = "Start game"
-
-[node name="Button2" type="Button" parent="VBoxContainer" unique_id=1056519976]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxFlat_nvhxi")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_frop6")
-text = "Options"
-
-[node name="Button3" type="Button" parent="VBoxContainer" unique_id=633716828]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxFlat_nvhxi")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_frop6")
-text = "Exit"
-
-[node name="Label" type="Label" parent="." unique_id=2030701437]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -66.5
-offset_top = 93.0
-offset_right = 66.5
-offset_bottom = 116.0
-grow_horizontal = 2
-text = "Bullethell project"
-
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_exit_pressed"]
+text = "Press Z to start"
+label_settings = SubResource("LabelSettings_g4v7s")
+horizontal_alignment = 1

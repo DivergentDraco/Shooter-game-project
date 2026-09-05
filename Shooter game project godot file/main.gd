@@ -7,10 +7,9 @@ var score = 0
 #Sets initial playing state
 var playing = false
 #Sets initial amount of enemy
-
-@onready var start_button = $CanvasLayer/CenterContainer/Start
+@onready var stage_manager = $StageManager
+@onready var start_button = $CanvasLayer/CenterContainer/VBoxContainer
 @onready var game_over = $CanvasLayer/CenterContainer/GameOver
-
 
 func _ready():
 	game_over.hide()
@@ -25,7 +24,7 @@ func _process(_delta):
 	if Input.is_action_pressed("shoot") and playing == false:
 		Spawning.clear_all_bullets()
 		start_button.hide()
-		new_game()	
+		new_game()
 
 func _on_player_died():
 	playing = false
@@ -39,9 +38,10 @@ func _on_start_pressed():
 	if Input.is_action_pressed("shoot"):
 		Spawning.clear_all_bullets()
 		start_button.hide()
-		new_game()	
+		new_game()
 	
 func new_game():
+	stage_manager.start_stage()
 	$StageMusic.play()
 	score = 0
 	$CanvasLayer/UI.update_score(score)
