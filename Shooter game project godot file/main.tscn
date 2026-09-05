@@ -14,25 +14,27 @@
 [ext_resource type="Script" uid="uid://c1285ppnh3i5a" path="res://Camera2D.gd" id="6_nnvno"]
 [ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="7_a6jrf"]
 [ext_resource type="AudioStream" uid="uid://bqod1ammb5y1e" path="res://SFX/Music/24. BOSSAY.mp3" id="10_074og"]
-[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://Enemy/Fairy Enemy/fairy_enemy.tscn" id="13_vdhg6"]
-[ext_resource type="PackedScene" uid="uid://c3demk7a4ol6" path="res://Enemy/Fairy Enemy Right/fairy_enemy_right.tscn" id="14_8246c"]
+[ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://fairy_enemy.tscn" id="13_vdhg6"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="16_4k2k6"]
 [ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="17_0rl1p"]
-[ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://Enemy/Fairy Enemy/fairy_enemy.gd" id="18_ok6jj"]
+[ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://fairy_enemy.gd" id="18_ok6jj"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="19_facbu"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="20_b1qrp"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="21_come4"]
+[ext_resource type="Script" uid="uid://cwtv80ecqaato" path="res://path2d.gd" id="22_ok6jj"]
+[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="23_facbu"]
 [ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="23_h8e4i"]
-[ext_resource type="PackedScene" uid="uid://bd4qvrtrmfs8n" path="res://Enemy/Fairy Enemy Left/fairy_enemy_left.tscn" id="24_4lmeg"]
-[ext_resource type="Script" uid="uid://d0yx13aal1x7y" path="res://Enemy/UFO enemy/UFO_path_follow_2d.gd" id="25_0cp0l"]
-[ext_resource type="Script" uid="uid://cmgkfl60a5wid" path="res://Enemy/UFO enemy/UFOEnemy.gd" id="26_d2t1y"]
+[ext_resource type="Texture2D" uid="uid://cegbjppyb37gg" path="res://Sprites and Animations/fairy_right.png" id="24_b1qrp"]
+[ext_resource type="Script" uid="uid://d0yx13aal1x7y" path="res://UFO_path_follow_2d.gd" id="25_0cp0l"]
+[ext_resource type="Texture2D" uid="uid://cdyc8xsgux0u1" path="res://Sprites and Animations/fairy_left.png" id="26_come4"]
+[ext_resource type="Script" uid="uid://cmgkfl60a5wid" path="res://UFOEnemy.gd" id="26_d2t1y"]
 [ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="27_gngh3"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="28_0n3wm"]
 [ext_resource type="Script" uid="uid://cfg5vce6oxtyb" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="29_qnost"]
 [ext_resource type="Script" uid="uid://dwc4tcowrt4db" path="res://boss.gd" id="30_wnkbs"]
 [ext_resource type="Texture2D" uid="uid://3wujfv5lmrwv" path="res://Sprites and Animations/funsies.png" id="31_f6a44"]
 [ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="32_0cbny"]
-[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/MaidEnemy.gd" id="33_hrvbo"]
+[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://MaidEnemy.gd" id="33_hrvbo"]
 [ext_resource type="Texture2D" uid="uid://bmtoxk0xu36po" path="res://Sprites and Animations/maid_idle.png" id="34_uypp3"]
 
 [sub_resource type="Curve2D" id="Curve2D_xuqvo"]
@@ -332,6 +334,196 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Curve2D" id="Curve2D_c8twk"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 255, 83, 0, 0, 0, 0, 255, 82)
+}
+point_count = 2
+
+[sub_resource type="GDScript" id="GDScript_h8e4i"]
+script/source = "extends Area2D
+
+signal died 
+
+var start_pos = Vector2.ZERO
+var speed = 100
+#var bullet_scene = preload(\"res://enemy_bullet.tscn\")
+var anchor
+var follow_anchor = false
+var hp = 3
+
+@onready var screensize  = get_viewport_rect().size
+@onready var hit_flash_anim_player = $HitFlashAnimationPlayer
+
+func start(pos):
+	follow_anchor = false
+	speed = 50
+	start_pos = pos
+	await get_tree().create_timer(randf_range(0.25, 0.55)).timeout
+	var tw = create_tween().set_trans(Tween.TRANS_BACK)
+	await tw.finished
+	follow_anchor = true
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+
+func explode():
+	if hp > 0:
+		hp -= 1
+		hit_flash_anim_player.play(\"hit_flash\")
+	else: 
+		speed = 0
+		$AnimatedSprite2D.play(\"explode\")
+		set_deferred(\"monitorable\", false)
+		died.emit(5)
+		$ExplodeSFX.play()
+		await $AnimatedSprite2D.animation_finished
+		queue_free()
+
+func _on_shoot_timer_timeout():
+	#var b = bullet_scene.instantiate()
+	#get_tree().root.add_child(b)
+	#b.start(position)
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited():
+	queue_free()
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4lmeg"]
+atlas = ExtResource("19_facbu")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0cp0l"]
+atlas = ExtResource("19_facbu")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2t1y"]
+atlas = ExtResource("19_facbu")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gngh3"]
+atlas = ExtResource("19_facbu")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0n3wm"]
+atlas = ExtResource("19_facbu")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qnost"]
+atlas = ExtResource("19_facbu")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dw7dk"]
+atlas = ExtResource("24_b1qrp")
+region = Rect2(0, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ck5fy"]
+atlas = ExtResource("24_b1qrp")
+region = Rect2(36, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwpvh"]
+atlas = ExtResource("24_b1qrp")
+region = Rect2(72, 0, 36, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wnkbs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4lmeg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0cp0l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2t1y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gngh3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0n3wm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qnost")
+}],
+"loop": 0,
+"name": &"explode",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dw7dk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ck5fy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fwpvh")
+}],
+"loop": 1,
+"name": &"new_animation",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6a44"]
+size = Vector2(18, 22)
+
+[sub_resource type="Animation" id="Animation_0cbny"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_hrvbo"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uypp3"]
+_data = {
+&"RESET": SubResource("Animation_0cbny"),
+&"hit_flash": SubResource("Animation_hrvbo")
+}
+
+[sub_resource type="PackedScene" id="PackedScene_6iyjs"]
+_bundled = {
+"conn_count": 1,
+"conns": PackedInt32Array(1073741834, 1073741833, 40, 39, 2, 0, 0),
+"editable_instances": [],
+"id_paths": [PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array()],
+"names": PackedStringArray("FairyEnemyRightPath", "Path2D", "curve", "script", "PathFollow2D", "PathFollow2D", "position", "rotates", "loop", "FairyEnemyRight", "Area2D", "enemies", "script", "AnimatedSprite2D", "AnimatedSprite2D", "material", "sprite_frames", "animation", "autoplay", "CollisionShape2D", "CollisionShape2D", "shape", "HitFlashAnimationPlayer", "AnimationPlayer", "root_node", "libraries", "ShootTimer", "Timer", "one_shot", "ExplodeSFX", "AudioStreamPlayer", "stream", "volume_db", "max_polyphony", "VisibleOnScreenNotifier2D", "VisibleOnScreenNotifier2D", "AnimationPlayer", "AnimationPlayer", "root_node", "_on_visible_on_screen_notifier_2d_screen_exited", "screen_exited"),
+"node_count": 10,
+"node_ids": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"node_paths": [NodePath("."), NodePath("./PathFollow2D"), NodePath("./PathFollow2D/FairyEnemyRight"), NodePath("./PathFollow2D/FairyEnemyRight"), NodePath("./PathFollow2D/FairyEnemyRight"), NodePath("./PathFollow2D/FairyEnemyRight"), NodePath("./PathFollow2D/FairyEnemyRight"), NodePath("./PathFollow2D/FairyEnemyRight"), NodePath("."), NodePath("PathFollow2D/FairyEnemyRight"), NodePath("PathFollow2D/FairyEnemyRight/VisibleOnScreenNotifier2D")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 2, 2, 0, 3, 1, 0, 1073741824, 0, 5, 4, -1, 3, 6, 2, 7, 3, 8, 4, 0, 1073741825, 0, 10, 9, -1, 1, 12, 5, 1, 11, 1073741826, 0, 14, 13, -1, 4, 15, 6, 16, 7, 17, 8, 18, 9, 0, 1073741827, 0, 20, 19, -1, 1, 21, 10, 0, 1073741828, 0, 23, 22, -1, 2, 24, 11, 25, 12, 0, 1073741829, 0, 27, 26, -1, 1, 28, 13, 0, 1073741830, 0, 30, 29, -1, 3, 31, 14, 32, 15, 33, 16, 0, 1073741831, 0, 35, 34, -1, 0, 0, 1073741832, 0, 37, 36, -1, 1, 38, 17, 0),
+"variants": [SubResource("Curve2D_c8twk"), ExtResource("22_ok6jj"), Vector2(255, 83), false, false, SubResource("GDScript_h8e4i"), ExtResource("23_facbu"), SubResource("SpriteFrames_wnkbs"), &"new_animation", "new_animation", SubResource("RectangleShape2D_f6a44"), NodePath("../AnimatedSprite2D"), {
+&"": SubResource("AnimationLibrary_uypp3")
+}, true, ExtResource("21_come4"), -12.329, 10, NodePath("../PathFollow2D/FairyEnemyRight/VisibleOnScreenNotifier2D")],
+"version": 3
+}
+
 [sub_resource type="Curve2D" id="Curve2D_ycbdj"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 255, 83, 0, 0, 0, 0, 255, 82, -70.9957, -17.3982, 70.9957, 17.3982, 390, 166, 0, 0, 0, 0, 525, 180)
@@ -395,6 +587,196 @@ _data = {
 &"ease": SubResource("Animation_qwawq")
 }
 
+[sub_resource type="Curve2D" id="Curve2D_4w656"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 249, 34)
+}
+point_count = 1
+
+[sub_resource type="GDScript" id="GDScript_e71vb"]
+script/source = "extends Area2D
+
+signal died 
+
+var start_pos = Vector2.ZERO
+var speed = 100
+var bullet_scene = preload(\"res://enemy_bullet.tscn\")
+var anchor
+var follow_anchor = false
+var hp = 3
+
+@onready var screensize  = get_viewport_rect().size
+@onready var hit_flash_anim_player = $HitFlashAnimationPlayer
+
+func start(pos):
+	follow_anchor = false
+	speed = 50
+	start_pos = pos
+	await get_tree().create_timer(randf_range(0.25, 0.55)).timeout
+	var tw = create_tween().set_trans(Tween.TRANS_BACK)
+	await tw.finished
+	follow_anchor = true
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+
+func explode():
+	if hp > 0:
+		hp -= 1
+		hit_flash_anim_player.play(\"hit_flash\")
+	else: 
+		speed = 0
+		$AnimatedSprite2D.play(\"explode\")
+		set_deferred(\"monitorable\", false)
+		died.emit(5)
+		$ExplodeSFX.play()
+		await $AnimatedSprite2D.animation_finished
+		queue_free()
+
+func _on_shoot_timer_timeout():
+	var b = bullet_scene.instantiate()
+	get_tree().root.add_child(b)
+	b.start(position)
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited():
+	queue_free()
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sm6fg"]
+atlas = ExtResource("19_facbu")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b17eg"]
+atlas = ExtResource("19_facbu")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntx8l"]
+atlas = ExtResource("19_facbu")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uatky"]
+atlas = ExtResource("19_facbu")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqtf5"]
+atlas = ExtResource("19_facbu")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vm84"]
+atlas = ExtResource("19_facbu")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjqkv"]
+atlas = ExtResource("26_come4")
+region = Rect2(0, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clvbj"]
+atlas = ExtResource("26_come4")
+region = Rect2(36, 0, 36, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jsmp4"]
+atlas = ExtResource("26_come4")
+region = Rect2(72, 0, 36, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wu3dr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sm6fg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b17eg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ntx8l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uatky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqtf5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vm84")
+}],
+"loop": 0,
+"name": &"explode",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mjqkv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_clvbj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jsmp4")
+}],
+"loop": 1,
+"name": &"new_animation",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cyx1q"]
+size = Vector2(18, 22)
+
+[sub_resource type="Animation" id="Animation_0dhbp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_34ol3"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c2n8d"]
+_data = {
+&"RESET": SubResource("Animation_0dhbp"),
+&"hit_flash": SubResource("Animation_34ol3")
+}
+
+[sub_resource type="PackedScene" id="PackedScene_wy5fy"]
+_bundled = {
+"conn_count": 1,
+"conns": PackedInt32Array(1073741834, 1073741833, 40, 39, 2, 0, 0),
+"editable_instances": [],
+"id_paths": [PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array(), PackedInt32Array()],
+"names": PackedStringArray("FairyEnemyLeftPath", "Path2D", "curve", "script", "PathFollow2D", "PathFollow2D", "position", "rotates", "loop", "FairyEnemyLeft", "Area2D", "enemies", "script", "AnimatedSprite2D", "AnimatedSprite2D", "material", "sprite_frames", "animation", "autoplay", "CollisionShape2D", "CollisionShape2D", "shape", "HitFlashAnimationPlayer", "AnimationPlayer", "root_node", "libraries", "ShootTimer", "Timer", "one_shot", "ExplodeSFX", "AudioStreamPlayer", "stream", "volume_db", "max_polyphony", "VisibleOnScreenNotifier2D", "VisibleOnScreenNotifier2D", "AnimationPlayer", "AnimationPlayer", "root_node", "_on_visible_on_screen_notifier_2d_screen_exited", "screen_exited"),
+"node_count": 10,
+"node_ids": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"node_paths": [NodePath("."), NodePath("./PathFollow2D"), NodePath("./PathFollow2D/FairyEnemyLeft"), NodePath("./PathFollow2D/FairyEnemyLeft"), NodePath("./PathFollow2D/FairyEnemyLeft"), NodePath("./PathFollow2D/FairyEnemyLeft"), NodePath("./PathFollow2D/FairyEnemyLeft"), NodePath("./PathFollow2D/FairyEnemyLeft"), NodePath("."), NodePath("PathFollow2D/FairyEnemyLeft"), NodePath("PathFollow2D/FairyEnemyLeft/VisibleOnScreenNotifier2D")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 2, 2, 0, 3, 1, 0, 1073741824, 0, 5, 4, -1, 3, 6, 2, 7, 3, 8, 4, 0, 1073741825, 0, 10, 9, -1, 1, 12, 5, 1, 11, 1073741826, 0, 14, 13, -1, 4, 15, 6, 16, 7, 17, 8, 18, 9, 0, 1073741827, 0, 20, 19, -1, 1, 21, 10, 0, 1073741828, 0, 23, 22, -1, 2, 24, 11, 25, 12, 0, 1073741829, 0, 27, 26, -1, 1, 28, 13, 0, 1073741830, 0, 30, 29, -1, 3, 31, 14, 32, 15, 33, 16, 0, 1073741831, 0, 35, 34, -1, 0, 0, 1073741832, 0, 37, 36, -1, 1, 38, 17, 0),
+"variants": [SubResource("Curve2D_4w656"), ExtResource("22_ok6jj"), Vector2(249, 34), false, false, SubResource("GDScript_e71vb"), ExtResource("23_facbu"), SubResource("SpriteFrames_wu3dr"), &"new_animation", "new_animation", SubResource("RectangleShape2D_cyx1q"), NodePath("../AnimatedSprite2D"), {
+&"": SubResource("AnimationLibrary_c2n8d")
+}, true, ExtResource("21_come4"), -12.329, 10, NodePath("../PathFollow2D/FairyEnemyLeft/VisibleOnScreenNotifier2D")],
+"version": 3
+}
+
 [sub_resource type="Curve2D" id="Curve2D_8j7sb"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 249, 34, 64.3467, -24.0416, -64.3467, 24.0416, 146, 106, 0, 0, 0, 0, -20, 132)
@@ -432,9 +814,9 @@ _bundled = {
 "node_ids": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0),
 "node_paths": [NodePath("."), NodePath("./FairyEnemyRightPath/PathFollow2D/FairyEnemyRight"), NodePath("./FairyEnemyRightPath/PathFollow2D/FairyEnemyRight"), NodePath("./FairyEnemyRightPath"), NodePath("."), NodePath("./FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft"), NodePath("./FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft"), NodePath("FairyEnemyRightPath/PathFollow2D/FairyEnemyRight"), NodePath("FairyEnemyRightPath/PathFollow2D/FairyEnemyRight")],
 "nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 2147483647, 2, 0, 3, 3, 1, 4, 2, 5, 3, 0, 1073741825, -1, 2147483647, 262150, -1, 1, 7, 4, 0, 1073741826, 0, 2147483647, 1835016, 5, 0, 0, 1073741827, -1, 2147483647, 524297, -1, 1, 10, 6, 0, 1073741828, 0, 2147483647, 11, 7, 2, 12, 8, 13, 9, 0, 1073741829, -1, 2147483647, 262158, -1, 1, 15, 10, 0, 1073741830, 0, 2147483647, 1835024, 11, 0, 0),
-"variants": [ExtResource("14_8246c"), Vector2(-266, -48), SubResource("Curve2D_ycbdj"), SubResource("GDScript_7oiqi"), SubResource("ShaderMaterial_p1e6j"), ExtResource("23_h8e4i"), {
+"variants": [SubResource("PackedScene_6iyjs"), Vector2(-266, -48), SubResource("Curve2D_ycbdj"), SubResource("GDScript_7oiqi"), SubResource("ShaderMaterial_p1e6j"), ExtResource("23_h8e4i"), {
 &"": SubResource("AnimationLibrary_y4uyb")
-}, ExtResource("24_4lmeg"), SubResource("Curve2D_8j7sb"), SubResource("GDScript_6i2vb"), SubResource("ShaderMaterial_3c8tv"), ExtResource("23_h8e4i")],
+}, SubResource("PackedScene_wy5fy"), SubResource("Curve2D_8j7sb"), SubResource("GDScript_6i2vb"), SubResource("ShaderMaterial_3c8tv"), ExtResource("23_h8e4i")],
 "version": 3
 }
 
@@ -828,9 +1210,9 @@ _bundled = {
 "node_ids": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0),
 "node_paths": [NodePath("."), NodePath("./FairyEnemyRightPath/PathFollow2D/FairyEnemyRight"), NodePath("./FairyEnemyRightPath/PathFollow2D/FairyEnemyRight"), NodePath("./FairyEnemyRightPath"), NodePath("."), NodePath("./FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft"), NodePath("./FairyEnemyLeftPath/PathFollow2D/FairyEnemyLeft")],
 "nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 2147483647, 2, 0, 3, 3, 1, 4, 2, 5, 3, 0, 1073741825, -1, 2147483647, 262150, -1, 1, 7, 4, 0, 1073741826, 0, 2147483647, 1835016, 5, 0, 0, 1073741827, -1, 2147483647, 524297, -1, 1, 10, 6, 0, 1073741828, 0, 2147483647, 11, 7, 2, 12, 8, 13, 9, 0, 1073741829, -1, 2147483647, 262158, -1, 1, 15, 10, 0, 1073741830, 0, 2147483647, 1835024, 11, 0, 0),
-"variants": [ExtResource("14_8246c"), Vector2(-266, -48), SubResource("Curve2D_wu3dr"), SubResource("GDScript_cyx1q"), SubResource("ShaderMaterial_0dhbp"), ExtResource("23_h8e4i"), {
+"variants": [SubResource("PackedScene_6iyjs"), Vector2(-266, -48), SubResource("Curve2D_wu3dr"), SubResource("GDScript_cyx1q"), SubResource("ShaderMaterial_0dhbp"), ExtResource("23_h8e4i"), {
 &"": SubResource("AnimationLibrary_34ol3")
-}, ExtResource("24_4lmeg"), SubResource("Curve2D_c2n8d"), SubResource("GDScript_wy5fy"), SubResource("ShaderMaterial_gx4rg"), ExtResource("23_h8e4i")],
+}, SubResource("PackedScene_wy5fy"), SubResource("Curve2D_c2n8d"), SubResource("GDScript_wy5fy"), SubResource("ShaderMaterial_gx4rg"), ExtResource("23_h8e4i")],
 "version": 3
 }
 
@@ -1484,7 +1866,7 @@ stream = ExtResource("10_074og")
 volume_db = 10.978
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="." unique_id=1538213690]
-resources = [PackedStringArray("EnemyScene1", "EnemyScene2", "EnemyScene3", "EnemyScene4", "EnemyScene6", "EnemyScene7", "fairy_enemy", "fairy_enemy_right"), [SubResource("PackedScene_blkrb"), SubResource("PackedScene_abqjc"), SubResource("PackedScene_1vm84"), SubResource("PackedScene_5dllo"), SubResource("PackedScene_jbvwl"), SubResource("PackedScene_rt5wr"), ExtResource("13_vdhg6"), ExtResource("14_8246c")]]
+resources = [PackedStringArray("EnemyScene1", "EnemyScene2", "EnemyScene3", "EnemyScene4", "EnemyScene6", "EnemyScene7", "fairy_enemy", "fairy_enemy_right"), [SubResource("PackedScene_blkrb"), SubResource("PackedScene_abqjc"), SubResource("PackedScene_1vm84"), SubResource("PackedScene_5dllo"), SubResource("PackedScene_jbvwl"), SubResource("PackedScene_rt5wr"), ExtResource("13_vdhg6"), SubResource("PackedScene_6iyjs")]]
 
 [node name="Node2D" type="Node2D" parent="." unique_id=280983599]
 
