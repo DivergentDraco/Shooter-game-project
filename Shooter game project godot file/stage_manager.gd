@@ -58,6 +58,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":0,
+		"spawnpoint": 1,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(50, -10), 
@@ -65,6 +66,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":0.2,
+		"spawnpoint": 1,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(50, -10), 
@@ -72,6 +74,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":0.4,
+		"spawnpoint": 1,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(50, -10), 
@@ -79,6 +82,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":0.6,
+		"spawnpoint": 1,
 		},
 		
 		
@@ -88,6 +92,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":1,
+		"spawnpoint": 1,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(150, -10), 
@@ -95,6 +100,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":1.2,
+		"spawnpoint": 1,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(150, -10), 
@@ -102,6 +108,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":1.4,
+		"spawnpoint": 1,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(150, -10), 
@@ -109,6 +116,7 @@ var waves = {
 		"speed": 10,
 		"acceleration": 150,
 		"delay":1.6,
+		"spawnpoint": 1,
 		},
 		
 		{"enemy": FAIRY, 
@@ -117,6 +125,7 @@ var waves = {
 		"speed": 400,
 		"acceleration": -400,
 		"delay":2.5,
+		"spawnpoint": 2,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(100, -10), 
@@ -124,6 +133,7 @@ var waves = {
 		"speed": 400,
 		"acceleration": -400,
 		"delay":2.5,
+		"spawnpoint": 2,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(150, -10), 
@@ -131,6 +141,7 @@ var waves = {
 		"speed": 400,
 		"acceleration": -400,
 		"delay":2.5,
+		"spawnpoint": 2,
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(200, -10), 
@@ -138,6 +149,7 @@ var waves = {
 		"speed": 400,
 		"acceleration": -400,
 		"delay":2.5,
+		"spawnpoint": 2,
 		},
 		
 		{"enemy": FAIRY, 
@@ -169,12 +181,14 @@ var waves = {
 		"delay":4.6,
 		},
 		
+#		V shaped
 		{"enemy": FAIRY, 
 		"pos": Vector2(50, -10), 
 		"movement_pattern": MovementPattern.Pattern.SINE, 
 		"speed": 150,
 		"acceleration": 0,
 		"delay":5,
+		
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(50, -10), 
@@ -182,6 +196,7 @@ var waves = {
 		"speed": 150,
 		"acceleration": 0,
 		"delay":5.2,
+		
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(50, -10), 
@@ -189,6 +204,7 @@ var waves = {
 		"speed": 150,
 		"acceleration": 0,
 		"delay":5.4,
+		
 		},
 		{"enemy": FAIRY, 
 		"pos": Vector2(50, -10), 
@@ -196,6 +212,7 @@ var waves = {
 		"speed": 150,
 		"acceleration": 0,
 		"delay":5.6,
+		
 		},
 		#{"enemy": FAIRY, "pos": Vector2(100, 100), "movement_pattern": MovementPattern.Pattern.SINE},
 		#{"enemy": FAIRY, "pos": Vector2(150, 100), "movement_pattern": MovementPattern.Pattern.DIAGONAL_LEFT},
@@ -245,6 +262,7 @@ var waves = {
 		"speed": 200,
 		"acceleration": -300,
 		"delay":1,
+		"spawnpoint": 3,
 		},
 		
 		{"enemy": FAIRY, 
@@ -255,6 +273,7 @@ var waves = {
 		"speed": 200,
 		"acceleration": -300,
 		"delay":1,
+		"spawnpoint": 3,
 		},
 		
 		{"enemy": FAIRY, 
@@ -265,6 +284,7 @@ var waves = {
 		"speed": 200,
 		"acceleration": -300,
 		"delay":1.3,
+		"spawnpoint": 3,
 		},
 		
 		{"enemy": FAIRY, 
@@ -275,6 +295,7 @@ var waves = {
 		"speed": 200,
 		"acceleration": -300,
 		"delay":1.3,
+		"spawnpoint": 3,
 		},
 	],
 	
@@ -323,7 +344,10 @@ func spawn_enemy(entry: Dictionary) -> void:
 	var enemies_container = get_tree().current_scene.get_node("Enemies")
 
 	var enemy = entry.enemy.instantiate()
-
+	
+	if entry.has("spawnpoint"):
+		enemy.set_spawnpoint(entry.spawnpoint)
+		
 	enemies_container.add_child(enemy)
 	enemy.global_position = entry.pos
 
@@ -344,6 +368,8 @@ func spawn_enemy(entry: Dictionary) -> void:
 	
 	if entry.has("direction"):
 		enemy.set_movement_direction(entry.direction)
+		
+
 
 func spawn_line_wave():
 	for i in range(5):

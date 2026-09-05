@@ -24,7 +24,7 @@ func _process(_delta):
 	if Input.is_action_pressed("shoot") and playing == false:
 		Spawning.clear_all_bullets()
 		start_button.hide()
-		new_game()	
+		new_game()
 
 func _on_player_died():
 	playing = false
@@ -38,7 +38,7 @@ func _on_start_pressed():
 	if Input.is_action_pressed("shoot"):
 		Spawning.clear_all_bullets()
 		start_button.hide()
-		new_game()	
+		new_game()
 	
 func new_game():
 	stage_manager.start_stage()

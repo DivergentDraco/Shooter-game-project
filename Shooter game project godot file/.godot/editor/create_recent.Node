@@ -1,3 +1,6 @@
+BulletPattern
+SpawnPattern
+SpawnPoint
 Label
 VBoxContainer
 ColorRect
@@ -6,9 +9,6 @@ CharacterBody2D
 Area2D
 RayCast2D
 Node2D
-SpawnPoint
-SpawnPattern
-BulletPattern
 Node
 PathFollow2D
 Path2D

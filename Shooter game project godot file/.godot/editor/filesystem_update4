@@ -3,3 +3,7 @@ res://hitflash effect/hitflash.tres
 res://main.tscn
 res://main.gd
 res://stage_manager.gd
+res://Enemy/Fairy Enemy/fairy_enemy.tscn
+res://hitflash effect/shadermaterial.tres
+res://homing.gd
+res://Enemy/Fairy Enemy/fairy_enemy.gd

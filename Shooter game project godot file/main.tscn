@@ -46,6 +46,29 @@ bullet = "2"
 cooldown_spawn = 0.1
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
 
+[sub_resource type="Curve2D" id="Curve2D_ok6jj"]
+
+[sub_resource type="Resource" id="Resource_0rl1p"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+radius = 10.0
+angle_total = 1.9992048449894249
+angle_decal = 0.5235987755982988
+bullet = "3"
+nbr = 3
+cooldown_spawn = 0.0
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_b1qrp"]
+
+[sub_resource type="Resource" id="Resource_yf5fn"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+bullet = "4"
+nbr = 10
+iterations = 2
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
 [sub_resource type="Curve2D" id="Curve2D_qsp4k"]
 
 [sub_resource type="Curve" id="Curve_kq58d"]
@@ -59,6 +82,126 @@ scale = 0.5
 custom_data = {}
 a_speed_multiplier = SubResource("Curve_kq58d")
 scale_multiplier = SubResource("Curve_seu75")
+homing_type = 0
+homing_target = NodePath("../../CanvasLayer/CenterContainer/Player")
+homing_steer = 0.1
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_facbu"]
+
+[sub_resource type="Curve" id="Curve_b1qrp"]
+
+[sub_resource type="Curve" id="Curve_come4"]
+
+[sub_resource type="Resource" id="Resource_h8e4i"]
+script = ExtResource("7_a6jrf")
+scale = 0.5
+custom_data = {}
+a_speed_multiplier = SubResource("Curve_b1qrp")
+scale_multiplier = SubResource("Curve_come4")
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_come4"]
+
+[sub_resource type="Curve" id="Curve_h8e4i"]
+
+[sub_resource type="Curve" id="Curve_4lmeg"]
+
+[sub_resource type="Resource" id="Resource_0cp0l"]
+script = ExtResource("7_a6jrf")
+scale = 0.5
+custom_data = {}
+a_speed_multiplier = SubResource("Curve_h8e4i")
+scale_multiplier = SubResource("Curve_4lmeg")
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -1798,11 +1941,39 @@ id = "2"
 pattern = SubResource("Resource_0rfb8")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
+[node name="SpawnPattern2" type="Path2D" parent="BulletPatternManager" unique_id=1880144049]
+curve = SubResource("Curve2D_ok6jj")
+script = ExtResource("3_d13ii")
+id = "3"
+pattern = SubResource("Resource_0rl1p")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="SpawnPattern3" type="Path2D" parent="BulletPatternManager" unique_id=887814348]
+curve = SubResource("Curve2D_b1qrp")
+script = ExtResource("3_d13ii")
+id = "4"
+pattern = SubResource("Resource_yf5fn")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
 [node name="BulletPattern" type="Path2D" parent="BulletPatternManager" unique_id=2027436251]
 curve = SubResource("Curve2D_qsp4k")
 script = ExtResource("5_0odxb")
 id = "2"
 props = SubResource("Resource_htxhm")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="BulletPattern2" type="Path2D" parent="BulletPatternManager" unique_id=578255860]
+curve = SubResource("Curve2D_facbu")
+script = ExtResource("5_0odxb")
+id = "3"
+props = SubResource("Resource_h8e4i")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="BulletPattern3" type="Path2D" parent="BulletPatternManager" unique_id=790335450]
+curve = SubResource("Curve2D_come4")
+script = ExtResource("5_0odxb")
+id = "4"
+props = SubResource("Resource_0cp0l")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
 [node name="StageManager" type="Node" parent="." unique_id=1113581236]
