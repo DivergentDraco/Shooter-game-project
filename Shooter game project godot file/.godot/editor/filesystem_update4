@@ -1,11 +1,5 @@
-res://main menu.tscn
-res://hitflash effect/hitflash.tres
+res://default_bus_layout.tres
 res://main.tscn
-res://main.gd
-res://stage_manager.gd
-res://Enemy/Fairy Enemy/fairy_enemy.tscn
-res://hitflash effect/shadermaterial.tres
-res://homing.gd
-res://Enemy/Fairy Enemy/fairy_enemy.gd
-res://Enemy/Maid Enemy/maid_enemy.tscn
+res://hitflash effect/hitflash.tres
 res://Enemy/Maid Enemy/maid_enemy.gd
+res://Enemy/Maid Enemy/maid_enemy.tscn
