@@ -41,12 +41,24 @@
 background_mode = 3
 glow_enabled = true
 glow_intensity = 1.19
-glow_bloom = 0.74
+glow_bloom = 0.4
 glow_hdr_threshold = 1.17
 glow_hdr_scale = 2.07
 glow_hdr_luminance_cap = 19.28
 adjustment_enabled = true
-adjustment_brightness = 0.74
+
+[sub_resource type="Curve2D" id="Curve2D_h8e4i"]
+
+[sub_resource type="Resource" id="Resource_d0u6y"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+bullet = "3"
+nbr = 10
+iterations = -1
+cooldown_spawn = 0.2
+cooldown_shoot = 0.1
+cooldown_next_shoot = 0.1
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
 
 [sub_resource type="Curve2D" id="Curve2D_xuqvo"]
 
@@ -149,6 +161,7 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
 [sub_resource type="Resource" id="Resource_h8e4i"]
 script = ExtResource("7_a6jrf")
+speed = 200.0
 scale = 0.5
 custom_data = {}
 a_speed_multiplier = SubResource("Curve_b1qrp")
@@ -1947,6 +1960,13 @@ environment = SubResource("Environment_g4v7s")
 
 [node name="BulletPatternManager" type="Node2D" parent="." unique_id=20919203]
 position = Vector2(-3, 0)
+
+[node name="SpawnPattern4" type="Path2D" parent="BulletPatternManager" unique_id=919206296]
+curve = SubResource("Curve2D_h8e4i")
+script = ExtResource("3_d13ii")
+id = "5"
+pattern = SubResource("Resource_d0u6y")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
 [node name="SpawnPattern" type="Path2D" parent="BulletPatternManager" unique_id=1847601575]
 curve = SubResource("Curve2D_xuqvo")

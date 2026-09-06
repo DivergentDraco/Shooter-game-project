@@ -162,7 +162,6 @@ script = ExtResource("6_fy2j3")
 
 [node name="SpawnPoint" type="Node2D" parent="." unique_id=1991981650]
 script = ExtResource("7_6t1vd")
-active = false
 auto_pattern_id = "2"
 auto_start_after_time = 0.5
 r_active_chances = 1.0

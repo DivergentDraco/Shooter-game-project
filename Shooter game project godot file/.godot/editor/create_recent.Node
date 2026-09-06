@@ -1,7 +1,7 @@
+SpawnPattern
 WorldEnvironment
 CharacterBody2D
 BulletPattern
-SpawnPattern
 SpawnPoint
 Label
 VBoxContainer
@@ -12,4 +12,3 @@ RayCast2D
 Node2D
 Node
 PathFollow2D
-Path2D

@@ -304,11 +304,11 @@ var waves = {
 	"wave_3": [
 		{"enemy": MAID, 
 		"pos": Vector2(122, 0), 
-		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
-		"speed": 250,
-		"acceleration": -300,
-		"min_speed": 0,
-		"delay":0,
+		#"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		#"speed": 250,
+		#"acceleration": -300,
+		#"min_speed": 0,
+		#"delay":0,
 		},
 	]
 	
