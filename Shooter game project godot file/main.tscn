@@ -37,6 +37,17 @@
 [ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/maid_enemy.gd" id="33_hrvbo"]
 [ext_resource type="Texture2D" uid="uid://bmtoxk0xu36po" path="res://Sprites and Animations/maid_idle.png" id="34_uypp3"]
 
+[sub_resource type="Environment" id="Environment_g4v7s"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.19
+glow_bloom = 0.74
+glow_hdr_threshold = 1.17
+glow_hdr_scale = 2.07
+glow_hdr_luminance_cap = 19.28
+adjustment_enabled = true
+adjustment_brightness = 0.74
+
 [sub_resource type="Curve2D" id="Curve2D_xuqvo"]
 
 [sub_resource type="Resource" id="Resource_0rfb8"]
@@ -1930,6 +1941,9 @@ distance = -160.0
 [node name="Main" type="Node2D" unique_id=1468295376]
 position = Vector2(3, 0)
 script = ExtResource("1_21msh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=643045890]
+environment = SubResource("Environment_g4v7s")
 
 [node name="BulletPatternManager" type="Node2D" parent="." unique_id=20919203]
 position = Vector2(-3, 0)
