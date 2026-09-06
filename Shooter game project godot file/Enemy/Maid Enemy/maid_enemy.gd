@@ -20,7 +20,7 @@ var attack_center: Vector2
 var state_time := 0.0
 
 @export var speed: float = 2.0        # How fast the enemy rotates
-@export var radius: float = 150.0     # How big the circle is
+@export var radius: float = 100     # How big the circle is
 @export var center_point: Vector2 = original_position # The middle of the circle
 
 var angle: float = 0.0
