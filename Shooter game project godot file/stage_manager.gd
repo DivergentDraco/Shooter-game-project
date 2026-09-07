@@ -8,8 +8,8 @@ var pending_spawns := 0
 var stage_started := false
 
 var wave_order = [
+	"wave_4",
 	"wave_3",
-	"wave_2",
 	"wave_1",
 	"wave_2",
 ]
@@ -48,6 +48,7 @@ func start_next_wave() -> void:
 
 const FAIRY = preload("res://Enemy/Fairy Enemy/fairy_enemy.tscn")
 const MAID = preload("res://Enemy/Maid Enemy/maid_enemy.tscn")
+const BIG_ZAM = preload("res://Enemy/Big Zam/big_zam.tscn")
 
 var waves = {
 	"wave_1": [
@@ -310,8 +311,17 @@ var waves = {
 		#"min_speed": 0,
 		#"delay":0,
 		},
-	]
-	
+	],
+	"wave_4": [
+		{"enemy": BIG_ZAM, 
+		"pos": Vector2(122, 0), 
+		#"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		#"speed": 250,
+		#"acceleration": -300,
+		#"min_speed": 0,
+		#"delay":0,
+		},
+	],
 }
 func spawn_wave(wave_name: String) -> void:
 	if not waves.has(wave_name):

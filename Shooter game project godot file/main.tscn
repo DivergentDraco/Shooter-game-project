@@ -92,6 +92,30 @@ cooldown_shoot = 0.1
 cooldown_next_shoot = 0.1
 metadata/_custom_type_script = "uid://dg81fho0rhp37"
 
+[sub_resource type="Curve2D" id="Curve2D_0cp0l"]
+
+[sub_resource type="Resource" id="Resource_g4v7s"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+angle_total = 2.6179938779914944
+angle_decal = 0.29670597283903605
+center = 3
+bullet = "5"
+nbr = 6
+iterations = -1
+cooldown_spawn = 0.3
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_d2t1y"]
+
+[sub_resource type="Resource" id="Resource_57qmd"]
+resource_name = "PatternOne"
+script = ExtResource("4_d13ii")
+bullet = "6"
+nbr = 3
+iterations = -1
+metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
+
 [sub_resource type="Curve2D" id="Curve2D_qsp4k"]
 
 [sub_resource type="Curve" id="Curve_kq58d"]
@@ -289,6 +313,71 @@ scale_multiplier = SubResource("Curve_d2t1y")
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_gngh3"]
+
+[sub_resource type="Curve" id="Curve_ok6jj"]
+_limits = [0.021052718, 253.73, 0.0, 1.0]
+_data = [Vector2(0, 0.021052718), 0.0, 0.0, 0, 0, Vector2(1, 253.73), 671.21747, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_0n3wm"]
+
+[sub_resource type="Resource" id="Resource_qnost"]
+script = ExtResource("7_a6jrf")
+speed = 300.0
+custom_data = {}
+a_speed_multi_iterations = 1
+a_speed_multi_scale = 1.0
+a_speed_multiplier = SubResource("Curve_ok6jj")
+scale_multiplier = SubResource("Curve_0n3wm")
+homing_type = 0
+homing_target = NodePath("../../CanvasLayer/CenterContainer/Player")
+homing_steer = 0.1
 homing_time_start = 0.0
 homing_duration = 999.0
 homing_detection_dist = 0.0
@@ -2049,6 +2138,20 @@ id = "5"
 pattern = SubResource("Resource_d0u6y")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
+[node name="SpawnPattern5" type="Path2D" parent="BulletPatternManager" unique_id=420230812]
+curve = SubResource("Curve2D_0cp0l")
+script = ExtResource("3_d13ii")
+id = "6"
+pattern = SubResource("Resource_g4v7s")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="SpawnPattern6" type="Path2D" parent="BulletPatternManager" unique_id=1954596392]
+curve = SubResource("Curve2D_d2t1y")
+script = ExtResource("3_d13ii")
+id = "7"
+pattern = SubResource("Resource_57qmd")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
 [node name="BulletPattern" type="Path2D" parent="BulletPatternManager" unique_id=2027436251]
 curve = SubResource("Curve2D_qsp4k")
 script = ExtResource("5_0odxb")
@@ -2077,19 +2180,19 @@ id = "5"
 props = SubResource("Resource_gngh3")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
+[node name="BulletPattern5" type="Path2D" parent="BulletPatternManager" unique_id=547569238]
+curve = SubResource("Curve2D_gngh3")
+script = ExtResource("5_0odxb")
+id = "6"
+props = SubResource("Resource_qnost")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
 [node name="StageManager" type="Node" parent="." unique_id=1113581236]
 script = ExtResource("3_074og")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1801651538]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=364955804]
-
-[node name="Polygon2D" type="Polygon2D" parent="CanvasLayer" unique_id=224047077]
-visible = false
-top_level = true
-position = Vector2(164, 0)
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(176, -32, 422, -15, 413, 336, 242, 341, 243, 0, -2, 0, -2, 339, -190, 324, -180, -38)
 
 [node name="UI" parent="CanvasLayer" unique_id=178016994 instance=ExtResource("1_ddoy4")]
 visible = false
@@ -2122,6 +2225,7 @@ layout_mode = 2
 text = "Press Z to start"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=578740909]
+z_index = -2
 texture_repeat = 2
 position = Vector2(120, 160)
 scale = Vector2(1.1, 1.1)

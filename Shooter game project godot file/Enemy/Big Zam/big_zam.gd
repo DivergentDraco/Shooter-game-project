@@ -1,4 +1,4 @@
-class_name Maid
+class_name Big_Zam
 extends CharacterBody2D
 
 enum BossState {
@@ -30,15 +30,14 @@ signal died
 @onready var screensize  = get_viewport_rect().size
 @onready var hit_flash_anim_player = $HitFlashAnimationPlayer
 @onready var spawn_points = {
-	"spawnpoint_1" : $SpawnPoint,
-	"spawnpoint_2" : $SpawnPoint2,
+	"spawnpoint_1" : %SpawnPoint,
+	"spawnpoint_2" : %SpawnPoint2,
 	"spawnpoint_3" : $SpawnPoint3,
+	"spawnpoint_4" : $SpawnPoint4,
 }
 
 var bullet_scene = preload("res://enemy_bullet.tscn")
 var hp = 100
-func _process(delta: float) -> void:
-	$SpawnPoint.rotation += deg_to_rad(90.0) * delta
 func _physics_process(delta: float) -> void:
 	move_speed = clamp(move_speed, min_speed, 1000)
 	state_time += delta
@@ -75,9 +74,10 @@ func change_state(new_state: BossState) -> void:
 		
 	match state:
 		BossState.ATTACK_1:
-			var point = spawn_points["spawnpoint_1"]
-			point.active = true
-			point.spawn()
+			for point_name in ["spawnpoint_1", "spawnpoint_2", "spawnpoint_3", "spawnpoint_4"]:
+				var point = spawn_points[point_name]
+				point.active = true
+				point.spawn()
 
 		BossState.ATTACK_2:
 			var point = spawn_points["spawnpoint_2"]
@@ -89,7 +89,7 @@ func change_state(new_state: BossState) -> void:
 			point.active = true
 			point.spawn()
 func enter_state(_delta: float) -> void:
-	var target_y := 30.0
+	var target_y := 60.0
 	var distance := target_y - global_position.y
 
 	var eased_speed : float = clamp(distance * 3.0, 20.0, move_speed)
@@ -118,10 +118,10 @@ func return_state(_delta: float) -> void:
 	velocity = global_position.direction_to(original_position) * return_speed
 
 func attack_1(_delta: float) -> void:
-	velocity.x = cos(state_time * 2.0) * 150.0
+	velocity.x = cos(state_time * 2.0) * 60
 	velocity.y = cos(state_time * 3) * 20.0
 	
-	if state_time >= 4.0:
+	if state_time >= 30.0:
 		next_state = BossState.ATTACK_2
 		change_state(BossState.RETURN)
 

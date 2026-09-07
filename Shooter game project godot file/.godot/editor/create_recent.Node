@@ -1,8 +1,8 @@
-BulletPattern
 SpawnPattern
+BulletPattern
+SpawnPoint
 WorldEnvironment
 CharacterBody2D
-SpawnPoint
 Label
 VBoxContainer
 ColorRect
