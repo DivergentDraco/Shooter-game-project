@@ -1,8 +1,9 @@
+LaserBeam
+CharacterBody2D
 SpawnPattern
 BulletPattern
 SpawnPoint
 WorldEnvironment
-CharacterBody2D
 Label
 VBoxContainer
 ColorRect

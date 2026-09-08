@@ -25,9 +25,7 @@
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="23_facbu"]
 [ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="23_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://cegbjppyb37gg" path="res://Sprites and Animations/fairy_right.png" id="24_b1qrp"]
-[ext_resource type="Script" uid="uid://d0yx13aal1x7y" path="res://Enemy/UFO enemy/UFO_path_follow_2d.gd" id="25_0cp0l"]
 [ext_resource type="Texture2D" uid="uid://cdyc8xsgux0u1" path="res://Sprites and Animations/fairy_left.png" id="26_come4"]
-[ext_resource type="Script" uid="uid://cmgkfl60a5wid" path="res://Enemy/UFO enemy/UFOEnemy.gd" id="26_d2t1y"]
 [ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="27_gngh3"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="28_0n3wm"]
 [ext_resource type="Script" uid="uid://cfg5vce6oxtyb" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="29_qnost"]
@@ -53,6 +51,7 @@ adjustment_enabled = true
 resource_name = "PatternOne"
 script = ExtResource("4_d13ii")
 bullet = "2"
+iterations = 3
 cooldown_spawn = 0.1
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
 
@@ -1142,6 +1141,61 @@ _data = {
 }
 point_count = 8
 
+[sub_resource type="GDScript" id="GDScript_ok6jj"]
+script/source = "extends PathFollow2D
+
+var speed = 10
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	progress_ratio = delta * speed
+"
+
+[sub_resource type="GDScript" id="GDScript_facbu"]
+script/source = "extends Area2D
+
+signal died 
+
+var start_pos = Vector2.ZERO
+var speed = 100
+var bullet_scene = preload(\"res://enemy_bullet.tscn\")
+var anchor
+var follow_anchor = false
+var hp = 26
+
+@onready var screensize  = get_viewport_rect().size
+@onready var hit_flash_anim_player = $HitFlashAnimationPlayer
+
+func start(pos):
+	follow_anchor = false
+	speed = 50
+	start_pos = pos
+	await get_tree().create_timer(randf_range(0.25, 0.55)).timeout
+	var tw = create_tween().set_trans(Tween.TRANS_BACK)
+	await tw.finished
+	follow_anchor = true
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+
+func explode():
+	if hp > 0:
+		hp -= 1
+		hit_flash_anim_player.play(\"hit_flash\")
+	else: 
+		speed = 0
+		$AnimatedSprite2D.play(\"explode\")
+		set_deferred(\"monitorable\", false)
+		died.emit(5)
+		$ExplodeSFX.play()
+		await $AnimatedSprite2D.animation_finished
+		queue_free()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited():
+	queue_free()
+"
+
 [sub_resource type="Animation" id="Animation_kcb6x"]
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1418,7 +1472,7 @@ _bundled = {
 "node_ids": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 "node_paths": [NodePath("."), NodePath("./UFOPath2D"), NodePath("./UFOPath2D/PathFollow2D"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy/Node2D"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy/Node2D"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy/Node2D"), NodePath("."), NodePath("UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy/MoveTimer"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy/ShootTimer"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy/VisibleOnScreenNotifier2D")],
 "nodes": PackedInt32Array(-1, -1, 1, 0, -1, 1, 2, 0, 0, 1073741824, 0, 4, 3, -1, 2, 5, 1, 6, 2, 0, 1073741825, 0, 8, 7, -1, 4, 9, 3, 10, 4, 11, 5, 12, 6, 0, 1073741826, 0, 14, 13, -1, 2, 16, 7, 17, 8, 1, 15, 1073741827, 0, 19, 18, -1, 3, 20, 9, 21, 10, 22, 11, 0, 1073741828, 0, 24, 23, -1, 5, 25, 12, 26, 13, 27, 14, 28, 15, 29, 16, 0, 1073741829, 0, 31, 30, -1, 1, 32, 17, 0, 1073741830, 0, 34, 33, -1, 2, 35, 18, 36, 19, 0, 1073741831, 0, 38, 37, -1, 1, 39, 20, 0, 1073741832, 0, 41, 40, -1, 1, 42, 21, 0, 1073741833, 0, 44, 43, -1, 3, 45, 22, 46, 23, 47, 24, 0, 1073741834, 0, 49, 48, -1, 0, 0, 1073741835, 0, 51, 50, -1, 0, 0, 1073741836, 0, 53, 52, -1, 4, 54, 25, 55, 26, 56, 27, 57, 28, 0, 1073741837, 0, 59, 58, -1, 10, 60, 29, 61, 30, 62, 31, 63, 32, 64, 33, 65, 34, 66, 35, 67, 36, 68, 37, 69, 38, 0, 1073741838, 0, 71, 70, -1, 4, 72, 39, 73, 40, 74, 41, 75, 42, 0, 1073741839, 0, 77, 76, -1, 4, 78, 43, 79, 44, 80, 45, 81, 46, 0),
-"variants": [true, Vector2(109, 14), SubResource("Curve2D_sfs1t"), 1.5708, false, false, ExtResource("25_0cp0l"), -1.5708, ExtResource("26_d2t1y"), NodePath("../../.."), {
+"variants": [true, Vector2(109, 14), SubResource("Curve2D_sfs1t"), 1.5708, false, false, SubResource("GDScript_ok6jj"), -1.5708, SubResource("GDScript_facbu"), NodePath("../../.."), {
 &"": SubResource("AnimationLibrary_ve51y")
 }, "new_animation", SubResource("ShaderMaterial_jdcfm"), SubResource("SpriteFrames_sm6fg"), &"UFO_animation", "UFO_animation", 0.0274713, SubResource("RectangleShape2D_b17eg"), NodePath("../AnimatedSprite2D"), {
 &"": SubResource("AnimationLibrary_rqtf5")
