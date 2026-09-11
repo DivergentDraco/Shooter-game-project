@@ -25,9 +25,7 @@
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="23_facbu"]
 [ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="23_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://cegbjppyb37gg" path="res://Sprites and Animations/fairy_right.png" id="24_b1qrp"]
-[ext_resource type="Script" uid="uid://d0yx13aal1x7y" path="res://Enemy/UFO enemy/UFO_path_follow_2d.gd" id="25_0cp0l"]
 [ext_resource type="Texture2D" uid="uid://cdyc8xsgux0u1" path="res://Sprites and Animations/fairy_left.png" id="26_come4"]
-[ext_resource type="Script" uid="uid://cmgkfl60a5wid" path="res://Enemy/UFO enemy/UFOEnemy.gd" id="26_d2t1y"]
 [ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="27_gngh3"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="28_0n3wm"]
 [ext_resource type="Script" uid="uid://cfg5vce6oxtyb" path="res://addons/BulletUpHell/SpawnPatterns/PatternLine.gd" id="29_qnost"]
@@ -53,6 +51,7 @@ adjustment_enabled = true
 resource_name = "PatternOne"
 script = ExtResource("4_d13ii")
 bullet = "2"
+iterations = 3
 cooldown_spawn = 0.1
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
 
@@ -91,6 +90,30 @@ cooldown_spawn = 0.2
 cooldown_shoot = 0.1
 cooldown_next_shoot = 0.1
 metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_0cp0l"]
+
+[sub_resource type="Resource" id="Resource_g4v7s"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+angle_total = 2.6179938779914944
+angle_decal = 0.29670597283903605
+center = 3
+bullet = "5"
+nbr = 6
+iterations = -1
+cooldown_spawn = 0.3
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_d2t1y"]
+
+[sub_resource type="Resource" id="Resource_57qmd"]
+resource_name = "PatternOne"
+script = ExtResource("4_d13ii")
+bullet = "6"
+nbr = 3
+iterations = -1
+metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
 
 [sub_resource type="Curve2D" id="Curve2D_qsp4k"]
 
@@ -289,6 +312,71 @@ scale_multiplier = SubResource("Curve_d2t1y")
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_gngh3"]
+
+[sub_resource type="Curve" id="Curve_ok6jj"]
+_limits = [0.021052718, 253.73, 0.0, 1.0]
+_data = [Vector2(0, 0.021052718), 0.0, 0.0, 0, 0, Vector2(1, 253.73), 671.21747, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_0n3wm"]
+
+[sub_resource type="Resource" id="Resource_qnost"]
+script = ExtResource("7_a6jrf")
+speed = 300.0
+custom_data = {}
+a_speed_multi_iterations = 1
+a_speed_multi_scale = 1.0
+a_speed_multiplier = SubResource("Curve_ok6jj")
+scale_multiplier = SubResource("Curve_0n3wm")
+homing_type = 0
+homing_target = NodePath("../../CanvasLayer/CenterContainer/Player")
+homing_steer = 0.1
 homing_time_start = 0.0
 homing_duration = 999.0
 homing_detection_dist = 0.0
@@ -1053,6 +1141,61 @@ _data = {
 }
 point_count = 8
 
+[sub_resource type="GDScript" id="GDScript_ok6jj"]
+script/source = "extends PathFollow2D
+
+var speed = 10
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	progress_ratio = delta * speed
+"
+
+[sub_resource type="GDScript" id="GDScript_facbu"]
+script/source = "extends Area2D
+
+signal died 
+
+var start_pos = Vector2.ZERO
+var speed = 100
+var bullet_scene = preload(\"res://enemy_bullet.tscn\")
+var anchor
+var follow_anchor = false
+var hp = 26
+
+@onready var screensize  = get_viewport_rect().size
+@onready var hit_flash_anim_player = $HitFlashAnimationPlayer
+
+func start(pos):
+	follow_anchor = false
+	speed = 50
+	start_pos = pos
+	await get_tree().create_timer(randf_range(0.25, 0.55)).timeout
+	var tw = create_tween().set_trans(Tween.TRANS_BACK)
+	await tw.finished
+	follow_anchor = true
+	$ShootTimer.wait_time = randf_range(4, 20)
+	$ShootTimer.start()
+
+func explode():
+	if hp > 0:
+		hp -= 1
+		hit_flash_anim_player.play(\"hit_flash\")
+	else: 
+		speed = 0
+		$AnimatedSprite2D.play(\"explode\")
+		set_deferred(\"monitorable\", false)
+		died.emit(5)
+		$ExplodeSFX.play()
+		await $AnimatedSprite2D.animation_finished
+		queue_free()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited():
+	queue_free()
+"
+
 [sub_resource type="Animation" id="Animation_kcb6x"]
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1329,7 +1472,7 @@ _bundled = {
 "node_ids": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 "node_paths": [NodePath("."), NodePath("./UFOPath2D"), NodePath("./UFOPath2D/PathFollow2D"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy/Node2D"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy/Node2D"), NodePath("./UFOPath2D/PathFollow2D/UFOEnemy/Node2D"), NodePath("."), NodePath("UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy/MoveTimer"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy/ShootTimer"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy"), NodePath("UFOPath2D/PathFollow2D/UFOEnemy/VisibleOnScreenNotifier2D")],
 "nodes": PackedInt32Array(-1, -1, 1, 0, -1, 1, 2, 0, 0, 1073741824, 0, 4, 3, -1, 2, 5, 1, 6, 2, 0, 1073741825, 0, 8, 7, -1, 4, 9, 3, 10, 4, 11, 5, 12, 6, 0, 1073741826, 0, 14, 13, -1, 2, 16, 7, 17, 8, 1, 15, 1073741827, 0, 19, 18, -1, 3, 20, 9, 21, 10, 22, 11, 0, 1073741828, 0, 24, 23, -1, 5, 25, 12, 26, 13, 27, 14, 28, 15, 29, 16, 0, 1073741829, 0, 31, 30, -1, 1, 32, 17, 0, 1073741830, 0, 34, 33, -1, 2, 35, 18, 36, 19, 0, 1073741831, 0, 38, 37, -1, 1, 39, 20, 0, 1073741832, 0, 41, 40, -1, 1, 42, 21, 0, 1073741833, 0, 44, 43, -1, 3, 45, 22, 46, 23, 47, 24, 0, 1073741834, 0, 49, 48, -1, 0, 0, 1073741835, 0, 51, 50, -1, 0, 0, 1073741836, 0, 53, 52, -1, 4, 54, 25, 55, 26, 56, 27, 57, 28, 0, 1073741837, 0, 59, 58, -1, 10, 60, 29, 61, 30, 62, 31, 63, 32, 64, 33, 65, 34, 66, 35, 67, 36, 68, 37, 69, 38, 0, 1073741838, 0, 71, 70, -1, 4, 72, 39, 73, 40, 74, 41, 75, 42, 0, 1073741839, 0, 77, 76, -1, 4, 78, 43, 79, 44, 80, 45, 81, 46, 0),
-"variants": [true, Vector2(109, 14), SubResource("Curve2D_sfs1t"), 1.5708, false, false, ExtResource("25_0cp0l"), -1.5708, ExtResource("26_d2t1y"), NodePath("../../.."), {
+"variants": [true, Vector2(109, 14), SubResource("Curve2D_sfs1t"), 1.5708, false, false, SubResource("GDScript_ok6jj"), -1.5708, SubResource("GDScript_facbu"), NodePath("../../.."), {
 &"": SubResource("AnimationLibrary_ve51y")
 }, "new_animation", SubResource("ShaderMaterial_jdcfm"), SubResource("SpriteFrames_sm6fg"), &"UFO_animation", "UFO_animation", 0.0274713, SubResource("RectangleShape2D_b17eg"), NodePath("../AnimatedSprite2D"), {
 &"": SubResource("AnimationLibrary_rqtf5")
@@ -2049,6 +2192,20 @@ id = "5"
 pattern = SubResource("Resource_d0u6y")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
+[node name="SpawnPattern5" type="Path2D" parent="BulletPatternManager" unique_id=420230812]
+curve = SubResource("Curve2D_0cp0l")
+script = ExtResource("3_d13ii")
+id = "6"
+pattern = SubResource("Resource_g4v7s")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="SpawnPattern6" type="Path2D" parent="BulletPatternManager" unique_id=1954596392]
+curve = SubResource("Curve2D_d2t1y")
+script = ExtResource("3_d13ii")
+id = "7"
+pattern = SubResource("Resource_57qmd")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
 [node name="BulletPattern" type="Path2D" parent="BulletPatternManager" unique_id=2027436251]
 curve = SubResource("Curve2D_qsp4k")
 script = ExtResource("5_0odxb")
@@ -2077,19 +2234,19 @@ id = "5"
 props = SubResource("Resource_gngh3")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
+[node name="BulletPattern5" type="Path2D" parent="BulletPatternManager" unique_id=547569238]
+curve = SubResource("Curve2D_gngh3")
+script = ExtResource("5_0odxb")
+id = "6"
+props = SubResource("Resource_qnost")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
 [node name="StageManager" type="Node" parent="." unique_id=1113581236]
 script = ExtResource("3_074og")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1801651538]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=364955804]
-
-[node name="Polygon2D" type="Polygon2D" parent="CanvasLayer" unique_id=224047077]
-visible = false
-top_level = true
-position = Vector2(164, 0)
-color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(176, -32, 422, -15, 413, 336, 242, 341, 243, 0, -2, 0, -2, 339, -190, 324, -180, -38)
 
 [node name="UI" parent="CanvasLayer" unique_id=178016994 instance=ExtResource("1_ddoy4")]
 visible = false
@@ -2122,6 +2279,7 @@ layout_mode = 2
 text = "Press Z to start"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=578740909]
+z_index = -2
 texture_repeat = 2
 position = Vector2(120, 160)
 scale = Vector2(1.1, 1.1)

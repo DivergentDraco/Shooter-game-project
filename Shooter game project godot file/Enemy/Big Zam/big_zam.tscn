@@ -1,54 +1,43 @@
-[gd_scene format=3 uid="uid://wv5x0jf353wt"]
+[gd_scene format=3 uid="uid://b840cqtqdufn1"]
 
-[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/maid_enemy.gd" id="1_r26s6"]
-[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_4guvl"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_nci8s"]
-[ext_resource type="Texture2D" uid="uid://bmtoxk0xu36po" path="res://Sprites and Animations/maid_idle.png" id="4_fbbpf"]
-[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_3hqi0"]
-[ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_6pmxx"]
-[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_bibex"]
+[ext_resource type="Script" uid="uid://c44nanpsd0f3g" path="res://Enemy/Big Zam/big_zam.gd" id="1_psu7i"]
+[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_ish7g"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_ln1en"]
+[ext_resource type="Texture2D" uid="uid://buadx58c1aykh" path="res://Sprites and Animations/Sprite-000b1.png" id="4_psu7i"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_enqg3"]
+[ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_6jep4"]
+[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_8l7bv"]
+[ext_resource type="AudioStream" uid="uid://c3n3h2v2oah6v" path="res://SFX/sound.wav" id="8_cn55w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b4ewf"]
 resource_local_to_scene = true
-shader = ExtResource("2_4guvl")
+shader = ExtResource("2_ish7g")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("3_ln1en")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("3_ln1en")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("3_ln1en")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("3_ln1en")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("3_ln1en")
 region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("3_ln1en")
 region = Rect2(80, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lga16"]
-atlas = ExtResource("4_fbbpf")
-region = Rect2(0, 0, 43, 43)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rli40"]
-atlas = ExtResource("4_fbbpf")
-region = Rect2(43, 0, 43, 43)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kr1sr"]
-atlas = ExtResource("4_fbbpf")
-region = Rect2(86, 0, 43, 43)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_buun7"]
 animations = [{
@@ -77,13 +66,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lga16")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rli40")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kr1sr")
+"texture": ExtResource("4_psu7i")
 }],
 "loop": 1,
 "name": &"new_animation",
@@ -91,7 +74,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hmlpi"]
-size = Vector2(20, 42)
+size = Vector2(40, 42)
 
 [sub_resource type="Animation" id="Animation_jemjn"]
 length = 0.001
@@ -130,15 +113,16 @@ _data = {
 &"hit_flash": SubResource("Animation_iryfb")
 }
 
-[node name="Maid" type="CharacterBody2D" unique_id=1632099671 groups=["enemies"]]
-z_index = 2
+[node name="Big Zam" type="CharacterBody2D" unique_id=1632099671 groups=["enemies"]]
+z_index = -1
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_r26s6")
+script = ExtResource("1_psu7i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1323609506]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_b4ewf")
+position = Vector2(0, -64)
 sprite_frames = SubResource("SpriteFrames_buun7")
 animation = &"new_animation"
 autoplay = "new_animation"
@@ -162,7 +146,7 @@ one_shot = true
 
 [node name="ExplodeSFX" type="AudioStreamPlayer" parent="." unique_id=1365798279]
 unique_name_in_owner = true
-stream = ExtResource("5_3hqi0")
+stream = ExtResource("5_enqg3")
 volume_db = -12.329
 max_polyphony = 10
 bus = &"SFX"
@@ -173,14 +157,14 @@ rect = Rect2(-10, -21, 20, 42)
 
 [node name="MovementPattern" type="Node" parent="." unique_id=1604672308]
 unique_name_in_owner = true
-script = ExtResource("6_6pmxx")
+script = ExtResource("6_6jep4")
 
 [node name="SpawnPoint" type="Node2D" parent="." unique_id=1350726589]
 unique_name_in_owner = true
-script = ExtResource("7_bibex")
+position = Vector2(16, 40)
+script = ExtResource("7_8l7bv")
 active = false
-auto_pattern_id = "5"
-rotating_speed = 7.0
+auto_pattern_id = "6"
 pool_amount = 300
 auto_start_after_time = 0.5
 r_active_chances = 1.0
@@ -194,10 +178,12 @@ metadata/_custom_type_script = "uid://btd0n20blj8nd"
 
 [node name="SpawnPoint2" type="Node2D" parent="." unique_id=1151862108]
 unique_name_in_owner = true
-script = ExtResource("7_bibex")
+position = Vector2(-16, 40)
+script = ExtResource("7_8l7bv")
 active = false
-auto_pattern_id = "3"
-auto_start_after_time = 0.7
+auto_pattern_id = "6"
+pool_amount = 300
+auto_start_after_time = 0.5
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""
@@ -209,10 +195,10 @@ metadata/_custom_type_script = "uid://btd0n20blj8nd"
 
 [node name="SpawnPoint3" type="Node2D" parent="." unique_id=866556360]
 unique_name_in_owner = true
-script = ExtResource("7_bibex")
+position = Vector2(56, 16)
+script = ExtResource("7_8l7bv")
 active = false
-auto_pattern_id = "4"
-auto_start_after_time = 0.4
+auto_pattern_id = "7"
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""
@@ -221,3 +207,24 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 metadata/_custom_type_script = "uid://btd0n20blj8nd"
+
+[node name="SpawnPoint4" type="Node2D" parent="." unique_id=291957114]
+unique_name_in_owner = true
+position = Vector2(-56, 16)
+script = ExtResource("7_8l7bv")
+active = false
+auto_pattern_id = "7"
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://btd0n20blj8nd"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1605111163]
+stream = ExtResource("8_cn55w")
+volume_db = 5.719
+autoplay = true
+bus = &"SFX"

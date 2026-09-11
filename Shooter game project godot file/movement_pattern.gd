@@ -7,6 +7,8 @@ enum Pattern {
 	SINE,
 	DIAGONAL_LEFT,
 	DIAGONAL_RIGHT,
+	SWERVE_LEFT,
+	SWERVE_RIGHT,
 }
 
 @export var pattern = Pattern.STRAIGHT
@@ -43,23 +45,11 @@ func get_velocity(delta: float) -> Vector2:
 			return Vector2(-100.0, speed)
 		Pattern.DIAGONAL_RIGHT:
 			return Vector2(100.0, speed)
+		Pattern.SWERVE_LEFT:
+			return Vector2(
+				-age * speed, 100.0)
+		Pattern.SWERVE_RIGHT:
+			return Vector2(
+				age * speed, 100.0)
 
 	return Vector2.ZERO
-
-func no_pattern():
-	return Vector2() * 0
-
-func straight_pattern() -> Vector2:
-	return direction.normalized() * speed
-
-func sine_pattern():
-	return Vector2(
-		sin(age * sine_frequency) * sine_strength,
-		speed
-	)
-
-func diagonal_left_pattern():
-	return Vector2(-100, speed)
-
-func diagonal_right_pattern():
-	return Vector2(100, speed)

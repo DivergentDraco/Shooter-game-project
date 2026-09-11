@@ -8,10 +8,12 @@ var pending_spawns := 0
 var stage_started := false
 
 var wave_order = [
-	"wave_3",
-	"wave_2",
 	"wave_1",
 	"wave_2",
+	"wave_5",
+	"wave_4",
+	"wave_3",
+	"wave_6",
 ]
 
 func _process(_delta: float) -> void:
@@ -36,10 +38,32 @@ func start_stage() -> void:
 		
 func start_next_wave() -> void:
 	if wave_index >= wave_order.size():
-		#print("All waves cleared!")
 		return
 
 	var wave_name = wave_order[wave_index]
+
+	var anim = $"../AnimationPlayer"
+	match wave_name:
+		"wave_1":
+			anim.speed_scale = 1.0
+
+		"wave_2":
+			anim.speed_scale = 1.0
+
+		"wave_3":
+			anim.speed_scale = 2.0
+
+		"wave_4":
+			anim.speed_scale = 2
+
+		"wave_5":
+			anim.speed_scale = 1
+
+		"wave_6":
+			anim.speed_scale = 2
+
+		_:
+			anim.speed_scale = 1.0
 
 	spawn_wave(wave_name)
 
@@ -48,6 +72,8 @@ func start_next_wave() -> void:
 
 const FAIRY = preload("res://Enemy/Fairy Enemy/fairy_enemy.tscn")
 const MAID = preload("res://Enemy/Maid Enemy/maid_enemy.tscn")
+const UFO = preload("res://Enemy/UFO/ufo.tscn")
+const BIG_ZAM = preload("res://Enemy/Big Zam/big_zam.tscn")
 
 var waves = {
 	"wave_1": [
@@ -310,8 +336,66 @@ var waves = {
 		#"min_speed": 0,
 		#"delay":0,
 		},
-	]
-	
+	],
+	"wave_4": [
+		{"enemy": BIG_ZAM, 
+		"pos": Vector2(122, 500), 
+		#"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		#"speed": 250,
+		#"acceleration": -300,
+		#"min_speed": 0,
+		#"delay":0,
+		},
+	],
+	"wave_5": [
+		{"enemy": FAIRY, 
+		"pos": Vector2(80, -10), 
+		"movement_pattern": MovementPattern.Pattern.SWERVE_LEFT,
+		"delay":0,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(80, -10), 
+		"movement_pattern": MovementPattern.Pattern.SWERVE_LEFT,
+		"delay":0.3,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(80, -10), 
+		"movement_pattern": MovementPattern.Pattern.SWERVE_LEFT,
+		"delay":0.6,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(160, -10), 
+		"movement_pattern": MovementPattern.Pattern.SWERVE_RIGHT,
+		"delay":1.2,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(160, -10), 
+		"movement_pattern": MovementPattern.Pattern.SWERVE_RIGHT,
+		"delay":1.5,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(160, -10), 
+		"movement_pattern": MovementPattern.Pattern.SWERVE_RIGHT,
+		"delay":1.8,
+		"spawnpoint": 1,
+		},
+	],
+	"wave_6": [
+		{"enemy": UFO, 
+		"pos": Vector2(120, 100), 
+		},
+		{"enemy": UFO, 
+		"pos": Vector2(90, 100), 
+		},
+		{"enemy": UFO, 
+		"pos": Vector2(150, 100), 
+		},
+	],
 }
 func spawn_wave(wave_name: String) -> void:
 	if not waves.has(wave_name):
@@ -364,27 +448,3 @@ func spawn_enemy(entry: Dictionary) -> void:
 	
 	if entry.has("direction"):
 		enemy.set_movement_direction(entry.direction)
-		
-
-
-func spawn_line_wave():
-	for i in range(5):
-		var enemy = FAIRY.instantiate()
-
-		enemy.global_position = Vector2(
-			80 + i * 70,
-			-50
-		)
-
-		$Enemies.add_child(enemy)
-		
-func spawn_v_wave():
-	var positions = [
-		Vector2(100,-40),
-		Vector2(150,-70),
-		Vector2(200,-40),
-	]
-	for pos in positions:
-		var enemy = FAIRY.instantiate()
-		$Enemies.add_child(enemy)
-		enemy.global_position = pos

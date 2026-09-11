@@ -1,20 +1,19 @@
-class_name Maid
+class_name Ufo
 extends CharacterBody2D
 
 enum BossState {
 	ENTER,
 	ATTACK_1,
-	ATTACK_2,
-	ATTACK_3,
 	DEAD,
 	RETURN,
+	FLEE,
 }
 
 var original_position: Vector2
 var next_state: BossState
 
 @export var state: BossState = BossState.ENTER
-@export var move_speed = 100
+@export var move_speed = 1000
 @export var min_speed = 0
 var attack_center: Vector2
 var state_time := 0.0
@@ -36,9 +35,11 @@ signal died
 }
 
 var bullet_scene = preload("res://enemy_bullet.tscn")
-var hp = 100
-func _process(delta: float) -> void:
-	$SpawnPoint.rotation += deg_to_rad(90.0) * delta
+var hp = 20
+
+func _ready() -> void:
+	change_state(BossState.ENTER)
+
 func _physics_process(delta: float) -> void:
 	move_speed = clamp(move_speed, min_speed, 1000)
 	state_time += delta
@@ -50,14 +51,11 @@ func _physics_process(delta: float) -> void:
 		BossState.ATTACK_1:
 			attack_1(delta)
 
-		BossState.ATTACK_2:
-			attack_2(delta)
-
-		BossState.ATTACK_3:
-			attack_3(delta)
-
 		BossState.DEAD:
 			velocity = Vector2.ZERO
+			
+		BossState.FLEE:
+			flee(delta)
 			
 		BossState.RETURN:
 			return_state(delta)
@@ -75,33 +73,29 @@ func change_state(new_state: BossState) -> void:
 		
 	match state:
 		BossState.ATTACK_1:
+			holding = false
+			hold_time = 0.0
+			set_next_destination()
+
 			var point = spawn_points["spawnpoint_1"]
 			point.active = true
 			point.spawn()
-
-		BossState.ATTACK_2:
-			var point = spawn_points["spawnpoint_2"]
-			point.active = true
-			point.spawn()
-
-		BossState.ATTACK_3:
-			var point = spawn_points["spawnpoint_3"]
-			point.active = true
-			point.spawn()
+			
 func enter_state(_delta: float) -> void:
-	var target_y := 30.0
-	var distance := target_y - global_position.y
+	set_collision_layer_value(2, false)
+	var target_y: float = 30.0
+	var distance: float = target_y - global_position.y
 
-	var eased_speed : float = clamp(distance * 3.0, 20.0, move_speed)
+	var eased_speed: float = clampf(absf(distance) * 3.0, 20.0, move_speed)
 
-	velocity = Vector2(0, eased_speed)
+	velocity.y = signf(distance) * eased_speed
+	velocity.x = 0.0
 
-	if global_position.y >= target_y - 1.0:
+	if absf(distance) < 1.0:
 		global_position.y = target_y
 		velocity = Vector2.ZERO
-		
+
 		original_position = global_position
-		
 		change_state(BossState.ATTACK_1)
 
 func return_state(_delta: float) -> void:
@@ -117,32 +111,57 @@ func return_state(_delta: float) -> void:
 
 	velocity = global_position.direction_to(original_position) * return_speed
 
-func attack_1(_delta: float) -> void:
-	velocity.x = cos(state_time * 2.0) * 150.0
-	velocity.y = cos(state_time * 3) * 20.0
-	
-	if state_time >= 4.0:
-		next_state = BossState.ATTACK_2
-		change_state(BossState.RETURN)
+var destination : Vector2
+var holding := false
+var hold_time : float = 0
 
-func attack_2(delta: float) -> void:
-	angle += speed * delta
-	
-	var offset = Vector2(cos(angle), sin(angle)) * radius
-	
-	velocity = center_point + offset
+@export var min_bounds := Vector2(30.0, 40.0)
+@export var max_bounds := Vector2(220.0, 100.0)
 
-	if state_time >= 5.0:
-		next_state = BossState.ATTACK_3
-		change_state(BossState.RETURN)
-		
-func attack_3(_delta: float) -> void:
-	velocity.x = cos(state_time * 2.0) * 150.0
-	velocity.y = 0.0
+func set_next_destination() -> void:
+	var new_destination := Vector2.ZERO
+
+	while true:
+		new_destination = Vector2(
+			randf_range(min_bounds.x, max_bounds.x),
+			randf_range(min_bounds.y, max_bounds.y)
+		)
+
+		if global_position.distance_to(new_destination) > 50.0:
+			break
+
+	destination = new_destination
+
+func attack_1(delta: float) -> void:
+	set_collision_layer_value(2, true)
+	velocity = Vector2.ZERO
+
+	if holding:
+		hold_time += delta
+
+		if hold_time >= 1.0:
+			hold_time = 0.0
+			holding = false
+			set_next_destination()
+
+		return
+
+	global_position = global_position.move_toward(
+		destination,
+		move_speed * delta
+	)
+
+	if global_position.distance_to(destination) < 1.0:
+		global_position = destination
+		holding = true
+		hold_time = 0.0
 
 	if state_time >= 6.0:
-		next_state = BossState.ATTACK_1
+		next_state = BossState.FLEE
 		change_state(BossState.RETURN)
+
+func flee(_delta: float) -> void:
+	velocity.y = -100
 		
 func set_movement_pattern(new_pattern):
 	movement_pattern.pattern = new_pattern
@@ -192,7 +211,7 @@ func explode():
 		died.emit(5)
 		$ExplodeSFX.play()
 		await $AnimatedSprite2D.animation_finished
-		Spawning.clear_all_bullets()
+		#Spawning.clear_all_bullets()
 		queue_free()
 
 var has_entered_screen := false

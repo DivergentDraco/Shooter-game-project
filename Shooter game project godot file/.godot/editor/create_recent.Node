@@ -1,8 +1,10 @@
-BulletPattern
-SpawnPattern
-WorldEnvironment
+AudioStreamPlayer2D
+LaserBeam
 CharacterBody2D
+SpawnPattern
+BulletPattern
 SpawnPoint
+WorldEnvironment
 Label
 VBoxContainer
 ColorRect
@@ -10,5 +12,3 @@ CollisionShape2D
 Area2D
 RayCast2D
 Node2D
-Node
-PathFollow2D

@@ -1,56 +1,60 @@
-[gd_scene format=3 uid="uid://wv5x0jf353wt"]
+[gd_scene format=3 uid="uid://dk2mpcs1gvxao"]
 
-[ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/maid_enemy.gd" id="1_r26s6"]
-[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_4guvl"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_nci8s"]
-[ext_resource type="Texture2D" uid="uid://bmtoxk0xu36po" path="res://Sprites and Animations/maid_idle.png" id="4_fbbpf"]
-[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_3hqi0"]
-[ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_6pmxx"]
-[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_bibex"]
+[ext_resource type="Script" uid="uid://dc1i5mgi51ppt" path="res://Enemy/UFO/ufo.gd" id="1_8ojbe"]
+[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="1_puuni"]
+[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="2_8ojbe"]
+[ext_resource type="Texture2D" uid="uid://dm77pkvdky0el" path="res://Sprites and Animations/ufo_idle.png" id="3_ykmwa"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="4_8smqo"]
+[ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="5_0oskk"]
+[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="6_c17ok"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b4ewf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a8oe6"]
 resource_local_to_scene = true
-shader = ExtResource("2_4guvl")
+shader = ExtResource("1_puuni")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("2_8ojbe")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("2_8ojbe")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("2_8ojbe")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("2_8ojbe")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("2_8ojbe")
 region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
-atlas = ExtResource("3_nci8s")
+atlas = ExtResource("2_8ojbe")
 region = Rect2(80, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lga16"]
-atlas = ExtResource("4_fbbpf")
-region = Rect2(0, 0, 43, 43)
+[sub_resource type="AtlasTexture" id="AtlasTexture_13cq5"]
+atlas = ExtResource("3_ykmwa")
+region = Rect2(0, 0, 28, 18)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rli40"]
-atlas = ExtResource("4_fbbpf")
-region = Rect2(43, 0, 43, 43)
+[sub_resource type="AtlasTexture" id="AtlasTexture_l1mqu"]
+atlas = ExtResource("3_ykmwa")
+region = Rect2(28, 0, 28, 18)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_kr1sr"]
-atlas = ExtResource("4_fbbpf")
-region = Rect2(86, 0, 43, 43)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ww84i"]
+atlas = ExtResource("3_ykmwa")
+region = Rect2(56, 0, 28, 18)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_buun7"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjfet"]
+atlas = ExtResource("3_ykmwa")
+region = Rect2(84, 0, 28, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_omy0s"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -77,21 +81,24 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lga16")
+"texture": SubResource("AtlasTexture_13cq5")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rli40")
+"texture": SubResource("AtlasTexture_l1mqu")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_kr1sr")
+"texture": SubResource("AtlasTexture_ww84i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vjfet")
 }],
 "loop": 1,
 "name": &"new_animation",
 "speed": 4.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmlpi"]
-size = Vector2(20, 42)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t2tob"]
+size = Vector2(26, 16)
 
 [sub_resource type="Animation" id="Animation_jemjn"]
 length = 0.001
@@ -124,65 +131,63 @@ tracks/0/keys = {
 "values": [true, false]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_juw7w"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vdekh"]
 _data = {
 &"RESET": SubResource("Animation_jemjn"),
 &"hit_flash": SubResource("Animation_iryfb")
 }
 
-[node name="Maid" type="CharacterBody2D" unique_id=1632099671 groups=["enemies"]]
-z_index = 2
+[node name="Ufo" type="CharacterBody2D" unique_id=677570530 groups=["enemies"]]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_r26s6")
+script = ExtResource("1_8ojbe")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1323609506]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1509038607]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_b4ewf")
-sprite_frames = SubResource("SpriteFrames_buun7")
+material = SubResource("ShaderMaterial_a8oe6")
+sprite_frames = SubResource("SpriteFrames_omy0s")
 animation = &"new_animation"
 autoplay = "new_animation"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1725792919]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1904279064]
 unique_name_in_owner = true
-shape = SubResource("RectangleShape2D_hmlpi")
+shape = SubResource("RectangleShape2D_t2tob")
 
-[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="." unique_id=1669188919]
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="." unique_id=1316696153]
 unique_name_in_owner = true
 root_node = NodePath("../AnimatedSprite2D")
-libraries/ = SubResource("AnimationLibrary_juw7w")
+libraries/ = SubResource("AnimationLibrary_vdekh")
 
-[node name="MoveTimer" type="Timer" parent="." unique_id=705005095]
+[node name="MoveTimer" type="Timer" parent="." unique_id=2126716740]
 unique_name_in_owner = true
 one_shot = true
 
-[node name="ShootTimer" type="Timer" parent="." unique_id=818877816]
+[node name="ShootTimer" type="Timer" parent="." unique_id=783815306]
 unique_name_in_owner = true
 one_shot = true
 
-[node name="ExplodeSFX" type="AudioStreamPlayer" parent="." unique_id=1365798279]
+[node name="ExplodeSFX" type="AudioStreamPlayer2D" parent="." unique_id=801492624]
 unique_name_in_owner = true
-stream = ExtResource("5_3hqi0")
+stream = ExtResource("4_8smqo")
 volume_db = -12.329
 max_polyphony = 10
+panning_strength = 0.0
 bus = &"SFX"
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1180243990]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=110133921]
 unique_name_in_owner = true
-rect = Rect2(-10, -21, 20, 42)
+rect = Rect2(-13, -8, 26, 16)
 
-[node name="MovementPattern" type="Node" parent="." unique_id=1604672308]
+[node name="MovementPattern" type="Node" parent="." unique_id=2061869969]
 unique_name_in_owner = true
-script = ExtResource("6_6pmxx")
+script = ExtResource("5_0oskk")
 
-[node name="SpawnPoint" type="Node2D" parent="." unique_id=1350726589]
+[node name="SpawnPoint" type="Node2D" parent="." unique_id=665064455]
 unique_name_in_owner = true
-script = ExtResource("7_bibex")
+script = ExtResource("6_c17ok")
 active = false
-auto_pattern_id = "5"
-rotating_speed = 7.0
-pool_amount = 300
-auto_start_after_time = 0.5
+auto_pattern_id = "6"
+auto_start_after_time = 0.2
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""
@@ -192,9 +197,9 @@ r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 metadata/_custom_type_script = "uid://btd0n20blj8nd"
 
-[node name="SpawnPoint2" type="Node2D" parent="." unique_id=1151862108]
+[node name="SpawnPoint2" type="Node2D" parent="." unique_id=1620446148]
 unique_name_in_owner = true
-script = ExtResource("7_bibex")
+script = ExtResource("6_c17ok")
 active = false
 auto_pattern_id = "3"
 auto_start_after_time = 0.7
@@ -207,9 +212,9 @@ r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 metadata/_custom_type_script = "uid://btd0n20blj8nd"
 
-[node name="SpawnPoint3" type="Node2D" parent="." unique_id=866556360]
+[node name="SpawnPoint3" type="Node2D" parent="." unique_id=494313985]
 unique_name_in_owner = true
-script = ExtResource("7_bibex")
+script = ExtResource("6_c17ok")
 active = false
 auto_pattern_id = "4"
 auto_start_after_time = 0.4

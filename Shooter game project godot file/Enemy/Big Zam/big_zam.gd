@@ -1,7 +1,8 @@
-class_name Maid
+class_name Big_Zam
 extends CharacterBody2D
 
 enum BossState {
+	INTRO,
 	ENTER,
 	ATTACK_1,
 	ATTACK_2,
@@ -13,7 +14,7 @@ enum BossState {
 var original_position: Vector2
 var next_state: BossState
 
-@export var state: BossState = BossState.ENTER
+@export var state: BossState = BossState.INTRO
 @export var move_speed = 100
 @export var min_speed = 0
 var attack_center: Vector2
@@ -25,25 +26,49 @@ var state_time := 0.0
 
 var angle: float = 0.0
 
+@onready var sprite = $AnimatedSprite2D
+
+var normal_sprite_scale: Vector2
+var normal_sprite_modulate: Color
+
+@export var intro_speed: float = 500.0
+@export var intro_target_y: float = -300.0
+@export var intro_start_y: float = 1000.0
+
+var normal_scale: Vector2
+var normal_modulate: Color
+
 signal died 
 @onready var movement_pattern = $MovementPattern
 @onready var screensize  = get_viewport_rect().size
 @onready var hit_flash_anim_player = $HitFlashAnimationPlayer
 @onready var spawn_points = {
-	"spawnpoint_1" : $SpawnPoint,
-	"spawnpoint_2" : $SpawnPoint2,
+	"spawnpoint_1" : %SpawnPoint,
+	"spawnpoint_2" : %SpawnPoint2,
 	"spawnpoint_3" : $SpawnPoint3,
+	"spawnpoint_4" : $SpawnPoint4,
 }
 
 var bullet_scene = preload("res://enemy_bullet.tscn")
 var hp = 100
-func _process(delta: float) -> void:
-	$SpawnPoint.rotation += deg_to_rad(90.0) * delta
+
+func _ready() -> void:
+	normal_scale = scale
+	normal_modulate = modulate
+
+	scale = normal_scale * 0.5
+	modulate = Color(0.107, 0.107, 0.107, 1.0)
+
+	set_collision_layer_value(2, false)
+
 func _physics_process(delta: float) -> void:
 	move_speed = clamp(move_speed, min_speed, 1000)
 	state_time += delta
 
 	match state:
+		BossState.INTRO:
+			intro_state(delta)
+		
 		BossState.ENTER:
 			enter_state(delta)
 
@@ -75,9 +100,10 @@ func change_state(new_state: BossState) -> void:
 		
 	match state:
 		BossState.ATTACK_1:
-			var point = spawn_points["spawnpoint_1"]
-			point.active = true
-			point.spawn()
+			for point_name in ["spawnpoint_1", "spawnpoint_2", "spawnpoint_3", "spawnpoint_4"]:
+				var point = spawn_points[point_name]
+				point.active = true
+				point.spawn()
 
 		BossState.ATTACK_2:
 			var point = spawn_points["spawnpoint_2"]
@@ -88,21 +114,46 @@ func change_state(new_state: BossState) -> void:
 			var point = spawn_points["spawnpoint_3"]
 			point.active = true
 			point.spawn()
+
+func intro_state(_delta: float) -> void:
+	set_collision_layer_value(2, false)
+	
+	velocity = Vector2(0.0, -intro_speed)
+
+	if global_position.y <= intro_target_y:
+		global_position.y = intro_target_y
+		velocity = Vector2.ZERO
+
+		scale = normal_scale
+		modulate = normal_modulate
+
+		change_state(BossState.ENTER)
+			
 func enter_state(_delta: float) -> void:
-	var target_y := 30.0
-	var distance := target_y - global_position.y
+	set_collision_layer_value(2, false)
 
-	var eased_speed : float = clamp(distance * 3.0, 20.0, move_speed)
+	var target_y := 60.0
+	var distance: float = target_y - global_position.y
 
-	velocity = Vector2(0, eased_speed)
+	var eased_speed: float = clampf(
+		absf(distance) * 3.0,
+		20.0,
+		move_speed
+	)
 
-	if global_position.y >= target_y - 1.0:
+	velocity = Vector2(
+		0.0,
+		signf(distance) * eased_speed
+	)
+
+	if absf(distance) < 1.0:
 		global_position.y = target_y
 		velocity = Vector2.ZERO
-		
+
 		original_position = global_position
-		
+
 		change_state(BossState.ATTACK_1)
+		set_collision_layer_value(2, true)
 
 func return_state(_delta: float) -> void:
 	var distance: float = global_position.distance_to(original_position)
@@ -118,10 +169,10 @@ func return_state(_delta: float) -> void:
 	velocity = global_position.direction_to(original_position) * return_speed
 
 func attack_1(_delta: float) -> void:
-	velocity.x = cos(state_time * 2.0) * 150.0
+	velocity.x = cos(state_time * 2.0) * 60
 	velocity.y = cos(state_time * 3) * 20.0
 	
-	if state_time >= 4.0:
+	if state_time >= 30.0:
 		next_state = BossState.ATTACK_2
 		change_state(BossState.RETURN)
 
