@@ -8,7 +8,7 @@ var pending_spawns := 0
 var stage_started := false
 
 var wave_order = [
-	"wave_6",
+	"wave_1",
 	"wave_2",
 	"wave_5",
 	"wave_4",
@@ -38,10 +38,32 @@ func start_stage() -> void:
 		
 func start_next_wave() -> void:
 	if wave_index >= wave_order.size():
-		#print("All waves cleared!")
 		return
 
 	var wave_name = wave_order[wave_index]
+
+	var anim = $"../AnimationPlayer"
+	match wave_name:
+		"wave_1":
+			anim.speed_scale = 1.0
+
+		"wave_2":
+			anim.speed_scale = 1.0
+
+		"wave_3":
+			anim.speed_scale = 2.0
+
+		"wave_4":
+			anim.speed_scale = 2
+
+		"wave_5":
+			anim.speed_scale = 1
+
+		"wave_6":
+			anim.speed_scale = 2
+
+		_:
+			anim.speed_scale = 1.0
 
 	spawn_wave(wave_name)
 
@@ -317,7 +339,7 @@ var waves = {
 	],
 	"wave_4": [
 		{"enemy": BIG_ZAM, 
-		"pos": Vector2(122, -60), 
+		"pos": Vector2(122, 500), 
 		#"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
 		#"speed": 250,
 		#"acceleration": -300,
@@ -366,6 +388,12 @@ var waves = {
 	"wave_6": [
 		{"enemy": UFO, 
 		"pos": Vector2(120, 100), 
+		},
+		{"enemy": UFO, 
+		"pos": Vector2(90, 100), 
+		},
+		{"enemy": UFO, 
+		"pos": Vector2(150, 100), 
 		},
 	],
 }

@@ -2,6 +2,7 @@ class_name Big_Zam
 extends CharacterBody2D
 
 enum BossState {
+	INTRO,
 	ENTER,
 	ATTACK_1,
 	ATTACK_2,
@@ -13,7 +14,7 @@ enum BossState {
 var original_position: Vector2
 var next_state: BossState
 
-@export var state: BossState = BossState.ENTER
+@export var state: BossState = BossState.INTRO
 @export var move_speed = 100
 @export var min_speed = 0
 var attack_center: Vector2
@@ -24,6 +25,18 @@ var state_time := 0.0
 @export var center_point: Vector2 = original_position # The middle of the circle
 
 var angle: float = 0.0
+
+@onready var sprite = $AnimatedSprite2D
+
+var normal_sprite_scale: Vector2
+var normal_sprite_modulate: Color
+
+@export var intro_speed: float = 500.0
+@export var intro_target_y: float = -300.0
+@export var intro_start_y: float = 1000.0
+
+var normal_scale: Vector2
+var normal_modulate: Color
 
 signal died 
 @onready var movement_pattern = $MovementPattern
@@ -38,11 +51,24 @@ signal died
 
 var bullet_scene = preload("res://enemy_bullet.tscn")
 var hp = 100
+
+func _ready() -> void:
+	normal_scale = scale
+	normal_modulate = modulate
+
+	scale = normal_scale * 0.5
+	modulate = Color(0.107, 0.107, 0.107, 1.0)
+
+	set_collision_layer_value(2, false)
+
 func _physics_process(delta: float) -> void:
 	move_speed = clamp(move_speed, min_speed, 1000)
 	state_time += delta
 
 	match state:
+		BossState.INTRO:
+			intro_state(delta)
+		
 		BossState.ENTER:
 			enter_state(delta)
 
@@ -88,21 +114,46 @@ func change_state(new_state: BossState) -> void:
 			var point = spawn_points["spawnpoint_3"]
 			point.active = true
 			point.spawn()
+
+func intro_state(_delta: float) -> void:
+	set_collision_layer_value(2, false)
+	
+	velocity = Vector2(0.0, -intro_speed)
+
+	if global_position.y <= intro_target_y:
+		global_position.y = intro_target_y
+		velocity = Vector2.ZERO
+
+		scale = normal_scale
+		modulate = normal_modulate
+
+		change_state(BossState.ENTER)
+			
 func enter_state(_delta: float) -> void:
+	set_collision_layer_value(2, false)
+
 	var target_y := 60.0
-	var distance := target_y - global_position.y
+	var distance: float = target_y - global_position.y
 
-	var eased_speed : float = clamp(distance * 3.0, 20.0, move_speed)
+	var eased_speed: float = clampf(
+		absf(distance) * 3.0,
+		20.0,
+		move_speed
+	)
 
-	velocity = Vector2(0, eased_speed)
+	velocity = Vector2(
+		0.0,
+		signf(distance) * eased_speed
+	)
 
-	if global_position.y >= target_y - 1.0:
+	if absf(distance) < 1.0:
 		global_position.y = target_y
 		velocity = Vector2.ZERO
-		
+
 		original_position = global_position
-		
+
 		change_state(BossState.ATTACK_1)
+		set_collision_layer_value(2, true)
 
 func return_state(_delta: float) -> void:
 	var distance: float = global_position.distance_to(original_position)

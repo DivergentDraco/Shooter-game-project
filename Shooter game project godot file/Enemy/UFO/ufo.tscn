@@ -137,7 +137,7 @@ _data = {
 &"hit_flash": SubResource("Animation_iryfb")
 }
 
-[node name="Ufo" type="CharacterBody2D" unique_id=677570530]
+[node name="Ufo" type="CharacterBody2D" unique_id=677570530 groups=["enemies"]]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_8ojbe")
@@ -166,11 +166,12 @@ one_shot = true
 unique_name_in_owner = true
 one_shot = true
 
-[node name="ExplodeSFX" type="AudioStreamPlayer" parent="." unique_id=1525311155]
+[node name="ExplodeSFX" type="AudioStreamPlayer2D" parent="." unique_id=801492624]
 unique_name_in_owner = true
 stream = ExtResource("4_8smqo")
 volume_db = -12.329
 max_polyphony = 10
+panning_strength = 0.0
 bus = &"SFX"
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=110133921]
@@ -185,7 +186,7 @@ script = ExtResource("5_0oskk")
 unique_name_in_owner = true
 script = ExtResource("6_c17ok")
 active = false
-auto_pattern_id = "2"
+auto_pattern_id = "6"
 auto_start_after_time = 0.2
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)

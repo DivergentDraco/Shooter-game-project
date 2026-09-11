@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_enqg3"]
 [ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_6jep4"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_8l7bv"]
+[ext_resource type="AudioStream" uid="uid://c3n3h2v2oah6v" path="res://SFX/sound.wav" id="8_cn55w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b4ewf"]
 resource_local_to_scene = true
@@ -221,3 +222,9 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 metadata/_custom_type_script = "uid://btd0n20blj8nd"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1605111163]
+stream = ExtResource("8_cn55w")
+volume_db = 5.719
+autoplay = true
+bus = &"SFX"

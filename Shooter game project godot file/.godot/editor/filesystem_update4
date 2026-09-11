@@ -1,10 +1,8 @@
 res://default_bus_layout.tres
-res://Enemy/Maid Enemy/maid_enemy.tscn
-res://hitflash effect/hitflash.tres
-res://movement_pattern.gd
-res://stage_manager.gd
-res://Enemy/Fairy Enemy/fairy_enemy.tscn
-res://hitflash effect/shadermaterial.tres
-res://main.tscn
-res://Enemy/UFO/ufo.gd
 res://Enemy/UFO/ufo.tscn
+res://hitflash effect/hitflash.tres
+res://Enemy/UFO/ufo.gd
+res://main.tscn
+res://stage_manager.gd
+res://Enemy/Big Zam/big_zam.tscn
+res://Enemy/Big Zam/big_zam.gd

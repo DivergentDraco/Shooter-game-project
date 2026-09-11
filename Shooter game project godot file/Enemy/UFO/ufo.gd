@@ -35,7 +35,7 @@ signal died
 }
 
 var bullet_scene = preload("res://enemy_bullet.tscn")
-var hp = 100
+var hp = 20
 
 func _ready() -> void:
 	change_state(BossState.ENTER)
@@ -73,8 +73,6 @@ func change_state(new_state: BossState) -> void:
 		
 	match state:
 		BossState.ATTACK_1:
-			destination_origin = global_position
-			destination_step = 0
 			holding = false
 			hold_time = 0.0
 			set_next_destination()
@@ -84,6 +82,7 @@ func change_state(new_state: BossState) -> void:
 			point.spawn()
 			
 func enter_state(_delta: float) -> void:
+	set_collision_layer_value(2, false)
 	var target_y: float = 30.0
 	var distance: float = target_y - global_position.y
 
@@ -113,8 +112,6 @@ func return_state(_delta: float) -> void:
 	velocity = global_position.direction_to(original_position) * return_speed
 
 var destination : Vector2
-var destination_origin: Vector2
-var destination_step : int = 0
 var holding := false
 var hold_time : float = 0
 
@@ -122,33 +119,21 @@ var hold_time : float = 0
 @export var max_bounds := Vector2(220.0, 100.0)
 
 func set_next_destination() -> void:
-	destination_step += 1
+	var new_destination := Vector2.ZERO
 
-	var t: float = destination_step * 0.8
+	while true:
+		new_destination = Vector2(
+			randf_range(min_bounds.x, max_bounds.x),
+			randf_range(min_bounds.y, max_bounds.y)
+		)
 
-	var center := Vector2(
-		(min_bounds.x + max_bounds.x) / 2.0,
-		(min_bounds.y + max_bounds.y) / 2.0
-	)
+		if global_position.distance_to(new_destination) > 50.0:
+			break
 
-	destination = center + Vector2(
-		cos(t * 2.0) * 100.0,
-		cos(t * 3.0) * 100.0
-	)
-
-	destination.x = clampf(
-		destination.x,
-		min_bounds.x,
-		max_bounds.x
-	)
-
-	destination.y = clampf(
-		destination.y,
-		min_bounds.y,
-		max_bounds.y
-	)
+	destination = new_destination
 
 func attack_1(delta: float) -> void:
+	set_collision_layer_value(2, true)
 	velocity = Vector2.ZERO
 
 	if holding:
@@ -226,7 +211,7 @@ func explode():
 		died.emit(5)
 		$ExplodeSFX.play()
 		await $AnimatedSprite2D.animation_finished
-		Spawning.clear_all_bullets()
+		#Spawning.clear_all_bullets()
 		queue_free()
 
 var has_entered_screen := false
