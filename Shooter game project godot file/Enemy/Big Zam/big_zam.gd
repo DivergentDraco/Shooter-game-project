@@ -28,6 +28,8 @@ var angle: float = 0.0
 
 @onready var sprite = $AnimatedSprite2D
 
+@onready var warning = get_tree().current_scene.get_node("Warning")
+
 var normal_sprite_scale: Vector2
 var normal_sprite_modulate: Color
 
@@ -53,6 +55,8 @@ var bullet_scene = preload("res://enemy_bullet.tscn")
 var hp = 100
 
 func _ready() -> void:
+	warning.start()
+	
 	normal_scale = scale
 	normal_modulate = modulate
 

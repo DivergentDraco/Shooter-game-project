@@ -13,10 +13,12 @@
 [ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="6_lswn8"]
 [ext_resource type="Script" uid="uid://c1285ppnh3i5a" path="res://Camera2D.gd" id="6_nnvno"]
 [ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="7_a6jrf"]
-[ext_resource type="AudioStream" uid="uid://bqod1ammb5y1e" path="res://SFX/Music/24. BOSSAY.mp3" id="10_074og"]
+[ext_resource type="Script" uid="uid://d10qk1q8m0y27" path="res://warning.gd" id="9_ok6jj"]
+[ext_resource type="Texture2D" uid="uid://bae4yoqlx20ka" path="res://Sprites and Animations/Sprite-0001.png" id="10_facbu"]
 [ext_resource type="PackedScene" uid="uid://brr06le18oxho" path="res://Enemy/Fairy Enemy/fairy_enemy.tscn" id="13_vdhg6"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="16_4k2k6"]
 [ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="17_0rl1p"]
+[ext_resource type="AudioStream" uid="uid://raoxbns630pp" path="res://SFX/Music/55. For Your Security.mp3" id="17_ok6jj"]
 [ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://Enemy/Fairy Enemy/fairy_enemy.gd" id="18_ok6jj"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="19_facbu"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="20_b1qrp"]
@@ -2246,6 +2248,14 @@ script = ExtResource("3_074og")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1801651538]
 
+[node name="Warning" type="Node2D" parent="." unique_id=755776620]
+script = ExtResource("9_ok6jj")
+
+[node name="Sprite0001" type="Sprite2D" parent="Warning" unique_id=569681156]
+position = Vector2(123, 67)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("10_facbu")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=364955804]
 
 [node name="UI" parent="CanvasLayer" unique_id=178016994 instance=ExtResource("1_ddoy4")]
@@ -2299,7 +2309,7 @@ noise = SubResource("FastNoiseLite_uf0tv")
 [node name="EnemyAnchor" type="Node2D" parent="." unique_id=825868698]
 
 [node name="StageMusic" type="AudioStreamPlayer2D" parent="." unique_id=1292603623]
-stream = ExtResource("10_074og")
+stream = ExtResource("17_ok6jj")
 volume_db = 10.978
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="." unique_id=1538213690]

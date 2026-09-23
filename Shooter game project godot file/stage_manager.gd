@@ -8,12 +8,13 @@ var pending_spawns := 0
 var stage_started := false
 
 var wave_order = [
-	"wave_1",
+	"wave_4",
 	"wave_2",
 	"wave_5",
 	"wave_4",
 	"wave_3",
 	"wave_6",
+	"wave_7",
 ]
 
 func _process(_delta: float) -> void:
@@ -61,6 +62,9 @@ func start_next_wave() -> void:
 
 		"wave_6":
 			anim.speed_scale = 2
+			
+		"wave_7":
+			anim.speed_scale = 0.5
 
 		_:
 			anim.speed_scale = 1.0
@@ -394,6 +398,12 @@ var waves = {
 		},
 		{"enemy": UFO, 
 		"pos": Vector2(150, 100), 
+		},
+	],
+	
+	"wave_7": [
+		{"enemy": UFO, 
+		"pos": Vector2(90, 100), 
 		},
 	],
 }

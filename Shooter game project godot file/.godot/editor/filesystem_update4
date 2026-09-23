@@ -1,8 +1,6 @@
 res://default_bus_layout.tres
-res://Enemy/UFO/ufo.tscn
-res://hitflash effect/hitflash.tres
-res://Enemy/UFO/ufo.gd
 res://main.tscn
+res://hitflash effect/hitflash.tres
 res://stage_manager.gd
-res://Enemy/Big Zam/big_zam.tscn
+res://warning.gd
 res://Enemy/Big Zam/big_zam.gd
