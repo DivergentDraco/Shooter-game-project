@@ -148,6 +148,7 @@ material = SubResource("ShaderMaterial_a8oe6")
 sprite_frames = SubResource("SpriteFrames_omy0s")
 animation = &"new_animation"
 autoplay = "new_animation"
+frame_progress = 0.4555205
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1904279064]
 unique_name_in_owner = true
@@ -226,3 +227,6 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 metadata/_custom_type_script = "uid://btd0n20blj8nd"
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

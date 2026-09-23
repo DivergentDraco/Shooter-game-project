@@ -1,8 +1,9 @@
+Sprite2D
+CharacterBody2D
 Node2D
 Node
 AudioStreamPlayer2D
 LaserBeam
-CharacterBody2D
 SpawnPattern
 BulletPattern
 SpawnPoint
@@ -12,4 +13,3 @@ VBoxContainer
 ColorRect
 CollisionShape2D
 Area2D
-RayCast2D

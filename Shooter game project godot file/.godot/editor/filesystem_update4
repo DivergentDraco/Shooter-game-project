@@ -4,3 +4,10 @@ res://hitflash effect/hitflash.tres
 res://stage_manager.gd
 res://warning.gd
 res://Enemy/Big Zam/big_zam.gd
+res://Sprites and Animations/Zoomer.png
+res://Sprites and Animations/zoomer.png
+res://Enemy/Zoomer/zoomer.gd
+res://Enemy/Zoomer/zoomer.tscn
+res://Enemy/UFO/ufo.gd
+res://Enemy/UFO/ufo.tscn
+res://cloud.gd

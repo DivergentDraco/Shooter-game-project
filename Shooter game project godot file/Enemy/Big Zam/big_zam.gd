@@ -28,7 +28,7 @@ var angle: float = 0.0
 
 @onready var sprite = $AnimatedSprite2D
 
-@onready var warning = get_tree().current_scene.get_node("Warning")
+@onready var warning = get_tree().current_scene.get_node("Warning/Sprite0001")
 
 var normal_sprite_scale: Vector2
 var normal_sprite_modulate: Color

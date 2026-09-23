@@ -5,20 +5,34 @@ var wave_index := 0
 var wave_active := false
 var pending_spawns := 0
 
+var wave_transitioning := false
+
 var stage_started := false
 
+@onready var cloud = get_tree().current_scene.get_node("Warning/Sprite0002")
+@onready var bg = $"../Background"
+
 var wave_order = [
-	"wave_4",
+	"wave_1",
 	"wave_2",
 	"wave_5",
+	"wave_7",
 	"wave_4",
 	"wave_3",
 	"wave_6",
-	"wave_7",
+	"wave_8",
+	"wave_9",
 ]
+
+func hide_bg_delayed() -> void:
+	await get_tree().create_timer(0.7).timeout
+	bg.visible = false
 
 func _process(_delta: float) -> void:
 	if not stage_started:
+		return
+	
+	if wave_transitioning:
 		return
 	
 	if not wave_active:
@@ -40,7 +54,9 @@ func start_stage() -> void:
 func start_next_wave() -> void:
 	if wave_index >= wave_order.size():
 		return
-
+	
+	wave_transitioning = true
+	
 	var wave_name = wave_order[wave_index]
 
 	var anim = $"../AnimationPlayer"
@@ -64,7 +80,19 @@ func start_next_wave() -> void:
 			anim.speed_scale = 2
 			
 		"wave_7":
+			anim.speed_scale = 1
+			
+		"wave_8":
+			anim.speed_scale = 2
+			
+		"wave_9":
+			anim.speed_scale = 2
+			cloud.start()
+			hide_bg_delayed()
+			
+		"wave_10":
 			anim.speed_scale = 0.5
+			await get_tree().create_timer(1.0).timeout
 
 		_:
 			anim.speed_scale = 1.0
@@ -73,10 +101,12 @@ func start_next_wave() -> void:
 
 	wave_index += 1
 	wave_active = true
+	wave_transitioning = false
 
 const FAIRY = preload("res://Enemy/Fairy Enemy/fairy_enemy.tscn")
 const MAID = preload("res://Enemy/Maid Enemy/maid_enemy.tscn")
 const UFO = preload("res://Enemy/UFO/ufo.tscn")
+const ZOOMER = preload("res://Enemy/Zoomer/zoomer.tscn")
 const BIG_ZAM = preload("res://Enemy/Big Zam/big_zam.tscn")
 
 var waves = {
@@ -402,9 +432,66 @@ var waves = {
 	],
 	
 	"wave_7": [
-		{"enemy": UFO, 
-		"pos": Vector2(90, 100), 
+		{"enemy": ZOOMER, 
+		"pos": Vector2(30, -10), 
 		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(60, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(90, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(120, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(150, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(180, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(210, -10), 
+		},
+	],
+	
+	"wave_8": [
+		{"enemy": ZOOMER, 
+		"pos": Vector2(60, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(120, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(180, -10), 
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(60, -10), 
+		"delay": 0.3,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(120, -10), 
+		"delay": 0.3,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(180, -10), 
+		"delay": 0.3,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(60, -10), 
+		"delay": 0.6,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(120, -10), 
+		"delay": 0.6,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(180, -10), 
+		"delay": 0.6,
+		},
+	],
+	
+	"wave_9": [
 	],
 }
 func spawn_wave(wave_name: String) -> void:
@@ -435,11 +522,13 @@ func spawn_enemy(entry: Dictionary) -> void:
 
 	var enemy = entry.enemy.instantiate()
 	
+	enemy.position = entry.pos
+
 	if entry.has("spawnpoint"):
 		enemy.set_spawnpoint(entry.spawnpoint)
-		
+
 	enemies_container.add_child(enemy)
-	enemy.global_position = entry.pos
+	#enemy.global_position = entry.pos
 
 	if entry.has("movement_pattern"):
 		enemy.set_movement_pattern(entry.movement_pattern)
