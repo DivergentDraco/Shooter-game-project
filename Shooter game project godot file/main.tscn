@@ -21,14 +21,15 @@
 [ext_resource type="Script" uid="uid://6qvcg86hrybu" path="res://cloud.gd" id="16_b1qrp"]
 [ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://bullet_pattern1.tscn" id="17_0rl1p"]
 [ext_resource type="Texture2D" uid="uid://yqrd0fx4w0y" path="res://Sprites and Animations/Space3.png" id="17_4lmeg"]
-[ext_resource type="AudioStream" uid="uid://raoxbns630pp" path="res://SFX/Music/55. For Your Security.mp3" id="17_ok6jj"]
 [ext_resource type="Texture2D" uid="uid://bm2rw1v00t1vo" path="res://Sprites and Animations/Space2.png" id="18_0cp0l"]
 [ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://Enemy/Fairy Enemy/fairy_enemy.gd" id="18_ok6jj"]
 [ext_resource type="Texture2D" uid="uid://dppk57sb4fj0q" path="res://Sprites and Animations/Space1.png" id="19_d2t1y"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="19_facbu"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="20_b1qrp"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="21_come4"]
+[ext_resource type="AudioStream" uid="uid://04m0bd55q3gx" path="res://SFX/Music/04. It May Be Greenish.mp3" id="22_4lmeg"]
 [ext_resource type="Script" uid="uid://cwtv80ecqaato" path="res://path2d.gd" id="22_ok6jj"]
+[ext_resource type="AudioStream" uid="uid://bqod1ammb5y1e" path="res://SFX/Music/24. BOSSAY.mp3" id="23_0cp0l"]
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="23_facbu"]
 [ext_resource type="PackedScene" uid="uid://cjwfaivji1uy2" path="res://addons/bulletuphell example/bullet test.tscn" id="23_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://cegbjppyb37gg" path="res://Sprites and Animations/fairy_right.png" id="24_b1qrp"]
@@ -114,11 +115,10 @@ metadata/_custom_type_script = "uid://dg81fho0rhp37"
 
 [sub_resource type="Curve2D" id="Curve2D_d2t1y"]
 
-[sub_resource type="Resource" id="Resource_57qmd"]
+[sub_resource type="Resource" id="Resource_0cbny"]
 resource_name = "PatternOne"
 script = ExtResource("4_d13ii")
-bullet = "6"
-nbr = 3
+bullet = "7"
 iterations = -1
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
 
@@ -394,24 +394,103 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
 [sub_resource type="Curve2D" id="Curve2D_gngh3"]
 
-[sub_resource type="Curve" id="Curve_ok6jj"]
-_limits = [0.021052718, 253.73, 0.0, 1.0]
-_data = [Vector2(0, 0.021052718), 0.0, 0.0, 0, 0, Vector2(1, 253.73), 671.21747, 0.0, 0, 0]
-point_count = 2
-
 [sub_resource type="Curve" id="Curve_0n3wm"]
 
 [sub_resource type="Resource" id="Resource_qnost"]
 script = ExtResource("7_a6jrf")
-speed = 300.0
+speed = 200.0
+scale = 1.5
 custom_data = {}
-a_speed_multi_iterations = 1
-a_speed_multi_scale = 1.0
-a_speed_multiplier = SubResource("Curve_ok6jj")
 scale_multiplier = SubResource("Curve_0n3wm")
 homing_type = 0
 homing_target = NodePath("../../CanvasLayer/CenterContainer/Player")
 homing_steer = 0.1
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_0n3wm"]
+
+[sub_resource type="Resource" id="Resource_uypp3"]
+resource_name = "PatternCircle"
+script = ExtResource("32_0cbny")
+angle_total = 2.443460952792061
+angle_decal = 0.25645868028804675
+bullet = "10"
+nbr = 5
+cooldown_next_spawn = 0.1
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_qnost"]
+
+[sub_resource type="Curve" id="Curve_wnkbs"]
+
+[sub_resource type="Resource" id="Resource_irq8t"]
+script = ExtResource("6_lswn8")
+ID = "0"
+texture = "0"
+metadata/_custom_type_script = "uid://ch2ah4ngy7del"
+
+[sub_resource type="Curve" id="Curve_f6a44"]
+
+[sub_resource type="Resource" id="Resource_hrvbo"]
+script = ExtResource("7_a6jrf")
+speed = 200.0
+scale = 3.0
+custom_data = {}
+death_after_time = 50.0
+anim_idle = SubResource("Resource_irq8t")
+spec_trail_length = 40.0
+spec_trail_width = 50.0
+spec_trail_modulate = Color(1, 0, 0, 1)
+spec_trail_smooth = 0.019
+a_speed_multiplier = SubResource("Curve_wnkbs")
+spec_bounces = 5
+scale_multiplier = SubResource("Curve_f6a44")
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
 homing_time_start = 0.0
 homing_duration = 999.0
 homing_detection_dist = 0.0
@@ -2200,7 +2279,7 @@ metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 curve = SubResource("Curve2D_d2t1y")
 script = ExtResource("3_d13ii")
 id = "7"
-pattern = SubResource("Resource_57qmd")
+pattern = SubResource("Resource_0cbny")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
 [node name="BulletPattern" type="Path2D" parent="BulletPatternManager" unique_id=2027436251]
@@ -2236,6 +2315,29 @@ curve = SubResource("Curve2D_gngh3")
 script = ExtResource("5_0odxb")
 id = "6"
 props = SubResource("Resource_qnost")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="BulletPattern6" type="Path2D" parent="BulletPatternManager" unique_id=439826549]
+curve = SubResource("Curve2D_gngh3")
+script = ExtResource("5_0odxb")
+id = "7"
+props = SubResource("Resource_qnost")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="SpawnPattern10" type="Path2D" parent="BulletPatternManager" unique_id=1979557212]
+position = Vector2(3, 0)
+curve = SubResource("Curve2D_0n3wm")
+script = ExtResource("3_d13ii")
+id = "10"
+pattern = SubResource("Resource_uypp3")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="BulletPattern10" type="Path2D" parent="BulletPatternManager" unique_id=1956302048]
+position = Vector2(3, 0)
+curve = SubResource("Curve2D_qnost")
+script = ExtResource("5_0odxb")
+id = "10"
+props = SubResource("Resource_hrvbo")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
 [node name="StageManager" type="Node" parent="." unique_id=1113581236]
@@ -2345,7 +2447,12 @@ noise = SubResource("FastNoiseLite_uf0tv")
 [node name="EnemyAnchor" type="Node2D" parent="." unique_id=825868698]
 
 [node name="StageMusic" type="AudioStreamPlayer2D" parent="." unique_id=1292603623]
-stream = ExtResource("17_ok6jj")
+stream = ExtResource("22_4lmeg")
+volume_db = 10.978
+
+[node name="StageMusic2" type="AudioStreamPlayer2D" parent="." unique_id=2056361001]
+unique_name_in_owner = true
+stream = ExtResource("23_0cp0l")
 volume_db = 10.978
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="." unique_id=1538213690]

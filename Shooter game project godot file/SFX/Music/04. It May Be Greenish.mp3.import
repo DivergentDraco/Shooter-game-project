@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://04m0bd55q3gx"
+path="res://.godot/imported/04. It May Be Greenish.mp3-c0c561e993a85553c2fe3c2584ac5b73.mp3str"
+
+[deps]
+
+source_file="res://SFX/Music/04. It May Be Greenish.mp3"
+dest_files=["res://.godot/imported/04. It May Be Greenish.mp3-c0c561e993a85553c2fe3c2584ac5b73.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

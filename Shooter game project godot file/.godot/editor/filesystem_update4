@@ -2,10 +2,7 @@ res://default_bus_layout.tres
 res://main.tscn
 res://hitflash effect/hitflash.tres
 res://stage_manager.gd
-res://Enemy/Fairy Enemy/fairy_enemy.gd
-res://addons/BulletUpHell/Spawning.tscn
-res://Enemy/Fairy Enemy/fairy_enemy.tscn
-res://hitflash effect/shadermaterial.tres
-res://Enemy/Maid Enemy/maid_enemy.tscn
-res://Enemy/Zoomer/zoomer.tscn
 res://Enemy/Big Zam/big_zam.tscn
+res://Enemy/Solus/solus.gd
+res://Enemy/Solus/solus.tscn
+res://addons/BulletUpHell/Spawning.tscn
