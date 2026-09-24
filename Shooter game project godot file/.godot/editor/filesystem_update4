@@ -2,12 +2,10 @@ res://default_bus_layout.tres
 res://main.tscn
 res://hitflash effect/hitflash.tres
 res://stage_manager.gd
-res://warning.gd
-res://Enemy/Big Zam/big_zam.gd
-res://Sprites and Animations/Zoomer.png
-res://Sprites and Animations/zoomer.png
-res://Enemy/Zoomer/zoomer.gd
+res://Enemy/Fairy Enemy/fairy_enemy.gd
+res://addons/BulletUpHell/Spawning.tscn
+res://Enemy/Fairy Enemy/fairy_enemy.tscn
+res://hitflash effect/shadermaterial.tres
+res://Enemy/Maid Enemy/maid_enemy.tscn
 res://Enemy/Zoomer/zoomer.tscn
-res://Enemy/UFO/ufo.gd
-res://Enemy/UFO/ufo.tscn
-res://cloud.gd
+res://Enemy/Big Zam/big_zam.tscn

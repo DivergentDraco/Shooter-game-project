@@ -3,34 +3,42 @@
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Sprites and Animations/fairy_idle.png" id="1_brf0a"]
 [ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="1_ughro"]
 [ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://Enemy/Fairy Enemy/fairy_enemy.gd" id="1_xcsrf"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="2_rcxsq"]
+[ext_resource type="Texture2D" uid="uid://btkwtqdktgbb1" path="res://Sprites and Animations/explode.png" id="3_6t1vd"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="3_wi5ge"]
 [ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_fy2j3"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_6t1vd"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
-atlas = ExtResource("2_rcxsq")
-region = Rect2(0, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8el8"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(0, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
-atlas = ExtResource("2_rcxsq")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_082vr"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(24, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
-atlas = ExtResource("2_rcxsq")
-region = Rect2(32, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_8g5ut"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(48, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
-atlas = ExtResource("2_rcxsq")
-region = Rect2(48, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_rmier"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(72, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
-atlas = ExtResource("2_rcxsq")
-region = Rect2(64, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_fsyfw"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(96, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
-atlas = ExtResource("2_rcxsq")
-region = Rect2(80, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jjj6"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pyenb"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a7unl"]
+atlas = ExtResource("3_6t1vd")
+region = Rect2(168, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ajjby"]
 atlas = ExtResource("1_brf0a")
@@ -48,22 +56,28 @@ region = Rect2(72, 0, 36, 24)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ap1v4")
+"texture": SubResource("AtlasTexture_r8el8")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_dab0p")
+"texture": SubResource("AtlasTexture_082vr")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_om7ce")
+"texture": SubResource("AtlasTexture_8g5ut")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s5xor")
+"texture": SubResource("AtlasTexture_rmier")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gwnqv")
+"texture": SubResource("AtlasTexture_fsyfw")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3mtu0")
+"texture": SubResource("AtlasTexture_3jjj6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pyenb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a7unl")
 }],
 "loop": 0,
 "name": &"explode",
@@ -133,7 +147,7 @@ script = ExtResource("1_xcsrf")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1777738134]
 material = ExtResource("1_ughro")
 sprite_frames = SubResource("SpriteFrames_87myr")
-animation = &"new_animation"
+animation = &"explode"
 autoplay = "new_animation"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1266773161]

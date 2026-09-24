@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c44nanpsd0f3g" path="res://Enemy/Big Zam/big_zam.gd" id="1_psu7i"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_ish7g"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_ln1en"]
+[ext_resource type="Texture2D" uid="uid://btkwtqdktgbb1" path="res://Sprites and Animations/explode.png" id="3_cn55w"]
 [ext_resource type="Texture2D" uid="uid://buadx58c1aykh" path="res://Sprites and Animations/Sprite-000b1.png" id="4_psu7i"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_enqg3"]
 [ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_6jep4"]
@@ -15,50 +15,64 @@ shader = ExtResource("2_ish7g")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
-atlas = ExtResource("3_ln1en")
-region = Rect2(0, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_dyl67"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(0, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
-atlas = ExtResource("3_ln1en")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_eo4f4"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(24, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
-atlas = ExtResource("3_ln1en")
-region = Rect2(32, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_nqumi"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(48, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
-atlas = ExtResource("3_ln1en")
-region = Rect2(48, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_pspt2"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(72, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
-atlas = ExtResource("3_ln1en")
-region = Rect2(64, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_nlscp"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(96, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
-atlas = ExtResource("3_ln1en")
-region = Rect2(80, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgpul"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u66gf"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3tff"]
+atlas = ExtResource("3_cn55w")
+region = Rect2(168, 0, 24, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_buun7"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ap1v4")
+"texture": SubResource("AtlasTexture_dyl67")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_dab0p")
+"texture": SubResource("AtlasTexture_eo4f4")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_om7ce")
+"texture": SubResource("AtlasTexture_nqumi")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s5xor")
+"texture": SubResource("AtlasTexture_pspt2")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gwnqv")
+"texture": SubResource("AtlasTexture_nlscp")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3mtu0")
+"texture": SubResource("AtlasTexture_jgpul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u66gf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3tff")
 }],
 "loop": 0,
 "name": &"explode",
@@ -124,7 +138,7 @@ unique_name_in_owner = true
 material = SubResource("ShaderMaterial_b4ewf")
 position = Vector2(0, -64)
 sprite_frames = SubResource("SpriteFrames_buun7")
-animation = &"new_animation"
+animation = &"explode"
 autoplay = "new_animation"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1725792919]

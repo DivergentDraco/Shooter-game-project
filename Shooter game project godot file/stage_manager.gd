@@ -10,18 +10,21 @@ var wave_transitioning := false
 var stage_started := false
 
 @onready var cloud = get_tree().current_scene.get_node("Warning/Sprite0002")
-@onready var bg = $"../Background"
+@onready var bg = $"../Parallax2D/Background"
 
 var wave_order = [
 	"wave_1",
 	"wave_2",
 	"wave_5",
 	"wave_7",
-	"wave_4",
-	"wave_3",
+	
 	"wave_6",
 	"wave_8",
 	"wave_9",
+	"wave_10",
+	
+	"wave_4",
+	"wave_3",
 ]
 
 func hide_bg_delayed() -> void:
@@ -59,43 +62,43 @@ func start_next_wave() -> void:
 	
 	var wave_name = wave_order[wave_index]
 
-	var anim = $"../AnimationPlayer"
+	var anim = $"../Parallax2D"
 	match wave_name:
 		"wave_1":
-			anim.speed_scale = 1.0
+			anim.autoscroll.y = 300.0
 
 		"wave_2":
-			anim.speed_scale = 1.0
+			anim.autoscroll.y = 300.0
 
 		"wave_3":
-			anim.speed_scale = 2.0
+			anim.autoscroll.y = 600.0
 
 		"wave_4":
-			anim.speed_scale = 2
+			anim.autoscroll.y = 600
 
 		"wave_5":
-			anim.speed_scale = 1
+			anim.autoscroll.y = 300
 
 		"wave_6":
-			anim.speed_scale = 2
+			anim.autoscroll.y = 600
 			
 		"wave_7":
-			anim.speed_scale = 1
+			anim.autoscroll.y = 300
 			
 		"wave_8":
-			anim.speed_scale = 2
+			anim.autoscroll.y = 600
 			
 		"wave_9":
-			anim.speed_scale = 2
+			anim.autoscroll.y = 600
 			cloud.start()
 			hide_bg_delayed()
 			
 		"wave_10":
-			anim.speed_scale = 0.5
+			anim.autoscroll.y = 600
 			await get_tree().create_timer(1.0).timeout
 
 		_:
-			anim.speed_scale = 1.0
+			anim.autoscroll.y = 300
 
 	spawn_wave(wave_name)
 
@@ -493,6 +496,111 @@ var waves = {
 	
 	"wave_9": [
 	],
+	
+	"wave_10": [
+		#{"enemy": FAIRY, 
+		#"pos": Vector2(50, 100), 
+		#"movement_pattern": MovementPattern.Pattern.NO_PATTERN},
+		{"enemy": FAIRY, 
+		"pos": Vector2(50, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(50, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0.2,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(50, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0.4,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(50, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0.6,
+		"spawnpoint": 1,
+		},
+		
+		{"enemy": FAIRY, 
+		"pos": Vector2(200, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(200, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0.2,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(200, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0.4,
+		"spawnpoint": 1,
+		},
+		{"enemy": FAIRY, 
+		"pos": Vector2(200, -10), 
+		"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
+		"speed": 10,
+		"acceleration": 150,
+		"delay":0.6,
+		"spawnpoint": 1,
+		},
+		
+		{"enemy": UFO, 
+		"pos": Vector2(120, 100), 
+		"delay":1.0,
+		},
+		
+		{"enemy": ZOOMER, 
+		"pos": Vector2(30, -10), 
+		"delay":3.0,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(60, -10), 
+		"delay":3.0,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(90, -10), 
+		"delay":3.0,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(120, -10), 
+		"delay":3.0,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(150, -10), 
+		"delay":3.0,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(180, -10), 
+		"delay":3.0,
+		},
+		{"enemy": ZOOMER, 
+		"pos": Vector2(210, -10), 
+		"delay":3.0,
+		},
+	]
 }
 func spawn_wave(wave_name: String) -> void:
 	if not waves.has(wave_name):

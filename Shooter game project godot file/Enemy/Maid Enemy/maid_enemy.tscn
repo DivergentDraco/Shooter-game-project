@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b1x0r0gfqcayi" path="res://Enemy/Maid Enemy/maid_enemy.gd" id="1_r26s6"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_4guvl"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_nci8s"]
+[ext_resource type="Texture2D" uid="uid://btkwtqdktgbb1" path="res://Sprites and Animations/explode.png" id="3_r26s6"]
 [ext_resource type="Texture2D" uid="uid://bmtoxk0xu36po" path="res://Sprites and Animations/maid_idle.png" id="4_fbbpf"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_3hqi0"]
 [ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_6pmxx"]
@@ -14,29 +14,37 @@ shader = ExtResource("2_4guvl")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
-atlas = ExtResource("3_nci8s")
-region = Rect2(0, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_4guvl"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(0, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
-atlas = ExtResource("3_nci8s")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_nci8s"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(24, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
-atlas = ExtResource("3_nci8s")
-region = Rect2(32, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_fbbpf"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(48, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
-atlas = ExtResource("3_nci8s")
-region = Rect2(48, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_3hqi0"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(72, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
-atlas = ExtResource("3_nci8s")
-region = Rect2(64, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pmxx"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(96, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
-atlas = ExtResource("3_nci8s")
-region = Rect2(80, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_bibex"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4ewf"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_buun7"]
+atlas = ExtResource("3_r26s6")
+region = Rect2(168, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lga16"]
 atlas = ExtResource("4_fbbpf")
@@ -54,22 +62,28 @@ region = Rect2(86, 0, 43, 43)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ap1v4")
+"texture": SubResource("AtlasTexture_4guvl")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_dab0p")
+"texture": SubResource("AtlasTexture_nci8s")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_om7ce")
+"texture": SubResource("AtlasTexture_fbbpf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s5xor")
+"texture": SubResource("AtlasTexture_3hqi0")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gwnqv")
+"texture": SubResource("AtlasTexture_6pmxx")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3mtu0")
+"texture": SubResource("AtlasTexture_bibex")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4ewf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_buun7")
 }],
 "loop": 0,
 "name": &"explode",
@@ -140,7 +154,7 @@ script = ExtResource("1_r26s6")
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_b4ewf")
 sprite_frames = SubResource("SpriteFrames_buun7")
-animation = &"new_animation"
+animation = &"explode"
 autoplay = "new_animation"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1725792919]

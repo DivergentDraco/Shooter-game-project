@@ -11,7 +11,7 @@ signal died
 	"spawnpoint_3" : $SpawnPoint3,
 }
 
-var bullet_scene = preload("res://enemy_bullet.tscn")
+
 var hp = 1
 
 func _physics_process(delta: float) -> void:

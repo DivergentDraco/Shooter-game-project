@@ -1,4 +1,7 @@
 Sprite2D
+Parallax2D
+ParallaxBackground
+AnimationPlayer
 CharacterBody2D
 Node2D
 Node
@@ -9,7 +12,3 @@ BulletPattern
 SpawnPoint
 WorldEnvironment
 Label
-VBoxContainer
-ColorRect
-CollisionShape2D
-Area2D

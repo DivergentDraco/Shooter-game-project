@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://26kxclr4lipt" path="res://Enemy/Zoomer/zoomer.gd" id="1_0pk8h"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://hitflash effect/hitflash.tres" id="2_pt5k8"]
-[ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="3_e4r7p"]
+[ext_resource type="Texture2D" uid="uid://btkwtqdktgbb1" path="res://Sprites and Animations/explode.png" id="3_0pk8h"]
 [ext_resource type="Texture2D" uid="uid://csvrfamroai67" path="res://Sprites and Animations/zoomer.png" id="4_uu5vw"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_t7cn3"]
 [ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://movement_pattern.gd" id="6_ud8cj"]
@@ -14,29 +14,37 @@ shader = ExtResource("2_pt5k8")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ap1v4"]
-atlas = ExtResource("3_e4r7p")
-region = Rect2(0, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt5k8"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(0, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_dab0p"]
-atlas = ExtResource("3_e4r7p")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4r7p"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(24, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_om7ce"]
-atlas = ExtResource("3_e4r7p")
-region = Rect2(32, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_uu5vw"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(48, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s5xor"]
-atlas = ExtResource("3_e4r7p")
-region = Rect2(48, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7cn3"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(72, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gwnqv"]
-atlas = ExtResource("3_e4r7p")
-region = Rect2(64, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ud8cj"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(96, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3mtu0"]
-atlas = ExtResource("3_e4r7p")
-region = Rect2(80, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_vsdt7"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_und7y"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_24mv6"]
+atlas = ExtResource("3_0pk8h")
+region = Rect2(168, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xwaxn"]
 atlas = ExtResource("4_uu5vw")
@@ -58,22 +66,28 @@ region = Rect2(54, 0, 18, 23)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ap1v4")
+"texture": SubResource("AtlasTexture_pt5k8")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_dab0p")
+"texture": SubResource("AtlasTexture_e4r7p")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_om7ce")
+"texture": SubResource("AtlasTexture_uu5vw")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s5xor")
+"texture": SubResource("AtlasTexture_t7cn3")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gwnqv")
+"texture": SubResource("AtlasTexture_ud8cj")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3mtu0")
+"texture": SubResource("AtlasTexture_vsdt7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_und7y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_24mv6")
 }],
 "loop": 0,
 "name": &"explode",
@@ -146,9 +160,8 @@ script = ExtResource("1_0pk8h")
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_und7y")
 sprite_frames = SubResource("SpriteFrames_24mv6")
-animation = &"new_animation"
+animation = &"explode"
 autoplay = "new_animation"
-frame_progress = 0.64950305
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=901943968]
 unique_name_in_owner = true
