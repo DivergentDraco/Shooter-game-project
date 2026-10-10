@@ -1,3 +1,8 @@
+ProgressBar
+TextureProgressBar
+Node2D
+GPUParticles2D
+AnimatedSprite2D
 BulletPattern
 SpawnPattern
 CharacterBody2D
@@ -5,10 +10,5 @@ Sprite2D
 Parallax2D
 ParallaxBackground
 AnimationPlayer
-Node2D
 Node
 AudioStreamPlayer2D
-LaserBeam
-SpawnPoint
-WorldEnvironment
-Label

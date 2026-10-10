@@ -127,6 +127,18 @@ _data = {
 &"hit_flash": SubResource("Animation_iryfb")
 }
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4v7s"]
+lifetime_randomness = 0.26
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 0)
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+
 [node name="Big Zam" type="CharacterBody2D" unique_id=1632099671 groups=["enemies"]]
 z_index = -1
 collision_layer = 2
@@ -179,7 +191,9 @@ position = Vector2(16, 40)
 script = ExtResource("7_8l7bv")
 active = false
 auto_pattern_id = "6"
+process_id = 101
 pool_amount = 300
+auto_start_on_cam = false
 auto_start_after_time = 0.5
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
@@ -196,7 +210,9 @@ position = Vector2(-16, 40)
 script = ExtResource("7_8l7bv")
 active = false
 auto_pattern_id = "6"
+process_id = 102
 pool_amount = 300
+auto_start_on_cam = false
 auto_start_after_time = 0.5
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
@@ -213,6 +229,8 @@ position = Vector2(56, 16)
 script = ExtResource("7_8l7bv")
 active = false
 auto_pattern_id = "7"
+process_id = 103
+auto_start_on_cam = false
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""
@@ -228,6 +246,8 @@ position = Vector2(-56, 16)
 script = ExtResource("7_8l7bv")
 active = false
 auto_pattern_id = "7"
+process_id = 104
+auto_start_on_cam = false
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""
@@ -242,3 +262,12 @@ stream = ExtResource("8_cn55w")
 volume_db = 5.719
 autoplay = true
 bus = &"SFX"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=229241113]
+texture_filter = 1
+emitting = false
+amount = 80
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_g4v7s")

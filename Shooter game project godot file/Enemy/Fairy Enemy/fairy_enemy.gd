@@ -11,7 +11,6 @@ signal died
 	"spawnpoint_3" : $SpawnPoint3,
 }
 
-
 var hp = 1
 
 func _physics_process(delta: float) -> void:
@@ -54,17 +53,29 @@ func set_spawnpoint(index: int) -> void:
 		3:
 			spawnpoint_3.active = true
 
-func explode():
+func hit():
 	if hp > 0:
 		hp -= 1
 		hit_flash_anim_player.play("hit_flash")
 	else: 
 		set_collision_layer_value(2, false)
-		velocity = Vector2.ZERO
+		set_physics_process(false)
 		$AnimatedSprite2D.play("explode")
 		set_deferred("monitorable", false)
 		died.emit(5)
 		$ExplodeSFX.play()
+		
+		
+		var debris = $GPUParticles2D
+		debris.reparent(get_tree().current_scene, true)
+		debris.restart()
+		debris.emitting = true
+
+		# Remove debris after it finishes
+		get_tree().create_timer(debris.lifetime + 0.5).timeout.connect(
+		debris.queue_free
+		)
+		
 		await $AnimatedSprite2D.animation_finished
 		queue_free()
 

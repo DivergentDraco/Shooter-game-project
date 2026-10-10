@@ -15,13 +15,9 @@ func _ready():
 	game_over.hide()
 	start_button.show()
 	
-func _on_enemy_died(value):
-	score += value
-	$CanvasLayer/UI.update_score(score)
-	$Camera2D.add_trauma(0.5)
 
 func _process(_delta):
-	if Input.is_action_pressed("shoot") and playing == false:
+	if Input.is_action_pressed("Z") and playing == false:
 		Spawning.clear_all_bullets()
 		start_button.hide()
 		new_game()
@@ -35,7 +31,7 @@ func _on_player_died():
 	start_button.show()
 	
 func _on_start_pressed():
-	if Input.is_action_pressed("shoot"):
+	if Input.is_action_pressed("Z"):
 		Spawning.clear_all_bullets()
 		start_button.hide()
 		new_game()
@@ -44,6 +40,5 @@ func new_game():
 	stage_manager.start_stage()
 	$StageMusic.play()
 	score = 0
-	$CanvasLayer/UI.update_score(score)
 	$CanvasLayer/CenterContainer/Player.start()
 	playing = true

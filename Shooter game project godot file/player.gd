@@ -26,7 +26,6 @@ var can_shoot = true
 # bullet mode: 0 = straight, 1 = spiral
 var bullet_mode = 0
 
-#
 func _ready():
 	array.resize(10)
 	start()
@@ -49,32 +48,31 @@ func _process(delta):
 	else:
 		ship.frame = 1
 		boosters.animation = "forward"
-#Shift key
-	if Input.is_action_pressed("focus"):
+	#Shift key
+	if Input.is_action_pressed("SHIFT"):
 		speed = 75
 		shiftind.visible = true
 	else:
 		speed = 150
 		shiftind.visible = false
-#calculate speed and position
+	#calculate speed and position
 	position += input * speed * delta
 
-#Store positions into arrays
+	#Store positions into arrays
 	# print(array)
 	if $Node2D1.position != array[0]:
 		array.insert(0, $Node2D1.position)
 	array.resize(20)
-#Select the 10th position stored in the array
+	#Select the 10th position stored in the array
 	$Node2D2.position = array[10]
 
-#Limit the player only inside the box	
-	# position = position.clamp(Vector2(8+165, 8), screensize - Vector2(173, 8))
+	#Limit the player only inside the box	
 	position = position.clamp(Vector2(8, 8), screensize - Vector2(8, 8))
 
-	if Input.is_action_pressed("shoot") and can_shoot:
+	if Input.is_action_pressed("Z") and can_shoot:
 		shoot()
 
-	if Input.is_action_just_pressed("switch"):
+	if Input.is_action_just_pressed("X"):
 		bullet_mode = 1 - bullet_mode # toggle between 0 and 1
 
 func shoot():
@@ -83,7 +81,7 @@ func shoot():
 	$Node2D1/AudioStreamPlayer.play()
 	var b = bullet_scene.instantiate()
 	get_tree().root.add_child(b)
-	var bullet_offset = Vector2(-2, 0) # half bullet size
+	var bullet_offset = Vector2(-2, -10) # half bullet size
 	b.start(position + bullet_offset, bullet_mode)
 	await get_tree().create_timer(0.045).timeout
 	can_shoot = true
@@ -98,4 +96,4 @@ func set_shield(value):
 
 func _on_body_entered(body):
 	if body.is_in_group("enemies"):
-		body.explode()
+		body.hit()

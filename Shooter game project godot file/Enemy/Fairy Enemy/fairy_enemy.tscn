@@ -138,6 +138,17 @@ _data = {
 &"hit_flash": SubResource("Animation_iryfb")
 }
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6t1vd"]
+lifetime_randomness = 0.26
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 0)
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+
 [node name="FairyEnemy" type="CharacterBody2D" unique_id=588814693 groups=["enemies"]]
 z_index = 1
 collision_layer = 2
@@ -215,6 +226,15 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 metadata/_custom_type_script = "uid://btd0n20blj8nd"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1505664451]
+texture_filter = 1
+emitting = false
+amount = 20
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_6t1vd")
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

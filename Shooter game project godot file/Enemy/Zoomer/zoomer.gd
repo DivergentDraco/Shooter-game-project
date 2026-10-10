@@ -105,13 +105,13 @@ func set_spawnpoint(index: int) -> void:
 		1:
 			spawnpoint_1.active = true
 
-func explode():
+func hit():
 	if hp > 0:
 		hp -= 1
 		hit_flash_anim_player.play("hit_flash")
 	else: 
 		set_collision_layer_value(2, false)
-		velocity = Vector2.ZERO
+		set_physics_process(false)
 		$AnimatedSprite2D.play("explode")
 		set_deferred("monitorable", false)
 		died.emit(5)

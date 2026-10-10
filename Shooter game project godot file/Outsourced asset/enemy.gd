@@ -34,7 +34,7 @@ func _process(delta):
 	if position.y > screensize.y + 32:
 		start(start_pos)
 
-func explode():
+func hit():
 	if hp > 0:
 		hp -= 1
 		hit_flash_anim_player.play("hit_flash")

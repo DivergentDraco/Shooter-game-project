@@ -16,6 +16,7 @@ var stage_started := false
 @onready var music2 = %StageMusic2
 
 var wave_order = [
+	#"wave_4",
 	"wave_12",
 	
 	"wave_1",
@@ -1157,3 +1158,20 @@ func spawn_enemy(entry: Dictionary) -> void:
 	
 	if entry.has("direction"):
 		enemy.set_movement_direction(entry.direction)
+		
+	if enemy is Big_Zam:
+		var hp_bar = get_tree().current_scene.get_node("CanvasLayer/BossHP")
+
+		hp_bar.max_value = enemy.max_hp
+		hp_bar.value = enemy.hp
+		hp_bar.show()
+
+		enemy.hp_changed.connect(
+			func(current_hp, _max_hp):
+				hp_bar.value = current_hp
+		)
+
+		enemy.died.connect(
+			func(_reward):
+				hp_bar.hide()
+		)

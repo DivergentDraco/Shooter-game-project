@@ -68,7 +68,7 @@ func start(pos):
 		$ShootTimer.wait_time = randf_range(4, 20)
 		$ShootTimer.start()
 
-func explode():
+func hit():
 		if hp > 0:
 			hp -= 1
 			hit_flash_anim_player.play("hit_flash")

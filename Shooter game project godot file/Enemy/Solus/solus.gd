@@ -231,7 +231,7 @@ func set_spawnpoint(index: int) -> void:
 		3:
 			spawnpoint_3.active = true
 
-func explode():
+func hit():
 	if hp > 0:
 		hp -= 1
 		hit_flash_anim_player.play("hit_flash")

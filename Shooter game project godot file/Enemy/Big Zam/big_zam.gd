@@ -40,6 +40,12 @@ var normal_sprite_modulate: Color
 var normal_scale: Vector2
 var normal_modulate: Color
 
+const EXPLOSION_SCENE = preload("res://Explosion/explosion.tscn")
+
+@export var explosion_count: int = 20
+@export var explosion_interval: float = 0.1
+@export var explosion_area: Vector2 = Vector2(200, 120)
+
 signal died 
 @onready var movement_pattern = $MovementPattern
 @onready var screensize  = get_viewport_rect().size
@@ -52,7 +58,12 @@ signal died
 }
 
 var bullet_scene = preload("res://enemy_bullet.tscn")
-var hp = 100
+signal hp_changed(current_hp: int, max_hp: int)
+
+@export var max_hp: int = 100
+var hp: int = 100
+
+
 
 func _ready() -> void:
 	warning.start()
@@ -86,7 +97,7 @@ func _physics_process(delta: float) -> void:
 			attack_3(delta)
 
 		BossState.DEAD:
-			velocity = Vector2.ZERO
+			dead_state(delta)
 			
 		BossState.RETURN:
 			return_state(delta)
@@ -118,6 +129,15 @@ func change_state(new_state: BossState) -> void:
 			var point = spawn_points["spawnpoint_3"]
 			point.active = true
 			point.spawn()
+			
+		BossState.RETURN:
+			for point_name in ["spawnpoint_1", "spawnpoint_2", "spawnpoint_3", "spawnpoint_4"]:
+				var point = spawn_points[point_name]
+				point.active = false
+			
+		BossState.DEAD:
+			stop_all_spawnpoints()
+			Spawning.clear_all_bullets()
 
 func intro_state(_delta: float) -> void:
 	set_collision_layer_value(2, false)
@@ -199,6 +219,98 @@ func attack_3(_delta: float) -> void:
 		next_state = BossState.ATTACK_1
 		change_state(BossState.RETURN)
 		
+var dead_started := false
+
+func dead_state(delta: float) -> void:
+	velocity.x = 0
+	if not dead_started:
+		velocity.y = -30
+		dead_started = true
+
+	velocity.y = move_toward(velocity.y, 0.0, 20 * delta)
+		
+
+var is_dying := false
+
+func hit() -> void:
+	if is_dying:
+		return
+
+	hp -= 1
+	hp_changed.emit(hp, max_hp)
+
+	if hp > 0:
+		hit_flash_anim_player.play("hit_flash")
+	else:
+		is_dying = true
+		die()
+
+
+func die() -> void:
+	if state == BossState.DEAD:
+		return
+
+	change_state(BossState.DEAD)
+	stop_all_spawnpoints()
+
+	set_collision_layer_value(2, false)
+	Spawning.clear_all_bullets()
+
+	died.emit(5)
+
+	# Repeated small explosions
+	for i in range(explosion_count):
+		spawn_random_explosion()
+		await get_tree().create_timer(explosion_interval).timeout
+
+	# Final large explosion
+	sprite.visible = false
+	var final_explosion = EXPLOSION_SCENE.instantiate()
+	get_tree().current_scene.add_child(final_explosion)
+
+	final_explosion.global_position = global_position
+	final_explosion.scale = Vector2.ONE * 3.0
+
+	# Pixel debris
+	var debris = $GPUParticles2D
+	debris.reparent(get_tree().current_scene, true)
+	debris.restart()
+	debris.emitting = true
+
+	# Remove debris after it finishes
+	get_tree().create_timer(debris.lifetime + 0.5).timeout.connect(
+		debris.queue_free
+	)
+
+	# Remove boss, but keep debris and explosions
+	queue_free()
+	
+	
+func spawn_random_explosion() -> void:
+	var explosion = EXPLOSION_SCENE.instantiate()
+	get_parent().add_child(explosion)
+
+	var offset = Vector2(
+		randf_range(-explosion_area.x / 2.0, explosion_area.x / 2.0),
+		randf_range(-explosion_area.y / 2.0, explosion_area.y / 2.0)
+	)
+
+	explosion.global_position = global_position + offset
+	explosion.scale = Vector2.ONE * randf_range(0.5, 1.5)
+
+	$ExplodeSFX.play()
+	
+var has_entered_screen := false
+
+func stop_all_spawnpoints() -> void:
+	for point in spawn_points.values():
+		point.active = false
+		point.set_physics_process(false)
+
+		if point.process_id > 0:
+			Spawning.process_kill(point.process_id)
+
+
 func set_movement_pattern(new_pattern):
 	movement_pattern.pattern = new_pattern
 
@@ -234,23 +346,6 @@ func set_spawnpoint(index: int) -> void:
 			spawnpoint_2.active = true
 		3:
 			spawnpoint_3.active = true
-
-func explode():
-	if hp > 0:
-		hp -= 1
-		hit_flash_anim_player.play("hit_flash")
-	else: 
-		set_collision_layer_value(2, false)
-		velocity = Vector2.ZERO
-		$AnimatedSprite2D.play("explode")
-		set_deferred("monitorable", false)
-		died.emit(5)
-		$ExplodeSFX.play()
-		await $AnimatedSprite2D.animation_finished
-		Spawning.clear_all_bullets()
-		queue_free()
-
-var has_entered_screen := false
 
 
 func _on_visible_on_screen_notifier_2d_screen_entered():
