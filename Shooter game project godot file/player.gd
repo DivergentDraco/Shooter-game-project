@@ -1,4 +1,4 @@
-extends Area2D
+extends CharacterBody2D
 
 #set signal
 signal shield_changed()
@@ -33,12 +33,12 @@ func _ready():
 func start():
 	show()
 	set_process(true)
-	position = Vector2(screensize.x/2, screensize.y - 50)
 	$Node2D1/GunCooldown.wait_time = cooldown
 	
-func _process(delta):
-#Move key
+func _physics_process(_delta):
+	# Move key
 	var input = Input.get_vector("left", "right", "up", "down")
+
 	if input.x > 0:
 		ship.frame = 2
 		boosters.animation = "right"
@@ -48,15 +48,18 @@ func _process(delta):
 	else:
 		ship.frame = 1
 		boosters.animation = "forward"
-	#Shift key
+
+	# Shift key
 	if Input.is_action_pressed("SHIFT"):
 		speed = 75
 		shiftind.visible = true
 	else:
 		speed = 150
 		shiftind.visible = false
-	#calculate speed and position
-	position += input * speed * delta
+
+	# Calculate speed and movement
+	velocity = input * speed
+	move_and_slide()
 
 	#Store positions into arrays
 	# print(array)
@@ -81,7 +84,7 @@ func shoot():
 	$Node2D1/AudioStreamPlayer.play()
 	var b = bullet_scene.instantiate()
 	get_tree().root.add_child(b)
-	var bullet_offset = Vector2(-2, -10) # half bullet size
+	var bullet_offset = Vector2(3, 0) # half bullet size
 	b.start(position + bullet_offset, bullet_mode)
 	await get_tree().create_timer(0.045).timeout
 	can_shoot = true

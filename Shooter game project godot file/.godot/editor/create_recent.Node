@@ -1,3 +1,8 @@
+Area2D
+CharacterBody2D
+CollisionShape2D
+StaticBody2D
+Control
 ProgressBar
 TextureProgressBar
 Node2D
@@ -5,10 +10,6 @@ GPUParticles2D
 AnimatedSprite2D
 BulletPattern
 SpawnPattern
-CharacterBody2D
 Sprite2D
 Parallax2D
 ParallaxBackground
-AnimationPlayer
-Node
-AudioStreamPlayer2D

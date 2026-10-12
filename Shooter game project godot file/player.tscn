@@ -70,8 +70,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_3oajm"]
 radius = 1.0
 
-[node name="Player" type="Area2D" unique_id=2076489632 groups=["players"]]
+[node name="Player" type="CharacterBody2D" unique_id=392784107 groups=["players"]]
 z_index = 1
+collision_layer = 0
 script = ExtResource("1_4pouc")
 bullet_scene = ExtResource("2_6pkbm")
 
@@ -104,10 +105,12 @@ stream = ExtResource("7_4v7vv")
 volume_db = -6.0
 bus = &"SFX"
 
+[node name="Area2D" type="Area2D" parent="." unique_id=756095453]
+
+[node name="PlayerCollisionShape" type="CollisionShape2D" parent="Area2D" unique_id=1316301019]
+shape = SubResource("CircleShape2D_3oajm")
+
 [node name="PlayerCollisionShape" type="CollisionShape2D" parent="." unique_id=960571324]
 shape = SubResource("CircleShape2D_3oajm")
 
 [node name="Node2D2" type="Node2D" parent="." unique_id=1772559412]
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="timeout" from="Node2D1/GunCooldown" to="." method="_on_gun_cooldown_timeout"]

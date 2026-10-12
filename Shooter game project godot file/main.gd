@@ -8,10 +8,11 @@ var score = 0
 var playing = false
 #Sets initial amount of enemy
 @onready var stage_manager = $StageManager
-@onready var start_button = $CanvasLayer/CenterContainer/VBoxContainer
-@onready var game_over = $CanvasLayer/CenterContainer/GameOver
+@onready var start_button = $CanvasLayer/Control/CenterContainer/VBoxContainer
+@onready var game_over = $CanvasLayer/Control/CenterContainer/GameOver
 
 func _ready():
+	get_window().content_scale_size = Vector2i(250, 320)
 	game_over.hide()
 	start_button.show()
 	
@@ -40,5 +41,5 @@ func new_game():
 	stage_manager.start_stage()
 	$StageMusic.play()
 	score = 0
-	$CanvasLayer/CenterContainer/Player.start()
+	$Player.start()
 	playing = true

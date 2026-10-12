@@ -142,7 +142,7 @@ anim_idle = SubResource("Resource_d2t1y")
 a_speed_multiplier = SubResource("Curve_kq58d")
 scale_multiplier = SubResource("Curve_seu75")
 homing_type = 0
-homing_target = NodePath("../../CanvasLayer/CenterContainer/Player")
+homing_target = NodePath("../../Player")
 homing_steer = 0.1
 homing_time_start = 0.0
 homing_duration = 999.0
@@ -405,7 +405,7 @@ custom_data = {}
 a_speed_multiplier = SubResource("Curve_gngh3")
 scale_multiplier = SubResource("Curve_0n3wm")
 homing_type = 0
-homing_target = NodePath("../../CanvasLayer/CenterContainer/Player")
+homing_target = NodePath("../../Player")
 homing_steer = 0.1
 homing_time_start = 0.0
 homing_duration = 999.0
@@ -2350,11 +2350,21 @@ z_index = -5
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1801651538]
 
+[node name="Player" parent="." unique_id=1429210341 instance=ExtResource("5_7bpry")]
+position = Vector2(120, 240)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=364955804]
 
-[node name="BossHP" type="ProgressBar" parent="CanvasLayer" unique_id=282860408]
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=824547309]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 250.0
+offset_bottom = 320.0
+
+[node name="BossHP" type="ProgressBar" parent="CanvasLayer/Control" unique_id=282860408]
 visible = false
 z_index = 1
+layout_mode = 0
 offset_left = 2.0
 offset_top = 13.0
 offset_right = 1221.9999
@@ -2363,29 +2373,29 @@ scale = Vector2(0.2, 0.2)
 value = 100.0
 show_percentage = false
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer" unique_id=1641602579]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control" unique_id=1641602579]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.781
+anchor_bottom = 0.66700006
+offset_right = 54.75
+offset_bottom = 106.55998
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Player" parent="CanvasLayer/CenterContainer" unique_id=1429210341 instance=ExtResource("5_7bpry")]
-position = Vector2(123, 240)
-
-[node name="GameOver" type="TextureRect" parent="CanvasLayer/CenterContainer" unique_id=242236601]
+[node name="GameOver" type="TextureRect" parent="CanvasLayer/Control/CenterContainer" unique_id=242236601]
 layout_mode = 2
 texture = ExtResource("2_ts3fu")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer" unique_id=1336570326]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/CenterContainer" unique_id=1336570326]
 layout_mode = 2
 
-[node name="Start" type="TextureButton" parent="CanvasLayer/CenterContainer/VBoxContainer" unique_id=1050205384]
+[node name="Start" type="TextureButton" parent="CanvasLayer/Control/CenterContainer/VBoxContainer" unique_id=1050205384]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("3_osiot")
 
-[node name="Label" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer" unique_id=965981428]
+[node name="Label" type="Label" parent="CanvasLayer/Control/CenterContainer/VBoxContainer" unique_id=965981428]
 layout_mode = 2
 text = "Press Z to start"
 
@@ -2452,7 +2462,7 @@ region_enabled = true
 region_rect = Rect2(2.08165e-12, 2.08165e-12, 240, 320)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1258082105]
-position = Vector2(120, 160)
+anchor_mode = 0
 script = ExtResource("6_nnvno")
 noise = SubResource("FastNoiseLite_uf0tv")
 
@@ -2472,7 +2482,7 @@ resources = [PackedStringArray("EnemyScene1", "EnemyScene2", "EnemyScene3", "Ene
 
 [node name="Node2D" type="Node2D" parent="." unique_id=280983599]
 
-[node name="Area2D" type="CharacterBody2D" parent="." unique_id=913362194]
+[node name="Area2D" type="StaticBody2D" parent="." unique_id=1069769959]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=989674579]
 position = Vector2(120, 0)
@@ -2490,5 +2500,5 @@ shape = SubResource("WorldBoundaryShape2D_sn0t7")
 position = Vector2(120, 160)
 shape = SubResource("WorldBoundaryShape2D_6f8o3")
 
-[connection signal="died" from="CanvasLayer/CenterContainer/Player" to="." method="_on_player_died"]
-[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="pressed" from="CanvasLayer/Control/CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]

@@ -230,7 +230,7 @@ metadata/_custom_type_script = "uid://btd0n20blj8nd"
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1505664451]
 texture_filter = 1
 emitting = false
-amount = 20
+amount = 10
 lifetime = 1.5
 one_shot = true
 explosiveness = 1.0

@@ -5,7 +5,7 @@ enum BossState {
 	ATTACK_1,
 }
 
-var player: Area2D
+var player: CharacterBody2D
 
 var attack_direction := Vector2.ZERO
 
