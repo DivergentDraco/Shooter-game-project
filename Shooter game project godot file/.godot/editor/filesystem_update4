@@ -1,37 +1,37 @@
-res://default_bus_layout.tres
-res://main.tscn
-res://hitflash effect/hitflash.tres
-res://Enemy/Fairy Enemy/fairy_enemy.tscn
-res://hitflash effect/shadermaterial.tres
-res://main.gd
-res://player.gd
-res://player.tscn
-res://Enemy/Zoomer/zoomer.gd
-res://Enemy/UFO/ufo.tscn
-res://Enemy/Big Zam/big_zam.tscn
-res://Enemy/Maid Enemy/maid_enemy.tscn
-res://Enemy/Zoomer/zoomer.tscn
-res://Enemy/Solus/solus.tscn
-res://Explosion/explosion.tscn
-res://Alpha Stage/Enemy/UFO/ufo.tscn
-res://Alpha Stage/Enemy/Big Zam/big_zam.tscn
-res://Alpha Stage/Enemy/Maid Enemy/maid_enemy.tscn
-res://Alpha Stage/Enemy/Fairy Enemy/fairy_enemy.tscn
-res://enemy.tscn
-res://Alpha Stage/Enemy/Zoomer/zoomer.tscn
-res://Alpha Stage/Enemy/Solus/solus.tscn
-res://player bullet/bullet.tscn
-res://Alpha Stage/hitflash effect/shadermaterial.tres
-res://addons/BulletUpHell/Spawning.tscn
-res://Alpha Stage/Explosion/explosion.tscn
-res://Outsourced asset/enemy.tscn
-res://stage_manager.gd
-res://Alpha Stage/Enemy/Big Zam/big_zam.gd
-res://main menu.tscn
-res://enemy_bullet.tscn
-res://ui.tscn
-res://Alpha Stage/Enemy/Maid Enemy/maid_enemy.gd
-res://Alpha Stage/Enemy/UFO/ufo.gd
-res://Alpha Stage/Enemy/Zoomer/zoomer.gd
+res://Alpha Stage/default_bus_layout.tres
 res://Alpha Stage/main.tscn
+res://Alpha Stage/hitflash effect/hitflash.tres
+res://Outsourced asset/enemy.gd
+res://Galactic Beast Stage/player bullet/bullet.gd
+res://Galactic Beast Stage/player bullet/bullet.tscn
+res://Galactic Beast Stage/hitflash effect/hitflash.tres
+res://Galactic Beast Stage/hitflash effect/shadermaterial.tres
+res://Galactic Beast Stage/Explosion/explosion.gd
+res://Galactic Beast Stage/Explosion/explosion.tscn
+res://Galactic Beast Stage/Enemy/Big Zam/big_zam.gd
+res://Galactic Beast Stage/Enemy/Big Zam/big_zam.tscn
+res://Galactic Beast Stage/Enemy/Fairy Enemy/fairy_enemy.gd
+res://Galactic Beast Stage/Enemy/Fairy Enemy/fairy_enemy.tscn
+res://Galactic Beast Stage/Enemy/Maid Enemy/maid_enemy.gd
+res://Galactic Beast Stage/Enemy/Maid Enemy/maid_enemy.tscn
+res://Galactic Beast Stage/Enemy/Solus/solus.gd
+res://Galactic Beast Stage/Enemy/Solus/solus.tscn
+res://Galactic Beast Stage/Enemy/UFO/ufo.gd
+res://Galactic Beast Stage/Enemy/UFO/ufo.tscn
+res://Galactic Beast Stage/Enemy/Zoomer/zoomer.gd
+res://Galactic Beast Stage/Enemy/Zoomer/zoomer.tscn
+res://Alpha Stage/Enemy/Fairy Enemy/fairy_enemy.gd
+res://Alpha Stage/movement_pattern.gd
+res://Alpha Stage/Enemy/Big Zam/big_zam.gd
+res://Galactic Beast Stage/main.tscn
+res://Alpha Stage/main.gd
+res://Galactic Beast Stage/stage_manager.gd
+res://Galactic Beast Stage/main.gd
 res://Alpha Stage/stage_manager.gd
+res://Galactic Beast Stage/bullet_pattern1.tscn
+res://Galactic Beast Stage/score_counter.tscn
+res://Alpha Stage/player.tscn
+res://Galactic Beast Stage/player.tscn
+res://Alpha Stage/player.gd
+res://Galactic Beast Stage/player.gd
+res://Galactic Beast Stage/warning.gd

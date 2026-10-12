@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cqm0v3rkh844a"
+path="res://.godot/imported/BALATRO [N163].mp3-ab1f9a1f3c3d799cd3056d893fefa7e9.mp3str"
+
+[deps]
+
+source_file="res://Galactic Beast Stage/SFX/Music/BALATRO [N163].mp3"
+dest_files=["res://.godot/imported/BALATRO [N163].mp3-ab1f9a1f3c3d799cd3056d893fefa7e9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

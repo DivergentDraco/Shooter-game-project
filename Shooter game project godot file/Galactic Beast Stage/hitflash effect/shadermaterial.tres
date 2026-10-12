@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://clhyr6o4orwwn"]
+
+[ext_resource type="Shader" uid="uid://c3ctdyqplm7ry" path="res://Galactic Beast Stage/hitflash effect/hitflash.tres" id="1_e4h1a"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_e4h1a")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)

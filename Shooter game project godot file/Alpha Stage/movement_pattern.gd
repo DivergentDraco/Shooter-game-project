@@ -1,4 +1,4 @@
-class_name MovementPattern
+class_name MovementPatternx
 extends Node
 
 enum Pattern {

@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Divergo's shooter game project"
-run/main_scene="res://Alpha Stage/main.tscn"
+run/main_scene="uid://dpnhxl7jsc4bw"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="uid://dodbfn58c8dbn"
 

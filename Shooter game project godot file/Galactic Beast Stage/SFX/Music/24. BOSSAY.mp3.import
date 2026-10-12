@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d4ckasi44dm1s"
+path="res://.godot/imported/24. BOSSAY.mp3-8d1f0b6280cfd1a1df1ca35e72c632d4.mp3str"
+
+[deps]
+
+source_file="res://Galactic Beast Stage/SFX/Music/24. BOSSAY.mp3"
+dest_files=["res://.godot/imported/24. BOSSAY.mp3-8d1f0b6280cfd1a1df1ca35e72c632d4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

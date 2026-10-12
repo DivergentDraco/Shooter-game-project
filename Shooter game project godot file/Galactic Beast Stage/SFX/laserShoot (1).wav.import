@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cv3lpvaio0ole"
+path="res://.godot/imported/laserShoot (1).wav-6c919eec00f001d8851df82a00a8011a.sample"
+
+[deps]
+
+source_file="res://Galactic Beast Stage/SFX/laserShoot (1).wav"
+dest_files=["res://.godot/imported/laserShoot (1).wav-6c919eec00f001d8851df82a00a8011a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

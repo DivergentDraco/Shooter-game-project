@@ -1,4 +1,4 @@
-class_name Fairy
+class_name Fairyx
 extends CharacterBody2D
 
 signal died 

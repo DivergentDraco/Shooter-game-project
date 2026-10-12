@@ -4,7 +4,6 @@ signal died
 
 var start_pos = Vector2.ZERO
 var speed = 0
-var bullet_scene = preload("res://enemy_bullet.tscn")
 var anchor
 var follow_anchor = false
 var hp = 3
