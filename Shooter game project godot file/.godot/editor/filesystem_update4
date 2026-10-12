@@ -7,3 +7,31 @@ res://main.gd
 res://player.gd
 res://player.tscn
 res://Enemy/Zoomer/zoomer.gd
+res://Enemy/UFO/ufo.tscn
+res://Enemy/Big Zam/big_zam.tscn
+res://Enemy/Maid Enemy/maid_enemy.tscn
+res://Enemy/Zoomer/zoomer.tscn
+res://Enemy/Solus/solus.tscn
+res://Explosion/explosion.tscn
+res://Alpha Stage/Enemy/UFO/ufo.tscn
+res://Alpha Stage/Enemy/Big Zam/big_zam.tscn
+res://Alpha Stage/Enemy/Maid Enemy/maid_enemy.tscn
+res://Alpha Stage/Enemy/Fairy Enemy/fairy_enemy.tscn
+res://enemy.tscn
+res://Alpha Stage/Enemy/Zoomer/zoomer.tscn
+res://Alpha Stage/Enemy/Solus/solus.tscn
+res://player bullet/bullet.tscn
+res://Alpha Stage/hitflash effect/shadermaterial.tres
+res://addons/BulletUpHell/Spawning.tscn
+res://Alpha Stage/Explosion/explosion.tscn
+res://Outsourced asset/enemy.tscn
+res://stage_manager.gd
+res://Alpha Stage/Enemy/Big Zam/big_zam.gd
+res://main menu.tscn
+res://enemy_bullet.tscn
+res://ui.tscn
+res://Alpha Stage/Enemy/Maid Enemy/maid_enemy.gd
+res://Alpha Stage/Enemy/UFO/ufo.gd
+res://Alpha Stage/Enemy/Zoomer/zoomer.gd
+res://Alpha Stage/main.tscn
+res://Alpha Stage/stage_manager.gd

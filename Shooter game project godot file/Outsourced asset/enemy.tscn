@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://buv1055nhydxp"]
+[gd_scene format=3 uid="uid://buv1055nhydxp"]
 
 [ext_resource type="Script" uid="uid://b3gn844jbtgc8" path="res://Outsourced asset/enemy.gd" id="1_uugm3"]
-[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://hitflash effect/shadermaterial.tres" id="2_wp72c"]
+[ext_resource type="Material" uid="uid://148x6b7nyi2f" path="res://Alpha Stage/hitflash effect/shadermaterial.tres" id="2_wp72c"]
 [ext_resource type="Texture2D" uid="uid://bfvjqpdy1yspp" path="res://Outsourced asset/Mini Pixel Pack 3/Enemies/Bon_Bon (16 x 16).png" id="3_x1pdb"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="4_1tl8h"]
-[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://SFX/explosion (1).wav" id="5_ddd6i"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://Alpha Stage/SFX/explosion (1).wav" id="5_ddd6i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j7632"]
 size = Vector2(16, 10)
@@ -185,36 +185,32 @@ _data = {
 &"hit_flash": SubResource("Animation_iryfb")
 }
 
-[node name="Enemy" type="Area2D" groups=["enemies"]]
+[node name="Enemy" type="Area2D" unique_id=1269608313 groups=["enemies"]]
 script = ExtResource("1_uugm3")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=516360316]
 material = ExtResource("2_wp72c")
 texture = ExtResource("3_x1pdb")
 hframes = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1799383239]
 shape = SubResource("RectangleShape2D_j7632")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_rfrsa")
-}
-autoplay = "bounce"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=535133489]
+libraries/ = SubResource("AnimationLibrary_rfrsa")
+autoplay = &"bounce"
 
-[node name="MoveTimer" type="Timer" parent="."]
+[node name="MoveTimer" type="Timer" parent="." unique_id=930301774]
 one_shot = true
 
-[node name="ShootTimer" type="Timer" parent="."]
+[node name="ShootTimer" type="Timer" parent="." unique_id=1543132212]
 one_shot = true
 
-[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="." unique_id=2115298319]
 root_node = NodePath("../Sprite2D")
-libraries = {
-&"": SubResource("AnimationLibrary_ymajm")
-}
+libraries/ = SubResource("AnimationLibrary_ymajm")
 
-[node name="ExplodeSFX" type="AudioStreamPlayer" parent="."]
+[node name="ExplodeSFX" type="AudioStreamPlayer" parent="." unique_id=778271221]
 stream = ExtResource("5_ddd6i")
 volume_db = -12.329
 max_polyphony = 10

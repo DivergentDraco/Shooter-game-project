@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bw06bb0c5676k"
+path="res://.godot/imported/explosion (1).wav-d0e18adfaf2786e82f4996f49b3d8a21.sample"
+
+[deps]
+
+source_file="res://Alpha Stage/SFX/explosion (1).wav"
+dest_files=["res://.godot/imported/explosion (1).wav-d0e18adfaf2786e82f4996f49b3d8a21.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
