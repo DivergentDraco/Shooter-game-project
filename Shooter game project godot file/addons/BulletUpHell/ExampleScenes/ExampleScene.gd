@@ -1,5 +1,7 @@
 extends Node2D
 
+func _ready() -> void:
+	get_window().content_scale_size = Vector2i(1000, 1000)
 
 
 func _process(delta):

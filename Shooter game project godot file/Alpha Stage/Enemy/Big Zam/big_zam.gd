@@ -1,4 +1,4 @@
-class_name Big_Zamx
+class_name Big_Zam
 extends CharacterBody2D
 
 enum BossState {

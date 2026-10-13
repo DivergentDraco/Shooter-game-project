@@ -16,6 +16,7 @@ var stage_started := false
 @onready var music2 = %StageMusic2
 
 var wave_order = [
+	"wave_4",
 	"wave_15",
 	"wave_12",
 	
@@ -393,7 +394,7 @@ var waves = {
 	],
 	"wave_4": [
 		{"enemy": BIG_ZAM, 
-		"pos": Vector2(122, 500), 
+		"pos": Vector2(160, 500), 
 		#"movement_pattern": MovementPattern.Pattern.STRAIGHT, 
 		#"speed": 250,
 		#"acceleration": -300,
@@ -1159,7 +1160,7 @@ func spawn_enemy(entry: Dictionary) -> void:
 	if entry.has("direction"):
 		enemy.set_movement_direction(entry.direction)
 		
-	if enemy is Big_Zam:
+	if enemy is Big_Zamx or enemy is Solusx:
 		var hp_bar = get_tree().current_scene.get_node("CanvasLayer/Control/BossHP")
 
 		hp_bar.max_value = enemy.max_hp

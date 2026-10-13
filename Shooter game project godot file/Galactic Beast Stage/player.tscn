@@ -47,6 +47,7 @@ texture = ExtResource("3_xsbqb")
 [node name="Ship" type="AnimatedSprite2D" parent="Node2D1" unique_id=1562045759]
 light_mask = 2
 sprite_frames = SubResource("SpriteFrames_irq8t")
+autoplay = "default"
 
 [node name="GunCooldown" type="Timer" parent="Node2D1" unique_id=712823248]
 wait_time = 0.032

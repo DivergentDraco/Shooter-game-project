@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d2n48olh7cs18"]
+
+[ext_resource type="Script" uid="uid://cxqf4ws2khb3j" path="res://Galactic Beast Stage/curved_laser.gd" id="1_kyna5"]
+
+[node name="CurvedLaser" type="Node2D" unique_id=509177445]
+script = ExtResource("1_kyna5")
+
+[node name="Head" type="Marker2D" parent="." unique_id=273979209]
+
+[node name="OuterLaser" type="Line2D" parent="." unique_id=505487442]
+
+[node name="InnerLaser" type="Line2D" parent="." unique_id=1033149835]
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1462042841]

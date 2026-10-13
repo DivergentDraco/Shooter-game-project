@@ -1,5 +1,17 @@
+res://Alpha Stage/default_bus_layout.tres
 res://Galactic Beast Stage/player.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
-res://Galactic Beast Stage/main.gd
+res://Galactic Beast Stage/Enemy/Solus/solus.tscn
 res://Galactic Beast Stage/main.tscn
-res://Galactic Beast Stage/player.gd
+res://Galactic Beast Stage/Enemy/Big Zam/big_zam.tscn
+res://Alpha Stage/stage_manager.gd
+res://Galactic Beast Stage/stage_manager.gd
+res://addons/BulletUpHell/Spawning.tscn
+res://Galactic Beast Stage/fps_label.gd
+res://Alpha Stage/Enemy/Big Zam/big_zam.gd
+res://Galactic Beast Stage/Enemy/Big Zam/big_zam.gd
+res://Galactic Beast Stage/Enemy/Solus/solus.gd
+res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd
+res://addons/BulletUpHell/ExampleScenes/Example8_Lasers.tscn
+res://Galactic Beast Stage/curved_laser.tscn
+res://Galactic Beast Stage/curved_laser.gd

@@ -48,7 +48,10 @@ signal died
 	"spawnpoint_1" : %SpawnPoint,
 }
 
-var hp = 300
+signal hp_changed(current_hp: int, max_hp: int)
+
+@export var max_hp: int = 300
+var hp: int = 300
 
 func _ready() -> void:
 	warning.start()
@@ -231,22 +234,94 @@ func set_spawnpoint(index: int) -> void:
 		3:
 			spawnpoint_3.active = true
 
-func hit():
-	if hp > 0:
-		hp -= 1
-		hit_flash_anim_player.play("hit_flash")
-	else: 
-		set_collision_layer_value(2, false)
-		velocity = Vector2.ZERO
-		$AnimatedSprite2D.play("explode")
-		set_deferred("monitorable", false)
-		died.emit(5)
-		$ExplodeSFX.play()
-		await $AnimatedSprite2D.animation_finished
-		Spawning.clear_all_bullets()
-		queue_free()
+var is_dying := false
 
+func hit() -> void:
+	if is_dying:
+		return
+
+	hp -= 1
+	hp_changed.emit(hp, max_hp)
+
+	if hp > 0:
+		hit_flash_anim_player.play("hit_flash")
+	else:
+		is_dying = true
+		die()
+		
+const EXPLOSION_SCENE = preload("res://Galactic Beast Stage/Explosion/explosion.tscn")
+
+@export var explosion_count: int = 20
+@export var explosion_interval: float = 0.1
+@export var explosion_area: Vector2 = Vector2(200, 120)
+
+func die() -> void:
+	if state == BossState.DEAD:
+		return
+
+	change_state(BossState.DEAD)
+	stop_all_spawnpoints()
+
+	set_collision_layer_value(2, false)
+	Spawning.clear_all_bullets()
+
+	died.emit(5)
+
+
+
+	# Repeated small explosions
+	for i in range(explosion_count):
+		spawn_random_explosion()
+		await get_tree().create_timer(explosion_interval).timeout
+
+	# Final large explosion
+	sprite.visible = false
+	$GPUParticles2D.queue_free()
+	var final_explosion = EXPLOSION_SCENE.instantiate()
+	get_tree().current_scene.add_child(final_explosion)
+
+	final_explosion.global_position = global_position
+	final_explosion.scale = Vector2.ONE * 3.0
+
+	# Pixel debris
+	var debris = $GPUParticles2D
+	debris.reparent(get_tree().current_scene, true)
+	debris.restart()
+	debris.emitting = true
+
+	# Remove debris after it finishes
+	get_tree().create_timer(debris.lifetime + 0.5).timeout.connect(
+		debris.queue_free
+	)
+
+	# Remove boss, but keep debris and explosions
+	queue_free()
+	
+func spawn_random_explosion() -> void:
+	var explosion = EXPLOSION_SCENE.instantiate()
+	get_parent().add_child(explosion)
+
+	var offset = Vector2(
+		randf_range(-explosion_area.x / 2.0, explosion_area.x / 2.0),
+		randf_range(-explosion_area.y / 2.0, explosion_area.y / 2.0)
+	)
+
+	explosion.global_position = global_position + offset
+	explosion.scale = Vector2.ONE * randf_range(0.5, 1.5)
+
+	$ExplodeSFX.play()
+	
 var has_entered_screen := false
+
+func stop_all_spawnpoints() -> void:
+	for point in spawn_points.values():
+		point.active = false
+		point.set_physics_process(false)
+
+		if point.process_id > 0:
+			Spawning.process_kill(point.process_id)
+
+
 
 
 func _on_visible_on_screen_notifier_2d_screen_entered():
