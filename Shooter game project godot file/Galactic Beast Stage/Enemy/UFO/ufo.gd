@@ -198,20 +198,46 @@ func set_spawnpoint(index: int) -> void:
 		3:
 			spawnpoint_3.active = true
 
-func hit():
+var is_dying: bool = false
+
+func hit(damage: int = 1) -> void:
+	if is_dying:
+		return
+
+	hp -= damage
+
 	if hp > 0:
-		hp -= 1
 		hit_flash_anim_player.play("hit_flash")
-	else: 
-		set_collision_layer_value(2, false)
-		set_physics_process(false)
-		$AnimatedSprite2D.play("explode")
-		set_deferred("monitorable", false)
-		died.emit(5)
-		$ExplodeSFX.play()
-		await $AnimatedSprite2D.animation_finished
-		#Spawning.clear_all_bullets()
-		queue_free()
+		return
+
+	# Prevent repeated deaths
+	is_dying = true
+
+	set_collision_layer_value(2, false)
+	set_physics_process(false)
+	set_deferred("monitorable", false)
+
+	$AnimatedSprite2D.play("explode")
+	$ExplodeSFX.play()
+
+	died.emit(5)
+
+	# Detach debris particles
+	var debris = get_node_or_null("GPUParticles2D")
+
+	if debris != null:
+		debris.reparent(get_tree().current_scene, true)
+		debris.restart()
+		debris.emitting = true
+
+		# Delete after particles finish
+		get_tree().create_timer(
+			debris.lifetime + 0.5
+		).timeout.connect(debris.queue_free)
+
+	await $AnimatedSprite2D.animation_finished
+
+	queue_free()
 
 var has_entered_screen := false
 

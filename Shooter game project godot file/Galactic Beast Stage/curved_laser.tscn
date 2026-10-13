@@ -7,8 +7,9 @@ script = ExtResource("1_kyna5")
 
 [node name="Head" type="Marker2D" parent="." unique_id=273979209]
 
-[node name="OuterLaser" type="Line2D" parent="." unique_id=505487442]
+[node name="Outer" type="Line2D" parent="." unique_id=505487442]
 
-[node name="InnerLaser" type="Line2D" parent="." unique_id=1033149835]
+[node name="Core" type="Line2D" parent="." unique_id=1033149835]
+visible = false
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1462042841]

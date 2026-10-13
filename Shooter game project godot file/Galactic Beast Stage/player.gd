@@ -25,6 +25,8 @@ var can_shoot = true
 # bullet mode: 0 = straight, 1 = spiral
 var bullet_mode = 0
 
+var laser_side: int = 1
+
 func _ready():
 	array.resize(10)
 	start()
@@ -75,7 +77,8 @@ func _physics_process(_delta):
 		shoot()
 
 	if Input.is_action_just_pressed("X"):
-		bullet_mode = 1 - bullet_mode # toggle between 0 and 1
+		#bullet_mode = 1 - bullet_mode # toggle between 0 and 1
+		shoot_laser()
 
 func shoot():
 	can_shoot = false
@@ -87,6 +90,70 @@ func shoot():
 	b.start(position + bullet_offset, bullet_mode)
 	await get_tree().create_timer(0.045).timeout
 	can_shoot = true
+	
+const HOMING_LASER = preload("res://Galactic Beast Stage/curved_laser.tscn")
+
+@export var laser_spawn_offset = Vector2(12, 20)
+@export var laser_launch_angle = 135.0
+
+func fire_homing_laser(enemy: Node2D) -> void:
+	var laser = HOMING_LASER.instantiate()
+
+	var laser_world = get_tree().current_scene.get_node(
+		"LaserViewport/LaserWorld"
+	)
+
+	laser_world.add_child(laser)
+
+	var spawn_offset = Vector2(12 * laser_side, 20)
+
+	var spawn_pos = global_position + spawn_offset
+	laser.position = spawn_pos / laser.pixel_scale
+
+	laser.target = enemy
+
+	# Alternate launch directions
+	laser.direction = Vector2.UP.rotated(
+		deg_to_rad(135.0 * laser_side)
+	)
+
+	laser_side *= -1
+	
+	
+@export var laser_cooldown: float = 0.2
+
+var can_fire_laser: bool = true
+
+func shoot_laser() -> void:
+	var enemies = get_tree().get_nodes_in_group("enemies")
+
+	if enemies.is_empty():
+		return
+
+	# Find nearest enemy
+	var nearest_enemy: Node2D = null
+	var nearest_distance: float = INF
+
+	for enemy in enemies:
+		if not enemy is Node2D:
+			continue
+
+		var distance = global_position.distance_to(enemy.global_position)
+
+		if distance < nearest_distance:
+			nearest_distance = distance
+			nearest_enemy = enemy
+
+	if nearest_enemy == null:
+		return
+
+	can_fire_laser = false
+
+	fire_homing_laser(nearest_enemy)
+
+	await get_tree().create_timer(laser_cooldown).timeout
+
+	can_fire_laser = true
 
 func set_shield(value):
 	shield = min(max_shield, value)

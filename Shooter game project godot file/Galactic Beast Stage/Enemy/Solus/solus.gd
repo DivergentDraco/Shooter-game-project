@@ -236,11 +236,11 @@ func set_spawnpoint(index: int) -> void:
 
 var is_dying := false
 
-func hit() -> void:
+func hit(damage: int = 1) -> void:
 	if is_dying:
 		return
 
-	hp -= 1
+	hp -= damage
 	hp_changed.emit(hp, max_hp)
 
 	if hp > 0:

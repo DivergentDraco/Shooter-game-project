@@ -5,8 +5,8 @@ func _process(_delta: float) -> void:
 	text = "FPS: %d" % fps
 
 	if fps < 30:
-		modulate = Color.RED
+		modulate = Color.ORANGE_RED
 	elif fps < 60:
 		modulate = Color.YELLOW
 	else:
-		modulate = Color.GREEN
+		modulate = Color.WHITE

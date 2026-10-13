@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://nui4o7lc7rvj" path="res://Galactic Beast Stage/player.tscn" id="9_1tu3f"]
 [ext_resource type="Script" uid="uid://xxaiydvnviyt" path="res://Galactic Beast Stage/fps_label.gd" id="10_8wx74"]
 [ext_resource type="Texture2D" uid="uid://cr7usmfo6apt8" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/GAME_OVER (72 x 8).png" id="10_mxinn"]
+[ext_resource type="FontFile" uid="uid://4mpx31b3cj6x" path="res://Galactic Beast Stage/Sprites and Animations/Everyday_Slight.ttf" id="10_wukgx"]
 [ext_resource type="Texture2D" uid="uid://o6gwbftsnc8c" path="res://Outsourced asset/Mini Pixel Pack 3/UI objects/START (48 x 8).png" id="11_vafc3"]
 [ext_resource type="Texture2D" uid="uid://u1uc2wm84q1a" path="res://Galactic Beast Stage/Sprites and Animations/Background.png" id="12_8wx74"]
 [ext_resource type="Texture2D" uid="uid://bae4yoqlx20ka" path="res://Alpha Stage/Sprites and Animations/Sprite-0001.png" id="12_p0wm2"]
@@ -379,8 +380,14 @@ r_scale_multi_curve_choice = []
 r_scale_multi_iter_variation = Vector3(0, 0, 0)
 r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_0iwtj"]
+viewport_path = NodePath("LaserViewport")
+
 [sub_resource type="LabelSettings" id="LabelSettings_wukgx"]
+font = ExtResource("10_wukgx")
 font_size = 8
+stacked_shadow_count = 1
+stacked_shadow_0/outline_size = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uf0tv"]
 
@@ -2063,6 +2070,22 @@ script = ExtResource("8_8wx74")
 
 [node name="BackgroundEnemies" type="Node2D" parent="." unique_id=1006725599]
 z_index = -5
+
+[node name="LaserDisplay" type="TextureRect" parent="." unique_id=1436221587]
+texture_filter = 1
+offset_right = 320.0
+offset_bottom = 480.0
+mouse_filter = 2
+texture = SubResource("ViewportTexture_0iwtj")
+expand_mode = 1
+
+[node name="LaserViewport" type="SubViewport" parent="." unique_id=1812520989]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(320, 480)
+render_target_update_mode = 4
+
+[node name="LaserWorld" type="Node2D" parent="LaserViewport" unique_id=1656697]
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1801651538]
 
