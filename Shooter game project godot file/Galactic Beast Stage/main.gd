@@ -12,6 +12,8 @@ var playing = false
 @onready var game_over = $CanvasLayer/Control/CenterContainer/GameOver
 
 func _ready():
+	for id in Input.get_connected_joypads():
+		print(Input.get_joy_name(id))
 	get_window().content_scale_size = Vector2i(320, 480)
 	game_over.hide()
 	start_button.show()

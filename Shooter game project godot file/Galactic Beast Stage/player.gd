@@ -11,7 +11,6 @@ signal died()
 
 #onready variables and nodes
 @onready var ship = $Node2D1/Ship
-@onready var boosters = $Node2D1/Ship/Boosters
 @onready var shiftind = $Node2D1/ShiftInd
 
 @onready var screensize = get_viewport_rect().size
