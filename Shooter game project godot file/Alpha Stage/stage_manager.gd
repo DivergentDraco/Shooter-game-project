@@ -16,7 +16,7 @@ var stage_started := false
 @onready var music2 = %StageMusic2
 
 var wave_order = [
-	#"wave_4",
+	"wave_15",
 	"wave_12",
 	
 	"wave_1",

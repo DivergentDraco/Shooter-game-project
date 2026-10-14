@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bsr2mm1i5he86" path="res://Alpha Stage/Enemy/Solus/solus.gd" id="1_t87d8"]
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://Alpha Stage/hitflash effect/hitflash.tres" id="2_t87d8"]
 [ext_resource type="Texture2D" uid="uid://btkwtqdktgbb1" path="res://Alpha Stage/Sprites and Animations/explode.png" id="3_ebwrg"]
-[ext_resource type="Texture2D" uid="uid://beof5un2oalyc" path="res://Alpha Stage/Sprites and Animations/569577-export.png" id="4_r1jsj"]
+[ext_resource type="Texture2D" uid="uid://cjdee1hg5wq55" path="res://Galactic Beast Stage/Sprites and Animations/GB_solus_boss_idle.png" id="4_t87d8"]
 [ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://Alpha Stage/SFX/explosion (1).wav" id="5_niad6"]
 [ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://Alpha Stage/movement_pattern.gd" id="6_kv4gf"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="7_n8q7k"]
@@ -47,25 +47,29 @@ region = Rect2(144, 0, 24, 24)
 atlas = ExtResource("3_ebwrg")
 region = Rect2(168, 0, 24, 24)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0v01b"]
-atlas = ExtResource("4_r1jsj")
-region = Rect2(0, 0, 53, 57)
+[sub_resource type="AtlasTexture" id="AtlasTexture_lwto1"]
+atlas = ExtResource("4_t87d8")
+region = Rect2(0, 0, 86, 74)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wfcl7"]
-atlas = ExtResource("4_r1jsj")
-region = Rect2(55, 0, 53, 57)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ebwrg"]
+atlas = ExtResource("4_t87d8")
+region = Rect2(86, 0, 86, 74)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sm8t2"]
-atlas = ExtResource("4_r1jsj")
-region = Rect2(110, 0, 53, 57)
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1jsj"]
+atlas = ExtResource("4_t87d8")
+region = Rect2(172, 0, 86, 74)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8pcgn"]
-atlas = ExtResource("4_r1jsj")
-region = Rect2(165, 0, 53, 57)
+[sub_resource type="AtlasTexture" id="AtlasTexture_niad6"]
+atlas = ExtResource("4_t87d8")
+region = Rect2(258, 0, 86, 74)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_erprb"]
-atlas = ExtResource("4_r1jsj")
-region = Rect2(220, 0, 53, 57)
+[sub_resource type="AtlasTexture" id="AtlasTexture_kv4gf"]
+atlas = ExtResource("4_t87d8")
+region = Rect2(344, 0, 86, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n8q7k"]
+atlas = ExtResource("4_t87d8")
+region = Rect2(430, 0, 86, 74)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fu1jc"]
 animations = [{
@@ -100,19 +104,22 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0v01b")
+"texture": SubResource("AtlasTexture_lwto1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wfcl7")
+"texture": SubResource("AtlasTexture_ebwrg")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_sm8t2")
+"texture": SubResource("AtlasTexture_r1jsj")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8pcgn")
+"texture": SubResource("AtlasTexture_niad6")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_erprb")
+"texture": SubResource("AtlasTexture_kv4gf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n8q7k")
 }],
 "loop": 1,
 "name": &"new_animation",
@@ -120,7 +127,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w0jye"]
-size = Vector2(20, 42)
+size = Vector2(50, 74)
 
 [sub_resource type="Animation" id="Animation_jemjn"]
 length = 0.001
@@ -167,8 +174,6 @@ script = ExtResource("1_t87d8")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1137919903]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_jsnql")
-position = Vector2(9, 0)
-scale = Vector2(0.6792453, 0.6792451)
 sprite_frames = SubResource("SpriteFrames_fu1jc")
 animation = &"new_animation"
 autoplay = "new_animation"
@@ -199,7 +204,7 @@ bus = &"SFX"
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=704804287]
 unique_name_in_owner = true
-rect = Rect2(-10, -21, 20, 42)
+rect = Rect2(-25, -37, 50, 74)
 
 [node name="MovementPattern" type="Node" parent="." unique_id=582758240]
 unique_name_in_owner = true
