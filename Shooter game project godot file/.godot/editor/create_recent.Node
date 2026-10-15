@@ -1,4 +1,8 @@
+Sprite2D
+Polygon2D
+Sprite3D
 CollisionShape2D
+Node
 Node2D
 SubViewport
 TextureRect
@@ -8,7 +12,3 @@ Marker2D
 LaserBeam
 Label
 GPUParticles2D
-AnimatedSprite2D
-Sprite2D
-CharacterBody2D
-StaticBody2D

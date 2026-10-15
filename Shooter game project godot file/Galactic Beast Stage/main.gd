@@ -17,7 +17,9 @@ func _ready():
 	get_window().content_scale_size = Vector2i(320, 480)
 	game_over.hide()
 	start_button.show()
-	
+	print(
+		$Background2.material.get_shader_parameter("scroll_speed")
+	)
 
 func _process(_delta):
 	if Input.is_action_pressed("Z") and playing == false:

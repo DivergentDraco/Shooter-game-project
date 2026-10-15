@@ -1,7 +1,4 @@
-res://Alpha Stage/default_bus_layout.tres
 res://Galactic Beast Stage/main.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
+res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/main.gd
-res://Alpha Stage/stage_manager.gd
-res://Alpha Stage/Enemy/Solus/solus.tscn
-res://Alpha Stage/main.tscn
