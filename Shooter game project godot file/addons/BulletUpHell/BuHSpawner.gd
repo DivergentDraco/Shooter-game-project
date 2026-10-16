@@ -1239,17 +1239,49 @@ func move_speed(B:Dictionary, props:Dictionary):
 
 	if abs(B["speed"]) < props.get("death_speed_under", 0): delete_bullet(B)
 
-func move_equation(B:Dictionary, props:Dictionary, eq_scale:float=1):
-	if props.get("a_direction_equation","") == "" and props.get("a_angular_equation","") == "": return
-	B["curveDir_index"] += eq_scale*B["speed"]/100
 
-	if props.get("a_direction_equation","") != "":
-		if expression.parse(props["a_direction_equation"],["x"]) != OK: push_error(expression.get_error_text())
-		B["curve"] = float(expression.execute([B["curveDir_index"]*0.05]))*100*eq_scale*(B["speed"]/100)
+func move_equation(B: Dictionary, props: Dictionary, eq_scale: float = 1.0) -> void:
+	if props.get("a_direction_equation", "") == "" and props.get("a_angular_equation", "") == "":
+		return
 
-	if props.get("a_angular_equation","") != "":
-		if expression.parse(props["a_angular_equation"],["x"]) != OK: push_error(expression.get_error_text())
-		B["rotation"] += float(expression.execute([B["curveDir_index"]/50]))/50*eq_scale*(B["speed"]/100)
+	B["curveDir_index"] += eq_scale * B["speed"] / 100.0
+
+	# Direction Equation
+	if props.get("a_direction_equation", "") != "":
+		var equation_text: String = props["a_direction_equation"]
+
+		var parse_error = expression.parse(equation_text, ["x"])
+
+		if parse_error != OK:
+			push_error("Direction equation parse error: " + expression.get_error_text())
+		else:
+			var result = expression.execute([B["curveDir_index"] * 0.05])
+
+			if expression.has_execute_failed():
+				push_error("Direction equation execution error: " + expression.get_error_text())
+			elif result is int or result is float:
+				B["curve"] = float(result) * 100.0 * eq_scale * (B["speed"] / 100.0)
+			else:
+				push_error("Direction equation returned a non-numeric value: " + str(result))
+
+	# Angular Equation
+	if props.get("a_angular_equation", "") != "":
+		var equation_text: String = props["a_angular_equation"]
+
+		var parse_error = expression.parse(equation_text, ["x"])
+
+		if parse_error != OK:
+			push_error("Angular equation parse error: " + expression.get_error_text())
+		else:
+			var result = expression.execute([B["curveDir_index"] / 50.0])
+
+			if expression.has_execute_failed():
+				push_error("Angular equation execution error: " + expression.get_error_text())
+			elif result is int or result is float:
+				B["rotation"] += float(result) / 50.0 * eq_scale * (B["speed"] / 100.0)
+			else:
+				push_error("Angular equation returned a non-numeric value: " + str(result))
+
 
 func _homing_at_signal(B:Dictionary, props:Dictionary):
 	# when homing starts with a signal

@@ -1,4 +1,10 @@
-res://Galactic Beast Stage/main.tscn
+res://Alpha Stage/default_bus_layout.tres
+res://Galactic Beast Stage/Enemy/Big Zam/big_zam.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
 res://Galactic Beast Stage/slant bg.gdshader
-res://Galactic Beast Stage/main.gd
+res://Galactic Beast Stage/orange.gdshader
+res://Galactic Beast Stage/stage_manager.gd
+res://Galactic Beast Stage/Enemy/UFO/ufo.tscn
+res://Galactic Beast Stage/Enemy/UFO/ufo.gd
+res://Galactic Beast Stage/main.tscn
+res://Galactic Beast Stage/Enemy/Maid Enemy/maid_enemy.gd

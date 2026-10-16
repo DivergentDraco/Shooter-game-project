@@ -54,6 +54,7 @@ signal hp_changed(current_hp: int, max_hp: int)
 var hp: int = 300
 
 func _ready() -> void:
+	afterimage_timer.timeout.connect(create_afterimage)
 	warning.start()
 	
 	#normal_scale = scale
@@ -322,6 +323,62 @@ func stop_all_spawnpoints() -> void:
 			Spawning.process_kill(point.process_id)
 
 
+
+@onready var afterimage_timer: Timer = $AfterimageTimer
+
+@export var afterimage_lifetime: float = 0.6
+@export var afterimage_opacity: float = 0.6
+
+func create_afterimage() -> void:
+	var ghost = Sprite2D.new()
+
+	# Get current animation frame
+	var original_texture = sprite.sprite_frames.get_frame_texture(
+		sprite.animation,
+		sprite.frame
+	)
+
+	# Create an orange silhouette
+	var image = original_texture.get_image()
+
+	for y in range(image.get_height()):
+		for x in range(image.get_width()):
+			var pixel = image.get_pixel(x, y)
+
+			if pixel.a > 0.0:
+				image.set_pixel(
+					x, y,
+					Color(1.0, 0.4, 0.0, pixel.a)
+				)
+
+	ghost.texture = ImageTexture.create_from_image(image)
+
+	# Match Solus's sprite
+	ghost.centered = sprite.centered
+	ghost.offset = sprite.offset
+	ghost.flip_h = sprite.flip_h
+	ghost.flip_v = sprite.flip_v
+	ghost.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
+	# Add to scene
+	get_tree().current_scene.add_child(ghost)
+	ghost.global_transform = sprite.global_transform
+
+	# Behind Solus
+	ghost.z_index = z_index - 1
+
+	# Fade out
+	ghost.modulate.a = afterimage_opacity
+
+	var tween = ghost.create_tween()
+	tween.tween_property(
+		ghost,
+		"modulate:a",
+		0.0,
+		afterimage_lifetime
+	)
+
+	tween.tween_callback(ghost.queue_free)
 
 
 func _on_visible_on_screen_notifier_2d_screen_entered():

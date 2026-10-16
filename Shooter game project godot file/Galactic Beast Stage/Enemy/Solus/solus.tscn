@@ -194,6 +194,8 @@ texture = "103"
 collision = "2"
 metadata/_custom_type_script = "uid://ch2ah4ngy7del"
 
+[sub_resource type="Curve" id="Curve_ljxd0"]
+
 [sub_resource type="Resource" id="Resource_h3w14"]
 script = ExtResource("13_fqslw")
 speed = 200.0
@@ -207,6 +209,7 @@ spec_trail_smooth = 0.019
 a_speed_multiplier = SubResource("Curve_wnkbs")
 spec_bounces = 5
 spec_only_spin_sprite = false
+scale_multiplier = SubResource("Curve_ljxd0")
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -368,3 +371,7 @@ position = Vector2(3, -24)
 amount = 30
 lifetime = 0.5
 process_material = SubResource("ParticleProcessMaterial_0iwtj")
+
+[node name="AfterimageTimer" type="Timer" parent="." unique_id=969526775]
+wait_time = 0.2
+autostart = true

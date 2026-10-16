@@ -55,6 +55,7 @@ signal died
 	"spawnpoint_2" : %SpawnPoint2,
 	"spawnpoint_3" : $SpawnPoint3,
 	"spawnpoint_4" : $SpawnPoint4,
+	"spawnpoint_5" : $SpawnPoint5,
 }
 
 signal hp_changed(current_hp: int, max_hp: int)
@@ -114,7 +115,7 @@ func change_state(new_state: BossState) -> void:
 		
 	match state:
 		BossState.ATTACK_1:
-			for point_name in ["spawnpoint_1", "spawnpoint_2", "spawnpoint_3", "spawnpoint_4"]:
+			for point_name in ["spawnpoint_1", "spawnpoint_2", "spawnpoint_3", "spawnpoint_4","spawnpoint_5"]:
 				var point = spawn_points[point_name]
 				point.active = true
 				point.spawn()

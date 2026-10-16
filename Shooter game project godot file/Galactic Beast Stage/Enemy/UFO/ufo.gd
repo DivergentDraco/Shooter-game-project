@@ -13,8 +13,8 @@ var original_position: Vector2
 var next_state: BossState
 
 @export var state: BossState = BossState.ENTER
-@export var move_speed = 1000
-@export var min_speed = 0
+@export var move_speed: float = 1000.0
+@export var min_speed: float = 0.0
 var attack_center: Vector2
 var state_time := 0.0
 
@@ -30,8 +30,6 @@ signal died
 @onready var hit_flash_anim_player = $HitFlashAnimationPlayer
 @onready var spawn_points = {
 	"spawnpoint_1" : $SpawnPoint,
-	"spawnpoint_2" : $SpawnPoint2,
-	"spawnpoint_3" : $SpawnPoint3,
 }
 
 var hp = 20
@@ -40,7 +38,7 @@ func _ready() -> void:
 	change_state(BossState.ENTER)
 
 func _physics_process(delta: float) -> void:
-	move_speed = clamp(move_speed, min_speed, 1000)
+	move_speed = clampf(move_speed, min_speed, 1000)
 	state_time += delta
 
 	match state:
@@ -187,16 +185,10 @@ func set_movement_direction(new_direction: Vector2) -> void:
 	
 func set_spawnpoint(index: int) -> void:
 	var spawnpoint_1 = get_node("SpawnPoint")
-	var spawnpoint_2 = get_node("SpawnPoint2")
-	var spawnpoint_3 = get_node("SpawnPoint3")
 
 	match index:
 		1:
 			spawnpoint_1.active = true
-		2:
-			spawnpoint_2.active = true
-		3:
-			spawnpoint_3.active = true
 
 var is_dying: bool = false
 
