@@ -1,18 +1,17 @@
 [gd_scene format=3 uid="uid://nui4o7lc7rvj"]
 
 [ext_resource type="Script" uid="uid://djiuap5ert8xg" path="res://Galactic Beast Stage/player.gd" id="1_1casx"]
-[ext_resource type="PackedScene" uid="uid://ce2sbgdju6rp7" path="res://Alpha Stage/player bullet/bullet.tscn" id="2_were4"]
 [ext_resource type="Texture2D" uid="uid://v3py8ibv6t5b" path="res://Alpha Stage/Sprites and Animations/hitbox dot.png" id="3_xsbqb"]
-[ext_resource type="Texture2D" uid="uid://cuhyvd6dk4e0i" path="res://Galactic Beast Stage/Sprites and Animations/Player ship spritesheet.png" id="4_1casx"]
+[ext_resource type="Texture2D" uid="uid://dr3glkt24lmh7" path="res://Galactic Beast Stage/Sprites and Animations/player.png" id="4_1casx"]
 [ext_resource type="AudioStream" uid="uid://dcv1ybqjnx2ph" path="res://Alpha Stage/SFX/laserShoot (1).wav" id="6_wl7ht"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fsoc7"]
 atlas = ExtResource("4_1casx")
-region = Rect2(0, 0, 24, 46)
+region = Rect2(0, 0, 39, 58)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_were4"]
 atlas = ExtResource("4_1casx")
-region = Rect2(24, 0, 24, 46)
+region = Rect2(39, 0, 39, 58)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_irq8t"]
 animations = [{
@@ -34,7 +33,6 @@ radius = 1.0
 [node name="Player" type="CharacterBody2D" unique_id=392784107 groups=["players"]]
 z_index = 1
 script = ExtResource("1_1casx")
-bullet_scene = ExtResource("2_were4")
 
 [node name="Node2D1" type="Node2D" parent="." unique_id=251011976]
 
@@ -48,6 +46,7 @@ texture = ExtResource("3_xsbqb")
 light_mask = 2
 sprite_frames = SubResource("SpriteFrames_irq8t")
 autoplay = "default"
+frame_progress = 0.9056975
 
 [node name="GunCooldown" type="Timer" parent="Node2D1" unique_id=712823248]
 wait_time = 0.032
@@ -67,3 +66,9 @@ shape = SubResource("CircleShape2D_3oajm")
 shape = SubResource("CircleShape2D_3oajm")
 
 [node name="Node2D2" type="Node2D" parent="." unique_id=1772559412]
+
+[node name="BulletPoint1" type="Marker2D" parent="." unique_id=963956594]
+position = Vector2(8, -8)
+
+[node name="BulletPoint2" type="Marker2D" parent="." unique_id=1333663073]
+position = Vector2(-8, -8)

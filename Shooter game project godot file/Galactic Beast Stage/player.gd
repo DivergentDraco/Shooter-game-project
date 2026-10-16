@@ -7,7 +7,7 @@ signal died()
 @export var speed = 160
 @export var cooldown = 0.06
 @export var max_shield = 1
-@export var bullet_scene : PackedScene
+const BULLET_SCENE = preload("res://Galactic Beast Stage/bullet.tscn")
 
 #onready variables and nodes
 @onready var ship = $Node2D1/Ship
@@ -80,14 +80,22 @@ func _physics_process(_delta):
 		#bullet_mode = 1 - bullet_mode # toggle between 0 and 1
 		shoot_laser()
 
-func shoot():
+@onready var bullet_points = [
+	$BulletPoint1,
+	$BulletPoint2
+]
+
+func shoot() -> void:
 	can_shoot = false
 	$Node2D1/GunCooldown.start()
 	$Node2D1/AudioStreamPlayer.play()
-	var b = bullet_scene.instantiate()
-	get_tree().root.add_child(b)
-	var bullet_offset = Vector2(3, 0) # half bullet size
-	b.start(position + bullet_offset, bullet_mode)
+
+	for point in bullet_points:
+		var b = BULLET_SCENE.instantiate()
+		get_tree().current_scene.add_child(b)
+
+		b.start(point.global_position, bullet_mode)
+
 	await get_tree().create_timer(0.045).timeout
 	can_shoot = true
 	

@@ -437,6 +437,15 @@ func set_anim_states(a:animState, P:String="", id:String=""):
 func sanitize_pattern(pattern:Pattern, source:Node):
 	if pattern.forced_target: pattern.node_target = source.get_node(pattern.forced_target)
 	if pattern.get("pattern_angle_target"):
+		var found := false
+
+		for property in pattern.get_property_list():
+			if property.name == "node_pattern_target":
+				found = true
+				print("Property found: ", property)
+
+		print("node_pattern_target exists: ", found)
+		print("Pattern script: ", pattern.get_script())
 		pattern.node_pattern_target = source.get_node(pattern.pattern_angle_target)
 	if pattern.resource_name == "PatternCustomShape":
 		if pattern.closed_shape: pattern.symmetry_type = SYMTYPE.ClosedShape

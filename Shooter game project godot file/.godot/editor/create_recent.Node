@@ -1,7 +1,9 @@
+BulletPattern
+CharacterBody2D
+Marker2D
 Timer
 InstanceLister
 CollisionShape2D
-BulletPattern
 SpawnPoint
 SpawnPattern
 LaserBeam
@@ -10,6 +12,3 @@ Sprite2D
 Polygon2D
 Sprite3D
 Node
-Node2D
-SubViewport
-TextureRect
