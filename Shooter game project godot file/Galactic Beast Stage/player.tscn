@@ -49,8 +49,7 @@ autoplay = "default"
 frame_progress = 0.9056975
 
 [node name="GunCooldown" type="Timer" parent="Node2D1" unique_id=712823248]
-wait_time = 0.032
-one_shot = true
+wait_time = 0.05
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D1" unique_id=1203977771]
 stream = ExtResource("6_wl7ht")
@@ -72,3 +71,5 @@ position = Vector2(8, -8)
 
 [node name="BulletPoint2" type="Marker2D" parent="." unique_id=1333663073]
 position = Vector2(-8, -8)
+
+[connection signal="timeout" from="Node2D1/GunCooldown" to="." method="_on_gun_cooldown_timeout"]

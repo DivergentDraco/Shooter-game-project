@@ -27,7 +27,9 @@ var bullet_mode = 0
 
 var laser_side: int = 1
 
-func _ready():
+func _ready() -> void:
+	setup_player_bullet()
+	
 	array.resize(10)
 	start()
 
@@ -73,31 +75,93 @@ func _physics_process(_delta):
 	#Limit the player only inside the box	
 	position = position.clamp(Vector2(8, 8), screensize - Vector2(8, 8))
 
-	if Input.is_action_pressed("Z") and can_shoot:
-		shoot()
-
+	if Input.is_action_pressed("Z"):
+		if $Node2D1/GunCooldown.is_stopped():
+			shoot()
+			$Node2D1/GunCooldown.start()
+	else:
+		$Node2D1/GunCooldown.stop()
 	if Input.is_action_just_pressed("X"):
 		#bullet_mode = 1 - bullet_mode # toggle between 0 and 1
 		shoot_laser()
+		
+func _on_gun_cooldown_timeout() -> void:
+	if Input.is_action_pressed("Z"):
+		shoot()
 
 @onready var bullet_points = [
 	$BulletPoint1,
 	$BulletPoint2
 ]
 
+@export var min_bullet_speed: float = 300.0
+@export var max_bullet_speed: float = 1000.0
+@export var speed_increase: float = 50.0
+
+var shot_count: int = 0
+var bullet_ids: Array[String] = []
+
+
+func setup_player_bullet() -> void:
+	bullet_ids.clear()
+
+	var speed: float = min_bullet_speed
+
+	while speed <= max_bullet_speed:
+		var bullet_id = "player_bullet_" + str(bullet_ids.size())
+		bullet_ids.append(bullet_id)
+
+		var props = Spawning.generate_new_bulletprops()
+		props.speed = speed
+		props.scale = 1.0
+		props.damage = 1.0
+
+		Spawning.new_bullet(
+			bullet_id,
+			Spawning.sanitize_bulletprops(props, bullet_id, self)
+		)
+
+		var p = PatternOne.new()
+		p.nbr = 1
+		p.bullet = bullet_id
+
+		Spawning.new_pattern(
+			bullet_id,
+			Spawning.sanitize_pattern(p, null)
+		)
+
+		speed += speed_increase
+	
 func shoot() -> void:
-	can_shoot = false
-	$Node2D1/GunCooldown.start()
-	$Node2D1/AudioStreamPlayer.play()
+	var index = mini(shot_count, bullet_ids.size() - 1)
+	var bullet_id = bullet_ids[index]
 
 	for point in bullet_points:
-		var b = BULLET_SCENE.instantiate()
-		get_tree().current_scene.add_child(b)
+		var spawn_data: Dictionary = {
+			"position": point.global_position,
+			"rotation": deg_to_rad(-90.0),
+			"parent": self
+		}
 
-		b.start(point.global_position, bullet_mode)
+		Spawning.spawn(spawn_data, bullet_id, "0")
 
-	await get_tree().create_timer(0.045).timeout
-	can_shoot = true
+	shot_count += 1
+
+	$Node2D1/AudioStreamPlayer.play()
+	
+#func shoot() -> void:
+	#can_shoot = false
+	#$Node2D1/GunCooldown.start()
+	#$Node2D1/AudioStreamPlayer.play()
+#
+	#for point in bullet_points:
+		#var b = BULLET_SCENE.instantiate()
+		#get_tree().current_scene.add_child(b)
+#
+		#b.start(point.global_position, bullet_mode)
+#
+	#await get_tree().create_timer(0.045).timeout
+	#can_shoot = true
 	
 const HOMING_LASER = preload("res://Galactic Beast Stage/curved_laser.tscn")
 

@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://nfl6cx8spgrn" path="res://Galactic Beast Stage/Sprites and Animations/bullet103.png" id="7_ekyys"]
 [ext_resource type="Script" uid="uid://c7npuw27soxd" path="res://addons/BulletUpHell/Drawer.gd" id="8_pebki"]
 [ext_resource type="Texture2D" uid="uid://brlv4gpbj8on" path="res://Galactic Beast Stage/Sprites and Animations/laser.png" id="11_nuj4b"]
+[ext_resource type="Texture2D" uid="uid://cq7iflkbejwof" path="res://Galactic Beast Stage/Sprites and Animations/playerbullet .png" id="12_6f7cb"]
 
 [sub_resource type="Resource" id="Resource_s2qvk"]
 script = ExtResource("2_ai2re")
@@ -135,6 +136,10 @@ region = Rect2(144, 0, 24, 24)
 [sub_resource type="AtlasTexture" id="AtlasTexture_uyu8o"]
 atlas = ExtResource("11_nuj4b")
 region = Rect2(0, 0, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1k4sh"]
+atlas = ExtResource("12_6f7cb")
+region = Rect2(0, 0, 4, 12)
 
 [sub_resource type="SpriteFrames" id="1"]
 animations = [{
@@ -280,6 +285,14 @@ animations = [{
 "loop": 1,
 "name": &"laser",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1k4sh")
+}],
+"loop": 1,
+"name": &"player_bullet",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l7wpt"]
@@ -290,6 +303,9 @@ radius = 10.049875
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0iwtj"]
 radius = 19.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_irq8t"]
+size = Vector2(8, 12)
 
 [node name="BulletHellManager" type="Node2D" unique_id=525237759]
 z_index = 1
@@ -312,16 +328,22 @@ collision_layer = 0
 [node name="ShapeManager" type="AnimatedSprite2D" parent="." unique_id=1141792189]
 texture_filter = 3
 sprite_frames = SubResource("1")
-animation = &"laser"
+animation = &"player_bullet"
 
 [node name="0" type="CollisionShape2D" parent="ShapeManager" unique_id=442034720]
+visible = false
 shape = SubResource("CircleShape2D_l7wpt")
 
 [node name="1" type="CollisionShape2D" parent="ShapeManager" unique_id=508776916]
+visible = false
 shape = SubResource("CircleShape2D_irq8t")
 
 [node name="2" type="CollisionShape2D" parent="ShapeManager" unique_id=1863084679]
+visible = false
 shape = SubResource("CircleShape2D_0iwtj")
+
+[node name="3" type="CollisionShape2D" parent="ShapeManager" unique_id=1119184394]
+shape = SubResource("RectangleShape2D_irq8t")
 
 [node name="SFX" type="Node2D" parent="." unique_id=1535383780]
 

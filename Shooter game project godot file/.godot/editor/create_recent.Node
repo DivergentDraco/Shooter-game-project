@@ -1,10 +1,10 @@
+CollisionShape2D
+SpawnPoint
 BulletPattern
 CharacterBody2D
 Marker2D
 Timer
 InstanceLister
-CollisionShape2D
-SpawnPoint
 SpawnPattern
 LaserBeam
 BulletNode
