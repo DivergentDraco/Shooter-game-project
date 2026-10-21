@@ -10,9 +10,9 @@ class_name PatternCircle
 @export_range(0, 9999, 1, "suffix:th bullet") var center:int = 0
 @export var perspective:float = 1
 
-@export_subgroup("Shooting")
 @export var symmetric:bool = false
 var symmetry_type = Spawning.SYMTYPE.ClosedShape
+
 
 func _init():
 	resource_name = "PatternCircle"

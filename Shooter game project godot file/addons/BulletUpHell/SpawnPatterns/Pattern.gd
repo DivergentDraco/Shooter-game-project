@@ -23,31 +23,41 @@ enum INTERRUPT {Continue, Destroy, Shoot}
 @export_subgroup("Forced Spawning Angle", "pattern_")
 @export_range(-999999, 999999, 0.001, "hide_slider", "suffix:°", "radians_as_degrees") var pattern_angle:float = 0.0
 @export var pattern_angle_target:NodePath
+@export_placeholder("Special target name") var pattern_special_target:String = ""
 @export var pattern_angle_mouse:bool = false
-@export_subgroup("Wait", "wait_")
-enum LATENCE {No, PositionOnly, Rotation, Spin, Aim}
-@export var wait_behavior:LATENCE = LATENCE.No
-enum MOMENTUM{None,TRANS_LINEAR,TRANS_SINE,TRANS_QUINT,TRANS_QUART,TRANS_QUAD,TRANS_EXPO,TRANS_ELASTIC,TRANS_CUBIC, \
-				TRANS_CIRC,TRANS_BOUNCE,TRANS_BACK}
-@export var wait_tween_momentum:MOMENTUM = MOMENTUM.None
-@export var wait_tween_length:float = 0
-@export var wait_tween_time:float = 0
 
 @export_group("Shooting")
 @export_range(-999999, 999999, 0.001, "hide_slider", "suffix:°", "radians_as_degrees") var forced_angle:float = 0.0
 @export var forced_target:NodePath
+@export_placeholder("Special target name") var forced_special_target:String = ""
 @export var forced_lookat_mouse:bool = false
 @export var forced_pattern_lookat:bool = true
+@export_subgroup("Target Another Pattern", "target_")
+@export_placeholder("Pattern ID") var target_pattern:String
+@export_range(0, 9999, 0.01, "suffix:s") var target_delay:float = 0
+@export var target_pattern_offset:Vector2 = Vector2.ZERO
+@export_range(-999999, 999999, 0.001, "hide_slider", "suffix:°", "radians_as_degrees") var target_pattern_rotation:float = 0.0
+@export var target_absolute_position:bool = false
 @export_range(0, 999999, 1) var impulse:int = 0
 
 @export_group("Advanced")
 @export var bullet_list:Array[String]
 @export_subgroup("Skipping", "skip_")
-@export_range(0, 999999) var skip_step:int
-@export_range(0, 999999) var skip_amount:int
+@export_range(0, 999999) var skip_step:int = 0
+@export_range(0, 1, 0.01, "hide_slider", "suffix:/1.0") var skip_chance:float = 0
+@export_range(0, 999999) var skip_amount:int = 1
 @export var skip_list:Array[PackedInt32Array]
 var skip_array:Array[PackedInt32Array]
 @export var skip_in_list:bool = true
+@export_subgroup("While waiting for shot", "wait_")
+enum LATENCE {No, PositionOnly, Rotation, Full}
+@export var wait_behavior:LATENCE = LATENCE.No
+@export var wait_keep_behavior:bool = false
+enum MOMENTUM{None,TRANS_LINEAR,TRANS_SINE,TRANS_QUINT,TRANS_QUART,TRANS_QUAD,TRANS_EXPO,TRANS_ELASTIC,TRANS_CUBIC, \
+				TRANS_CIRC,TRANS_BOUNCE,TRANS_BACK}
+@export var wait_tween_momentum:MOMENTUM = MOMENTUM.None
+@export var wait_tween_length:float = 0
+@export var wait_tween_time:float = 0
 @export var temp_count:int = -1
 
 @export_group("Random", "random_")
@@ -55,3 +65,4 @@ var skip_array:Array[PackedInt32Array]
 
 var has_random
 var node_target:Node2D
+var node_pattern_target:Node2D

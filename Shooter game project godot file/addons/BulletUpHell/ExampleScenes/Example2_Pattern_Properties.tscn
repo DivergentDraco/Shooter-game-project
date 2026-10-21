@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://catsnsqlktbgj"]
+[gd_scene format=3 uid="uid://catsnsqlktbgj"]
 
 [ext_resource type="Script" uid="uid://c6h0yvvtpnxmd" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_8luw8"]
 [ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_4wqim"]
@@ -15,72 +15,22 @@ resource_name = "PatternOne"
 source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("3_kdwy4")
 bullet = "1"
-nbr = 1
 iterations = -1
 cooldown_spawn = 5.0
-cooldown_shoot = 0.0
-cooldown_next_spawn = 0.0
-cooldown_next_shoot = 0.0
-cooldown_layers = PackedVector2Array()
-cooldown_stasis = false
-on_interruption = 0
-pattern_angle = 0.0
-pattern_angle_target = NodePath("")
-pattern_angle_mouse = false
-wait_behavior = 0
 wait_tween_momentum = 4
 wait_tween_length = 50.0
 wait_tween_time = 2.0
-forced_angle = 0.0
-forced_target = NodePath("")
-forced_lookat_mouse = false
-forced_pattern_lookat = true
-impulse = 0
-bullet_list = Array[String]([])
-skip_step = 0
-skip_amount = 0
-skip_list = Array[PackedInt32Array]([])
-skip_in_list = true
-temp_count = -1
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_iro43"]
 resource_name = "PatternCircle"
 source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("4_espee")
-radius = 0.0
 angle_total = 3.586
 angle_decal = -1.9706
-center = 0
-perspective = 1.0
-symmetric = false
 bullet = "1"
 nbr = 5
 iterations = -1
 cooldown_spawn = 5.0
-cooldown_shoot = 0.0
-cooldown_next_spawn = 0.0
-cooldown_next_shoot = 0.0
-cooldown_layers = PackedVector2Array()
-cooldown_stasis = false
-on_interruption = 0
-pattern_angle = 0.0
-pattern_angle_target = NodePath("")
-pattern_angle_mouse = false
-wait_behavior = 0
-wait_tween_momentum = 0
-wait_tween_length = 0.0
-wait_tween_time = 0.0
-forced_angle = 0.0
-forced_target = NodePath("")
-forced_lookat_mouse = false
-forced_pattern_lookat = true
-impulse = 0
-bullet_list = Array[String]([])
-skip_step = 0
-skip_amount = 0
-skip_list = Array[PackedInt32Array]([])
-skip_in_list = true
-temp_count = -1
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_gy1yd"]
 resource_name = "PatternLine"
@@ -88,35 +38,11 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("5_aeave")
 offset = Vector2(20, 10)
 center = 3
-symmetric = true
 bullet = "1"
 nbr = 5
 iterations = -1
 cooldown_spawn = 3.0
 cooldown_shoot = 2.0
-cooldown_next_spawn = 0.0
-cooldown_next_shoot = 0.0
-cooldown_layers = PackedVector2Array()
-cooldown_stasis = false
-on_interruption = 0
-pattern_angle = 0.0
-pattern_angle_target = NodePath("")
-pattern_angle_mouse = false
-wait_behavior = 0
-wait_tween_momentum = 0
-wait_tween_length = 0.0
-wait_tween_time = 0.0
-forced_angle = 0.0
-forced_target = NodePath("")
-forced_lookat_mouse = false
-forced_pattern_lookat = true
-impulse = 0
-bullet_list = Array[String]([])
-skip_step = 0
-skip_amount = 0
-skip_list = Array[PackedInt32Array]([])
-skip_in_list = true
-temp_count = -1
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_txvqr"]
 resource_name = "PatternLine"
@@ -124,35 +50,12 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("5_aeave")
 offset = Vector2(20, 10)
 center = 3
-symmetric = true
 bullet = "1"
 nbr = 5
 iterations = -1
 cooldown_spawn = 3.0
 cooldown_shoot = 2.0
-cooldown_next_spawn = 0.0
-cooldown_next_shoot = 0.0
-cooldown_layers = PackedVector2Array()
-cooldown_stasis = false
-on_interruption = 0
-pattern_angle = 0.0
-pattern_angle_target = NodePath("")
 pattern_angle_mouse = true
-wait_behavior = 0
-wait_tween_momentum = 0
-wait_tween_length = 0.0
-wait_tween_time = 0.0
-forced_angle = 0.0
-forced_target = NodePath("")
-forced_lookat_mouse = false
-forced_pattern_lookat = true
-impulse = 0
-bullet_list = Array[String]([])
-skip_step = 0
-skip_amount = 0
-skip_list = Array[PackedInt32Array]([])
-skip_in_list = true
-temp_count = -1
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_pnfem"]
 resource_name = "PatternLine"
@@ -160,35 +63,12 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("5_aeave")
 offset = Vector2(20, 10)
 center = 3
-symmetric = true
 bullet = "1"
 nbr = 5
 iterations = -1
 cooldown_spawn = 3.0
 cooldown_shoot = 2.0
-cooldown_next_spawn = 0.0
-cooldown_next_shoot = 0.0
-cooldown_layers = PackedVector2Array()
-cooldown_stasis = false
-on_interruption = 0
-pattern_angle = 0.0
-pattern_angle_target = NodePath("")
-pattern_angle_mouse = false
-wait_behavior = 0
-wait_tween_momentum = 0
-wait_tween_length = 0.0
-wait_tween_time = 0.0
-forced_angle = 0.0
-forced_target = NodePath("")
 forced_lookat_mouse = true
-forced_pattern_lookat = true
-impulse = 0
-bullet_list = Array[String]([])
-skip_step = 0
-skip_amount = 0
-skip_list = Array[PackedInt32Array]([])
-skip_in_list = true
-temp_count = -1
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_dpy7q"]
 resource_name = "PatternLine"
@@ -196,35 +76,13 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("5_aeave")
 offset = Vector2(20, 10)
 center = 3
-symmetric = true
 bullet = "1"
 nbr = 5
 iterations = -1
 cooldown_spawn = 3.0
 cooldown_shoot = 2.0
-cooldown_next_spawn = 0.0
-cooldown_next_shoot = 0.0
-cooldown_layers = PackedVector2Array()
-cooldown_stasis = false
-on_interruption = 0
-pattern_angle = 0.0
-pattern_angle_target = NodePath("")
-pattern_angle_mouse = false
-wait_behavior = 0
-wait_tween_momentum = 0
-wait_tween_length = 0.0
-wait_tween_time = 0.0
-forced_angle = 0.0
-forced_target = NodePath("")
 forced_lookat_mouse = true
 forced_pattern_lookat = false
-impulse = 0
-bullet_list = Array[String]([])
-skip_step = 0
-skip_amount = 0
-skip_list = Array[PackedInt32Array]([])
-skip_in_list = true
-temp_count = -1
 
 [sub_resource type="Curve2D" id="Curve2D_kjhx3"]
 
@@ -234,49 +92,9 @@ temp_count = -1
 
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_yktta"]
 script = ExtResource("10_taw2s")
-damage = 1.0
-speed = 100.0
-scale = 1.0
-angle = 0.0
-groups = PackedStringArray()
 custom_data = {}
-death_after_time = 30.0
-death_outside_box = Rect2(0, 0, 0, 0)
-death_from_collision = true
-death_speed_under = 0.0
-death_culling_overwrite = 3
-spec_modulate_loop = 0.0
-no_rotation = false
-z_index = 0
-anim_more = Array[ExtResource("7_rfq1o")]([])
-spec_trail_length = 0.0
-spec_trail_width = 0.0
-spec_trail_modulate = Color(1, 1, 1, 1)
-spec_trail_fade_out = false
-spec_trail_thin_out = false
-spec_trail_smooth = 0.03
-a_direction_equation = ""
-a_angular_equation = ""
-a_curve_movement = 0
-a_speed_multi_iterations = 0
-a_speed_multi_scale = 0.0
 a_speed_multiplier = SubResource("Curve_vbs6u")
-depth_active = Vector2(0, 0)
-depth_spawn = 0.0
-depth_speed = 100.0
-depth_min_max = Vector2(-300, 100)
-depth_bounce = false
-spec_bounces = 0
-spec_no_collision = false
-spec_rotating_speed = 0.0
-spec_only_spin_sprite = true
-spec_weight = 1.0
-scale_multi_iterations = 0
 scale_multiplier = SubResource("Curve_2xsyn")
-scale_multi_scale = 1.0
-trigger_container = ""
-trigger_wait_for_shot = true
-temp_count = -1
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -325,53 +143,53 @@ r_scale_multi_curve_choice = []
 r_scale_multi_iter_variation = Vector3(0, 0, 0)
 r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" unique_id=1410566284]
 script = ExtResource("1_8luw8")
 
-[node name="Patterns" type="Node2D" parent="."]
+[node name="Patterns" type="Node2D" parent="." unique_id=985065967]
 
-[node name="SpawnPattern" type="Path2D" parent="Patterns"]
+[node name="SpawnPattern" type="Path2D" parent="Patterns" unique_id=1659684596]
 script = ExtResource("2_4wqim")
 id = "one"
 pattern = SubResource("NavigationPolygon_kt31x")
 
-[node name="SpawnPattern2" type="Path2D" parent="Patterns"]
+[node name="SpawnPattern2" type="Path2D" parent="Patterns" unique_id=844326643]
 script = ExtResource("2_4wqim")
 id = "circle"
 pattern = SubResource("NavigationPolygon_iro43")
 
-[node name="SpawnPattern3" type="Path2D" parent="Patterns"]
+[node name="SpawnPattern3" type="Path2D" parent="Patterns" unique_id=1742853440]
 script = ExtResource("2_4wqim")
 id = "line"
 pattern = SubResource("NavigationPolygon_gy1yd")
 
-[node name="SpawnPattern4" type="Path2D" parent="Patterns"]
+[node name="SpawnPattern4" type="Path2D" parent="Patterns" unique_id=335928419]
 script = ExtResource("2_4wqim")
 id = "arrow-spawn"
 pattern = SubResource("NavigationPolygon_txvqr")
 
-[node name="SpawnPattern5" type="Path2D" parent="Patterns"]
+[node name="SpawnPattern5" type="Path2D" parent="Patterns" unique_id=1286813300]
 script = ExtResource("2_4wqim")
 id = "arrow-shoot"
 pattern = SubResource("NavigationPolygon_pnfem")
 
-[node name="SpawnPattern6" type="Path2D" parent="Patterns"]
+[node name="SpawnPattern6" type="Path2D" parent="Patterns" unique_id=364997774]
 script = ExtResource("2_4wqim")
 id = "arrow-indie"
 pattern = SubResource("NavigationPolygon_dpy7q")
 
-[node name="BulletProps" type="Node2D" parent="."]
+[node name="BulletProps" type="Node2D" parent="." unique_id=1275142753]
 
-[node name="BulletPattern" type="Path2D" parent="BulletProps"]
+[node name="BulletPattern" type="Path2D" parent="BulletProps" unique_id=1460255588]
 curve = SubResource("Curve2D_kjhx3")
 script = ExtResource("9_1v31q")
 id = "1"
 props = SubResource("PackedDataContainer_yktta")
 
-[node name="SpawnPoints" type="Node2D" parent="."]
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1673293057]
 
-[node name="SpawnPoint" type="Node2D" parent="SpawnPoints"]
-position = Vector2(86, 58)
+[node name="SpawnPoint" type="Node2D" parent="SpawnPoints" unique_id=331768561]
+position = Vector2(59, 43)
 script = ExtResource("11_2iydo")
 auto_pattern_id = "one"
 r_active_chances = 1.0
@@ -382,8 +200,8 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="SpawnPoint2" type="Node2D" parent="SpawnPoints"]
-position = Vector2(86, 307)
+[node name="SpawnPoint2" type="Node2D" parent="SpawnPoints" unique_id=2013405882]
+position = Vector2(60, 92)
 script = ExtResource("11_2iydo")
 auto_pattern_id = "circle"
 r_active_chances = 1.0
@@ -394,8 +212,8 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="SpawnPoint3" type="Node2D" parent="SpawnPoints"]
-position = Vector2(192, 512)
+[node name="SpawnPoint3" type="Node2D" parent="SpawnPoints" unique_id=522574310]
+position = Vector2(60, 150)
 script = ExtResource("11_2iydo")
 auto_pattern_id = "line"
 r_active_chances = 1.0
@@ -406,8 +224,8 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="SpawnPoint4" type="Node2D" parent="SpawnPoints"]
-position = Vector2(488, 104)
+[node name="SpawnPoint4" type="Node2D" parent="SpawnPoints" unique_id=218862310]
+position = Vector2(57, 226)
 script = ExtResource("11_2iydo")
 auto_pattern_id = "arrow-spawn"
 r_active_chances = 1.0
@@ -418,8 +236,8 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="SpawnPoint5" type="Node2D" parent="SpawnPoints"]
-position = Vector2(488, 304)
+[node name="SpawnPoint5" type="Node2D" parent="SpawnPoints" unique_id=124218312]
+position = Vector2(59, 309)
 script = ExtResource("11_2iydo")
 auto_pattern_id = "arrow-shoot"
 r_active_chances = 1.0
@@ -430,8 +248,8 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="SpawnPoint6" type="Node2D" parent="SpawnPoints"]
-position = Vector2(832, 488)
+[node name="SpawnPoint6" type="Node2D" parent="SpawnPoints" unique_id=2092205650]
+position = Vector2(64, 400)
 script = ExtResource("11_2iydo")
 auto_pattern_id = "arrow-indie"
 r_active_chances = 1.0
@@ -442,26 +260,27 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="Walls" type="StaticBody2D" parent="."]
+[node name="Walls" type="StaticBody2D" parent="." unique_id=545010230]
 collision_layer = 16
 collision_mask = 32
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Walls"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Walls" unique_id=109951759]
 polygon = PackedVector2Array(1024, -8, 1024, 600, 0, 600, 0, 0, -56, 0, -48, 656, 1072, 640, 1056, -64, 0, -64, 8, 0)
 
-[node name="FPS" type="Label" parent="."]
+[node name="FPS" type="Label" parent="." unique_id=316094651]
 visible = false
 offset_right = 40.0
 offset_bottom = 14.0
 
-[node name="Tuto" type="Label" parent="."]
+[node name="Tuto" type="Label" parent="." unique_id=821647668]
 offset_left = 416.0
 offset_top = 560.0
 offset_right = 1008.0
 offset_bottom = 592.0
 text = "You can see how modifying simple properties can give very different results."
 
-[node name="Tuto2" type="Label" parent="."]
+[node name="Tuto2" type="Label" parent="." unique_id=1311772876]
+visible = false
 offset_left = 448.0
 offset_top = 8.0
 offset_right = 1048.0

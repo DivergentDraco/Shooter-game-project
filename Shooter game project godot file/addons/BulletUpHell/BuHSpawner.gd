@@ -13,16 +13,15 @@ signal bullet_collided_body(body:Node,body_shape_index:int,bullet:Dictionary,loc
 signal resume_process(process_id:int)
 signal process_info(process_id:int, spawner, pattern:String, props:String, bullets:Array)
 
-const STANDARD_BULLET_RADIUS:float = 5
-var CORESNBR:int = OS.get_processor_count()
 var CUSTOM:customFunctions = customFunctions.new()
 var DrawerInstance:Node2D
 
 @export var custom_bullet_prop_data:Dictionary
+@export_range(1, 9999, 1, "hide_slider", "suffix:px") var STANDARD_BULLET_RADIUS:float = 5
 @export_placeholder("Group name") var GROUP_BOUNCE:PackedStringArray = ["Bounce"]
 @export_range(0.001, 999, 0.01, "hide_slider") var time_scale:float = 1
 @export var RAND_SEED:int = -1
-@export var Gravity:Vector2 = Vector2(0,0)
+@export var Gravity:Vector2 = Vector2.ZERO
 @export var MAX_ACC:int = 500
 
 @export_group("Resource Lists")
@@ -84,13 +83,12 @@ var RAND
 var expression = Expression.new()
 var _delta:float = 0
 var start_homing_group:Array[String]
-var HOMING_MARGIN := 20.0
 enum GROUP_SELECT{Nearest_on_homing, Nearest_on_spawn, Nearest_on_shoot, Nearest_anywhen, Random}
 enum SYMTYPE{ClosedShape,Line}
 enum CURVE_TYPE{None, LoopFromStart, OnceThenDie, OnceThenStay, LoopFromEnd, OnceThenStop}
 enum LIST_ENDS{Stop, Loop, Reverse}
 enum ANIM{TEXTURE, COLLISION, SFX, SCALE, SKEW}
-enum LATENCE {No, PosOnly, Rotation, Spin, Aim}
+enum LATENCE {No, PosOnly, Rotation, Full}
 enum INTERRUPT {Continue, Destroy, Shoot}
 
 # culling
@@ -148,6 +146,7 @@ func reset(minimal:bool=false):
 	#process_list.clear()
 	# reset bullets
 	clear_all_bullets()
+	#await get_tree().process_frame
 	# empty data structure
 	_free_rids()
 	poolQueue.clear()
@@ -253,29 +252,29 @@ func setup_viewport(pos:Vector2, area:String):
 
 #§§§§§§§§§§§§§ RESOURCES §§§§§§§§§§§§§
 
-func new_instance(id:String, instance:Node2D):
+func new_instance(id:String, instance:Node2D, no_warn:bool=false):
 	if arrayInstances.has(id):
-		push_warning("Warning : New instance ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
+		if !no_warn: push_warning("Warning : New instance ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
 		return
 	arrayInstances[id] = instance
-func new_trigger(id:String, t:Trigger):
+func new_trigger(id:String, t:Trigger, no_warn:bool=false):
 	if arrayTriggers.has(id):
-		push_warning("Warning : New trigger ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
+		if !no_warn: push_warning("Warning : New trigger ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
 		return
 	arrayTriggers[id] = t
-func new_pattern(id:String, p:Pattern):
+func new_pattern(id:String, p:Pattern, no_warn:bool=false):
 	if arrayPatterns.has(id):
-		push_warning("Warning : New pattern ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
+		if !no_warn: push_warning("Warning : New pattern ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
 		return
 	arrayPatterns[id] = p
-func new_bullet(id:String, b:Dictionary):
+func new_bullet(id:String, b:Dictionary, no_warn:bool=false):
 	if arrayProps.has(id):
-		push_warning("Warning : New bullet ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
+		if !no_warn: push_warning("Warning : New bullet ignored. Name "+id+" already exists. Make sure this duplicate isn't an error.")
 		return
 	arrayProps[id] = b
-func new_container(node:TriggerContainer):
+func new_container(node:TriggerContainer, no_warn:bool=false):
 	if arrayContainers.has(node.id):
-		push_warning("Warning : New container ignored. Name "+node.id+" already exists. Make sure this duplicate isn't an error.")
+		if !no_warn: push_warning("Warning : New container ignored. Name "+node.id+" already exists. Make sure this duplicate isn't an error.")
 		return
 	arrayContainers[node.id] = node
 
@@ -350,8 +349,8 @@ func sanitize_bulletprops(props:Resource, id:String, source:Node, preview:bool=f
 			"anim_delete_texture","anim_spawn_collision","anim_waiting_collision","anim_delete_collision",\
 			"homing_special_target","homing_group","homing_start_signal","a_angular_equation"] and value == "": continue
 		elif P in ["a_speed_multi_iterations","scale_multi_iterations","spec_bounces","spec_rotating_speed", \
-			"spec_warn","spec_explo","spec_skew","spec_modulate_loop","spec_trail_length",\
-			"a_curve_movement","death_speed_under","homing_detection_dist","spec_trail_unlimited","temp_count"] and int(value) == int(0): continue
+			"spec_warn","spec_explo","spec_skew","spec_modulate_loop","spec_trail_length", "death_pause_remove_after",\
+			"a_curve_movement","death_speed_under","homing_detection_dist","spec_trail_unlimited","temp_count"] and float(value) == float(0): continue
 		elif P in ["anim_idle_sfx","anim_spawn_sfx","anim_waiting_sfx","anim_delete_sfx"] and value == -1: continue
 		elif P in ["spec_tourment","spec_no_collision","overwrite_groups","homing_mouse","spec_spin_only_sprite","no_rotation", \
 				] and value == false: continue
@@ -435,18 +434,10 @@ func set_anim_states(a:animState, P:String="", id:String=""):
 	return a.ID
 
 func sanitize_pattern(pattern:Pattern, source:Node):
-	if pattern.forced_target: pattern.node_target = source.get_node(pattern.forced_target)
-	if pattern.get("pattern_angle_target"):
-		var found := false
-
-		for property in pattern.get_property_list():
-			if property.name == "node_pattern_target":
-				found = true
-				print("Property found: ", property)
-
-		print("node_pattern_target exists: ", found)
-		print("Pattern script: ", pattern.get_script())
-		pattern.node_pattern_target = source.get_node(pattern.pattern_angle_target)
+	if pattern.forced_special_target: pattern.node_target = get_special_target(pattern.forced_special_target)
+	elif pattern.forced_target: pattern.node_target = source.get_node(pattern.forced_target)
+	if pattern.pattern_special_target: pattern.node_pattern_target = get_special_target(pattern.pattern_special_target)
+	elif pattern.get("pattern_angle_target"): pattern.node_pattern_target = source.get_node(pattern.pattern_angle_target)
 	if pattern.resource_name == "PatternCustomShape":
 		if pattern.closed_shape: pattern.symmetry_type = SYMTYPE.ClosedShape
 	elif pattern.resource_name in ["PatternLine","PatternCircle"]:
@@ -678,7 +669,7 @@ func set_angle(pattern:Pattern, pos:Vector2, queued_instance:Dictionary):
 func create_bullet_instance_dict(queued_instance:Dictionary, bullet_props:Dictionary, pattern:Pattern):
 	queued_instance["shape_disabled"] = true
 	queued_instance["speed"] = bullet_props.speed
-	queued_instance["vel"] = Vector2()
+	queued_instance["vel"] = Vector2.ZERO
 	queued_instance["interruption"] = pattern.on_interruption
 	if bullet_props.has("groups"): queued_instance["groups"] = bullet_props.get("groups")
 	if pattern.impulse > 0:
@@ -689,6 +680,10 @@ func create_bullet_instance_dict(queued_instance:Dictionary, bullet_props:Dictio
 		queued_instance["acc"] = Vector2.ZERO
 	if pattern.wait_behavior > LATENCE.No:
 		queued_instance["follows_parent"] = pattern.wait_behavior
+		if pattern.wait_keep_behavior:
+			queued_instance["source_prev"] = queued_instance["source_node"]["position"] if queued_instance["source_node"] is Dictionary \
+											else queued_instance["source_node"].global_position
+			queued_instance["source_prev_rot"] = queued_instance["source_node"].get("rotation")
 	return queued_instance
 
 func _object_init_groups(is_bullet_node:bool, bullet:Node2D, queued_instance:Dictionary, bullet_props):
@@ -701,14 +696,19 @@ func _object_init_groups(is_bullet_node:bool, bullet:Node2D, queued_instance:Dic
 
 func set_spawn_data(queued_instance:Dictionary, bullet_props:Dictionary, pattern:Pattern, i:int, ori_angle:float, pos:Vector2):
 	var angle:float
-	var forced_angle:float = ori_angle
-	if not pattern.resource_name == "PatternOne" and not pattern.get("pattern_angle") == 0:
-		forced_angle = pattern.get("pattern_angle")
-		if pattern.pattern_angle_target != NodePath() and is_instance_valid(pattern.node_pattern_target):
-			forced_angle = pos.angle_to_point(pattern.node_pattern_target.global_position)
-		if pattern.pattern_angle_mouse:
-			forced_angle = pos.angle_to_point(get_global_mouse_position())
-
+	var forced_angle:float = get_forced_angle(pattern, ori_angle, pos)
+	if pattern.target_pattern != "":
+		var target_pattern:Pattern = arrayPatterns.get(pattern.target_pattern, null)
+		if target_pattern == null: push_error("Target pattern ", pattern.target_pattern, "doesn't exist.")
+		queued_instance["spawn_pos"] = get_spawn_position_from_pattern(pattern, i, forced_angle)
+		var target_pos:Vector2 = get_spawn_position_from_pattern(target_pattern, i-1, get_forced_angle(target_pattern, ori_angle, pos)) \
+								.rotated(pattern.target_pattern_rotation)+pattern.target_pattern_offset
+		if pattern.target_absolute_position: target_pos -= pos
+		queued_instance["rotation"] = queued_instance["spawn_pos"].angle_to_point(target_pos)
+		if pattern.target_delay > 0:
+			queued_instance["speed"] = (queued_instance["spawn_pos"].distance_to(target_pos))/pattern.target_delay
+		return
+	
 	match pattern.resource_name:
 		"PatternCircle":
 			angle = get_spawn_angle_circle(pattern.angle_total, pattern.angle_decal, pattern.nbr-int(pattern.angle_total < 2*PI), i)
@@ -726,6 +726,28 @@ func set_spawn_data(queued_instance:Dictionary, bullet_props:Dictionary, pattern
 		"PatternCustomArea":
 			queued_instance["spawn_pos"] = pattern.pos[RAND.randi()%pattern.pooling][i].rotated(forced_angle)
 			queued_instance["rotation"] = bullet_props.angle + ori_angle
+
+func get_spawn_position_from_pattern(pattern:Pattern, i:int, rotate:float):
+	match pattern.resource_name:
+		"PatternCircle":
+			var angle = get_spawn_angle_circle(pattern.angle_total, pattern.angle_decal, pattern.nbr-int(pattern.angle_total < 2*PI), i%pattern.nbr)
+			return get_spawn_pos_circle(angle, rotate, pattern.radius, pattern.perspective)
+		"PatternLine":
+			return get_spawn_pos_line(pattern.offset, pattern.center, rotate, pattern.nbr, i%pattern.nbr)
+		"PatternOne":
+			return Vector2()
+		"PatternCustomShape","PatternCustomPoints":
+			return pattern.pos[i%pattern.nbr].rotated(rotate)
+		"PatternCustomArea":
+			return pattern.pos[RAND.randi()%pattern.pooling][i%pattern.nbr].rotated(rotate)
+
+func get_forced_angle(pattern:Pattern, ori_angle:float, pos:Vector2):
+	if pattern.get("pattern_angle") != 0: return pattern.get("pattern_angle")
+	elif pattern.pattern_angle_target != NodePath() and is_instance_valid(pattern.node_pattern_target):
+		return pos.angle_to_point(pattern.node_pattern_target.global_position)
+	elif pattern.pattern_angle_mouse:
+		return pos.angle_to_point(get_global_mouse_position())
+	return ori_angle
 
 func get_spawn_positions(pattern:Pattern):
 	if pattern.resource_name == "PatternOne": return Vector2()
@@ -835,7 +857,7 @@ func spawn(spawner, patternID:String, shared_area:String="0", process_id:int=-1,
 			var pausing:int = 0
 			while pausing not in [-1, process_id]: pausing = await Spawning.resume_process
 		if spawner is Node2D:
-			ori_angle = spawner.rotation if spawner.use_local_rotation else spawner.global_rotation
+			ori_angle = spawner.rotation if spawner.get("use_local_rotation") else spawner.global_rotation
 			pos = spawner.global_position
 		elif spawner is Dictionary:
 			pos = spawner["position"]
@@ -848,6 +870,7 @@ func spawn(spawner, patternID:String, shared_area:String="0", process_id:int=-1,
 		is_object = bullet_props.has("instance_id")
 		is_bullet_node = (is_object and bullet_props.has("speed"))
 		for i:int in pattern.nbr:
+			if pattern.skip_chance > 0 and randf() < pattern.skip_chance: continue
 			if skip_array and i in skip_array[iter_nbr%skip_array.size()]:
 				if pattern.skip_in_list: skipped_bullet += 1
 				continue
@@ -1060,7 +1083,7 @@ func _shoot(bullets:Array[Dictionary], ignore_interrupt:bool=false):
 		if not poolBullets.has(b): continue
 		if B["state"] >= BState.Moving: continue
 		props = B["props"]
-		if B.has("source_node") and not is_instance_valid(B["source_node"]):
+		if B.get("source_node", {}) is Node2D and not is_instance_valid(B["source_node"]):
 			_interrupt_bullet(B)
 			if not ignore_interrupt: continue
 
@@ -1073,7 +1096,7 @@ func _shoot(bullets:Array[Dictionary], ignore_interrupt:bool=false):
 			if arrayAnim[props["anim_shoot"]][ANIM.SFX]: arrayAnim[props["anim_shoot"]][ANIM.SFX].play()
 		elif not B["state"] in [BState.Spawning, BState.Shooting]: B["state"] = BState.Moving
 
-		if B.get("follows_parent", 0) > LATENCE.No: B.erase("follows_parent")
+		if B.get("follows_parent", 0) == LATENCE.No: B.erase("follows_parent")
 		if not props.has("curve"): B.erase("spawn_pos")
 		else: B["spawn_pos"] = B["position"]
 
@@ -1106,7 +1129,7 @@ func init_special_variables(b:Dictionary):
 		b["trail_counter"] = float(0.0)
 	if bp.has("homing_list"):
 		b["homing_counter"] = int(0)
-	if bp.get("homing_imprecision", Vector2(0,0)) != Vector2(0,0):
+	if bp.get("homing_imprecision", Vector2.ZERO) != Vector2.ZERO:
 		b["homing_offset"] = Vector2(RAND.randf_range(-bp["homing_imprecision"].x,bp["homing_imprecision"].x), \
 									RAND.randf_range(-bp["homing_imprecision"].y,bp["homing_imprecision"].y))
 	if bp.has("curve"):
@@ -1246,51 +1269,20 @@ func move_speed(B:Dictionary, props:Dictionary):
 		B["speed_multi_iter"] -= 1
 		B["speed_interpolate"] = 0
 
-	if abs(B["speed"]) < props.get("death_speed_under", 0): delete_bullet(B)
+	if abs(B["speed"]) < props.get("death_speed_under", 0):
+		if not pause_bullet(B, props.get("death_pause_remove_after", -1)): delete_bullet(B)
 
+func move_equation(B:Dictionary, props:Dictionary, eq_scale:float=1):
+	if props.get("a_direction_equation","") == "" and props.get("a_angular_equation","") == "": return
+	B["curveDir_index"] += eq_scale*B["speed"]/100
 
-func move_equation(B: Dictionary, props: Dictionary, eq_scale: float = 1.0) -> void:
-	if props.get("a_direction_equation", "") == "" and props.get("a_angular_equation", "") == "":
-		return
+	if props.get("a_direction_equation","") != "":
+		if expression.parse(props["a_direction_equation"],["x"]) != OK: push_error(expression.get_error_text())
+		B["curve"] = float(expression.execute([B["curveDir_index"]*0.05]))*100*eq_scale*(B["speed"]/100)
 
-	B["curveDir_index"] += eq_scale * B["speed"] / 100.0
-
-	# Direction Equation
-	if props.get("a_direction_equation", "") != "":
-		var equation_text: String = props["a_direction_equation"]
-
-		var parse_error = expression.parse(equation_text, ["x"])
-
-		if parse_error != OK:
-			push_error("Direction equation parse error: " + expression.get_error_text())
-		else:
-			var result = expression.execute([B["curveDir_index"] * 0.05])
-
-			if expression.has_execute_failed():
-				push_error("Direction equation execution error: " + expression.get_error_text())
-			elif result is int or result is float:
-				B["curve"] = float(result) * 100.0 * eq_scale * (B["speed"] / 100.0)
-			else:
-				push_error("Direction equation returned a non-numeric value: " + str(result))
-
-	# Angular Equation
-	if props.get("a_angular_equation", "") != "":
-		var equation_text: String = props["a_angular_equation"]
-
-		var parse_error = expression.parse(equation_text, ["x"])
-
-		if parse_error != OK:
-			push_error("Angular equation parse error: " + expression.get_error_text())
-		else:
-			var result = expression.execute([B["curveDir_index"] / 50.0])
-
-			if expression.has_execute_failed():
-				push_error("Angular equation execution error: " + expression.get_error_text())
-			elif result is int or result is float:
-				B["rotation"] += float(result) / 50.0 * eq_scale * (B["speed"] / 100.0)
-			else:
-				push_error("Angular equation returned a non-numeric value: " + str(result))
-
+	if props.get("a_angular_equation","") != "":
+		if expression.parse(props["a_angular_equation"],["x"]) != OK: push_error(expression.get_error_text())
+		B["rotation"] += float(expression.execute([B["curveDir_index"]/50]))/50*eq_scale*(B["speed"]/100)
 
 func _homing_at_signal(B:Dictionary, props:Dictionary):
 	# when homing starts with a signal
@@ -1319,7 +1311,7 @@ func move_homing(B:Dictionary, props:Dictionary):
 	var target_pos:Vector2
 	if typeof(B["homing_target"]) == TYPE_OBJECT:
 		if not is_instance_valid(B["homing_target"]): return
-		target_pos = B["homing_target"].global_position + B.get("homing_offset", Vector2(0,0))
+		target_pos = B["homing_target"].global_position + B.get("homing_offset", Vector2.ZERO)
 	else: target_pos = B["homing_target"]
 	# reaches target
 	var dist_to_target:float = B["position"].distance_to(target_pos)
@@ -1379,6 +1371,23 @@ func move_depth(B:Dictionary, props:Dictionary):
 		if props["depth_bounce"]: B["depth_speed"] = -B["depth_speed"]
 		else: delete_bullet(B)
 
+func move_with_parent(B:Dictionary):
+	if not B.has("source_prev"): return
+	var source = B["source_node"]
+	var new_rot:float = source.get("rotation") - B["source_prev_rot"]
+	B["position"] -= B["source_prev"] # recenter the bullet to 0,0 to apply relative rotation
+	if B["follows_parent"] == LATENCE.Rotation: B["position"] = B["position"].rotated(new_rot)
+		
+	B["source_prev_rot"] = source.get("rotation")
+	# apply parent's position
+	if source is Dictionary:
+		B["position"] += source["position"]
+		B["source_prev"] = source["position"]
+	else:
+		B["position"] += source.global_position
+		B["source_prev"] = source.global_position
+	
+
 func _interrupt_bullet(B):
 	match B["interruption"]:
 		INTERRUPT.Continue: B.erase("follows_parent")
@@ -1392,19 +1401,12 @@ func wait_behavior(B:Dictionary):
 		return
 
 	if B.get("follows_parent", 0) == LATENCE.No: return
-	var rot:float;
-	if B["follows_parent"] == LATENCE.Rotation: rot = source.rotation
-	#elif B["follows_parent"] == LATENCE.Spin:
-		#B["rotation"] #TODO
-
-	# follows position
-	if B["follows_parent"] == LATENCE.PosOnly:
-		if source is Dictionary: B["position"] = B["spawn_pos"] + source["position"]
-		else: B["position"] = source.global_position + B["spawn_pos"]
-	# follows rotation
-	else:
-		B["position"] = B["spawn_pos"].rotated(rot) + source["position"] if source is Dictionary \
-					else B["spawn_pos"].rotated(rot) + source.global_position
+	var rot:float = 0 if B["follows_parent"] == LATENCE.Full else source.rotation
+	var full_rot:float = 0 if B["follows_parent"] == LATENCE.Rotation else source.rotation
+	
+	B["position"] = B["spawn_pos"].rotated(rot) + source["position"] if source is Dictionary \
+				else B["spawn_pos"].rotated(rot) + source.global_position
+	B["position"].rotated(full_rot)
 
 func _update_culling():
 	can_cull = false
@@ -1425,16 +1427,25 @@ func _state_check(B:Dictionary, props:Dictionary):
 	if B.has("death_counter"):
 		B["death_counter"] += _delta
 		if B["death_counter"] >= props["death_after_time"]:
+			return _remove_after_check("death_counter", B, props)
+	if props.has("death_outside_box") and not props["death_outside_box"].has_point(B["position"]):
+		return _remove_after_check("death_outside_box", B, props)
+	if B.has("pause_counter"):
+		B["pause_counter"] -= _delta
+		if B["pause_counter"] <= 0:
 			delete_bullet(B)
 			_apply_movement(B, props)
 			return -1
-	if props.has("death_outside_box") and not props["death_outside_box"].has_point(B["position"]):
-		delete_bullet(B)
-		_apply_movement(B, props)
-		return -1
 	# check for culling offscreen bullets
 	if not B["RID"] is Node2D and can_cull and check_bullet_culling(B) == CULLINGSTATES.Culled: return -1
 	return 1
+
+func _remove_after_check(property:String, B:Dictionary, props:Dictionary):
+	B.erase(property)
+	if pause_bullet(B, props.get("death_pause_remove_after", -1)): return 0
+	delete_bullet(B)
+	_apply_movement(B, props)
+	return -1
 
 func bullet_movement(B:Dictionary, props:Dictionary):
 	if B["state"] == BState.Deleting: return 0
@@ -1448,23 +1459,28 @@ func bullet_movement(B:Dictionary, props:Dictionary):
 	elif B["state"] == BState.Moving:
 		# trails
 		move_trail(B, props)
+		#move_with_parent(B)
 		# speed curve
 		move_speed(B, props)
 		# direction from math equation
 		move_equation(B, props)
 		# homing
 		move_homing(B, props)
-		# gravity
-		move_gravity(B, props)
 		# impulse
 		move_impulse(B)
 		# depth
 		move_depth(B, props)
 		# follow path2D
 		if B.has("curve_counter"): move_curve(B, props)
+		# main movement
 		else:
 			B["vel"] = Vector2(B["speed"], B.get("curve",0)).rotated(B["rotation"])
 			B["position"] += B["vel"]*_delta
+		# follow parent's pos and rot
+		move_with_parent(B)
+		
+		# gravity
+		move_gravity(B, props)
 
 		if B.has("spawn_pos") and not props.has("curve"): B["position"] += B["spawn_pos"]
 
@@ -1482,7 +1498,7 @@ func bullet_movement(B:Dictionary, props:Dictionary):
 	else:
 		detect_bullet_approaching(B)
 		_apply_movement(B, props)
-		
+
 
 func _apply_node_movement(B:Dictionary, b, props:Dictionary):
 	if b.base_scale == null: b.base_scale = b.scale
@@ -1533,6 +1549,7 @@ func _apply_movement(B:Dictionary, props:Dictionary):
 												B.get("scale",Vector2(props["scale"],props["scale"])), \
 												props.get("skew",0), \
 												B["position"]))
+	#print(bullet_index," ", B["position"])
 	if B["shape_disabled"]:
 		# handles depths
 		if B.has("depth"):
@@ -1550,13 +1567,13 @@ func _apply_movement(B:Dictionary, props:Dictionary):
 
 func _switch_to_next_anim(b:Dictionary):
 	var new_anim_instant:bool
-	if b["state"] == BState.Spawning:
-		b["state"] = BState.Spawned
-		new_anim_instant = change_animation(b, "waiting")
-	elif b["state"] == BState.Spawned:
+	if b["state"] <= BState.Spawned:
 		b["state"] = BState.Shooting
 		new_anim_instant = change_animation(b, "shoot")
 		if new_anim_instant: new_anim_instant = _switch_to_next_anim(b)
+	elif b["state"] == BState.Spawning:
+		b["state"] = BState.Spawned
+		new_anim_instant = change_animation(b, "waiting")
 	elif b["state"] == BState.Shooting:
 		b["state"] = BState.Moving
 		new_anim_instant = change_animation(b, "idle")
@@ -1576,7 +1593,8 @@ func get_texture_frame(b:Dictionary, spriteframes:SpriteFrames=textures):
 			b["anim_counter"] = 0
 			b["anim_frame"] += 1
 			if b["anim_frame"] >= b["anim_length"]: # reached anim end
-				if _switch_to_next_anim(b): # next anim is single framed
+				if b.get("anim_loop"): b["anim_frame"] = 0 # put back at the start of anim
+				elif _switch_to_next_anim(b): # next anim is single framed
 					return spriteframes.get_frame_texture(b["anim"][ANIM.TEXTURE], 0)
 				else: b["anim_frame"] = 0 if b.get("anim_loop") else b["anim_length"]-1
 		return spriteframes.get_frame_texture(b["anim"][ANIM.TEXTURE], b.get("anim_frame"))
@@ -1644,11 +1662,7 @@ func _draw_bullet(B:Dictionary, props:Dictionary):
 			depth_scale = 1-((B["depth"]-props["depth_active"].y)/(props["depth_min_max"].y-props["depth_active"].y))
 
 	# bullet nodes don't need to be drawn, they can use sprites
-	if B["RID"] is Node2D:
-		#if props.has("depth_scaling"): b.scale = props.get("depth_scaling")
-		#if props.has("depth_fading"): b.modulate.a = props.get("depth_fading")
-		#if props.has("speed"): B["RID"].queue_redraw() #todo
-		return
+	if B["RID"] is Node2D: return
 
 	if (B["state"] < BState.Spawning) \
 		or (props.has("spec_modulate") and props.has("spec_modulate_loop") and \
@@ -1784,6 +1798,12 @@ func delete_bullet(B:Dictionary, shadow_clearing:bool=false):
 	if shadow_clearing or change_animation(B, "delete"):
 		back_to_grave(B)
 	else: B["state"] = BState.Deleting
+
+func pause_bullet(B:Dictionary, delete_after:float=0):
+	if delete_after == -1: return false # only used for internal calls to check if B has the pause property
+	elif delete_after > 0: B["pause_counter"] = delete_after
+	B["state"] = BState.Paused
+	return true # return true if the pause has been applied, only use is internal
 
 ## GET
 
@@ -1973,15 +1993,6 @@ func pause_process_list(processes:Array[int]):
 func pause_all_processes():
 	process_pause_all = true
 
-#func process_get_infos(process:int):
-	#assert(process != 0, "You set process to 0, which is forbidden")
-	#while process_get != 0: continue
-	#process_infos.clear()
-	#process_get = process
-	#while process_infos.is_empty(): continue
-	#process_get = 0
-	#return process_infos
-
 ### HOMING ###
 
 func edit_special_target(var_name:String, path:Node2D):
@@ -2074,7 +2085,7 @@ func bullet_collide_area(area_rid:RID,area:Area2D,area_shape_index:int,local_sha
 func bullet_collide_body(body_rid:RID,body:Node,body_shape_index:int,local_shape_index:int,shared_area:Area2D) -> void:
 	var B:Dictionary = shared_area.get_meta("Bullets")[local_shape_index] if shared_area.get_parent() == $SharedAreas \
 				else poolBullets[shared_area]
-
+	#print(B["vel"])
 	############## go to CUSTOM if you want to implement custom behavior
 	if not CUSTOM.bullet_collide_body(body_rid, body, body_shape_index, local_shape_index, shared_area, B): return
 
@@ -2098,7 +2109,8 @@ func bullet_collide_body(body_rid:RID,body:Node,body_shape_index:int,local_shape
 	if body.is_in_group("Player"):
 		delete_bullet(B)
 	elif B["props"]["death_from_collision"]:
-		delete_bullet(B)
+		if not pause_bullet(B, B["props"].get("death_pause_remove_after", -1)):
+			delete_bullet(B)
 
 
 var bounce_index:int = 0
@@ -2123,7 +2135,7 @@ func _process_bounce(B:Dictionary, shared_area:Area2D, tries:int=0):
 
 func _handle_bounce_collision(B:Dictionary, index:int, shared_area:Area2D, tries:int=0):
 	var bouncy_node:CharacterBody2D = get_node("Bouncy/" + str(index))
-	var collision:KinematicCollision2D = bouncy_node.move_and_collide(Vector2(0,0), true)
+	var collision:KinematicCollision2D = bouncy_node.move_and_collide(Vector2.ZERO, true)
 
 	if collision:
 		B["vel"] = B["vel"].bounce(collision.get_normal())
@@ -2379,7 +2391,7 @@ func _spawn_random(spawner, patternID:String, pattern:Pattern, shared_area:Strin
 									r_angle, r_radius, r_angle_total, r_angle_decal, r_offx, r_offy)
 
 			if not bullet_props.get("fixed_rotation", false):
-				set_angle(pattern, pos, queued_instance)
+				set_angle_random(pattern, pos, queued_instance)
 			else: queued_instance["rotation"] = 0
 
 			if pattern.wait_tween_momentum > 0:
@@ -2415,8 +2427,8 @@ func _spawn_random(spawner, patternID:String, pattern:Pattern, shared_area:Strin
 	# finsihed spawning
 	process_counter -= 1
 	if process_id != 1: process_list.erase(process_id)
-	handle_temp_props(pattern, patternID)
-	handle_temp_pattern(bullet_props, r_props_id)
+	handle_temp_props(bullet_props, patternID)
+	handle_temp_pattern(pattern, r_props_id)
 	
 
 func set_angle_random(pattern:Pattern, pos:Vector2, queued_instance:Dictionary):

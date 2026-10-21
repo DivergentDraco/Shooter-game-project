@@ -13,12 +13,13 @@ class_name BulletProps
 
 ## destruction
 @export_group("Destruction", "death_")
-@export_range(0, 999999, 0.001, "hide_slider") var death_after_time:float = 30
+@export_range(0, 999999, 0.001, "hide_slider", "suffix:s") var death_after_time:float = 30
 @export var death_outside_box:Rect2 = Rect2()
 @export var death_from_collision:bool = true
 @export_range(0, 999999, 0.1, "hide_slider") var death_speed_under:float = 0
 enum CullingLevel {Anim, Move, Full, Inherit}
 @export var death_culling_overwrite:CullingLevel = CullingLevel.Inherit
+@export_range(0, 999999, 0.001, "hide_slider", "suffix:s") var death_pause_remove_after:float = 0
 
 ## animations
 @export_group("Visuals")

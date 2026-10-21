@@ -1,8 +1,8 @@
 extends Node2D
 
-func _ready() -> void:
-	get_window().content_scale_size = Vector2i(1000, 1000)
 
+func ready():
+	get_window().content_scale_size = Vector2i(1920, 1080)
 
 func _process(delta):
 	$FPS.text = str(Engine.get_frames_per_second())+" FPS\n"+str(Spawning.poolBullets.size())

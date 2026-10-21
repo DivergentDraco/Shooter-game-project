@@ -1,15 +1,15 @@
-[gd_scene format=3 uid="uid://djoa5uwqiadsi"]
+[gd_scene load_steps=23 format=3 uid="uid://djoa5uwqiadsi"]
 
-[ext_resource type="Script" uid="uid://c6h0yvvtpnxmd" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_y1qmf"]
-[ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_hxj8a"]
-[ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="3_7xpys"]
-[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="4_03jl0"]
-[ext_resource type="Script" uid="uid://dcgggjlg7ts6s" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="4_g86m3"]
-[ext_resource type="Script" uid="uid://3g6onq1uyuvc" path="res://addons/BulletUpHell/Bullet/ObjectProps.gd" id="5_f3tc5"]
-[ext_resource type="Script" uid="uid://0kp73jebt5ha" path="res://addons/BulletUpHell/Bullet/BulletNodeProps.gd" id="6_2khcu"]
-[ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="8_1n7y6"]
-[ext_resource type="Script" uid="uid://cuf26gljyyrfx" path="res://addons/BulletUpHell/Nodes/BuHInstanceLister.gd" id="8_cv4tu"]
-[ext_resource type="Script" uid="uid://78se6gf424dm" path="res://addons/BulletUpHell/Nodes/BuHBulletNode.gd" id="10_ld65i"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd" id="1_y1qmf"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="2_hxj8a"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="3_7xpys"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="4_03jl0"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="4_g86m3"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/ObjectProps.gd" id="5_f3tc5"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Bullet/BulletNodeProps.gd" id="6_2khcu"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHInstanceLister.gd" id="8_cv4tu"]
+[ext_resource type="Texture2D" uid="uid://bkhpsrdiok3hd" path="res://icon.png" id="9_o8nap"]
+[ext_resource type="Script" path="res://addons/BulletUpHell/Nodes/BuHBulletNode.gd" id="10_ld65i"]
 
 [sub_resource type="Animation" id="Animation_pse3a"]
 resource_name = "Despawn"
@@ -43,7 +43,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b0f8f"]
 _data = {
-&"Despawn": SubResource("Animation_pse3a")
+"Despawn": SubResource("Animation_pse3a")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_byy2k"]
@@ -57,10 +57,33 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("3_7xpys")
 radius = 100.0
 angle_total = 6.28319
+angle_decal = 0.0
+center = 0
+symmetric = false
 bullet = "1"
 nbr = 5
 iterations = -1
 cooldown_spawn = 5.0
+cooldown_shoot = 0.0
+cooldown_next_spawn = 0.0
+cooldown_next_shoot = 0.0
+cooldown_layers = PackedVector2Array()
+cooldown_stasis = false
+pattern_angle = 0.0
+pattern_angle_target = NodePath("")
+pattern_angle_mouse = false
+wait_behavior = 0
+wait_tween_momentum = 0
+wait_tween_length = 0.0
+wait_tween_time = 0.0
+forced_angle = 0.0
+forced_target = NodePath("")
+forced_lookat_mouse = false
+forced_pattern_lookat = true
+bullet_list = Array[String]([])
+skip_step = 0
+skip_list = Array[PackedInt32Array]([])
+skip_in_list = true
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_agnmt"]
 resource_name = "PatternCircle"
@@ -68,17 +91,45 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 script = ExtResource("3_7xpys")
 radius = 100.0
 angle_total = 6.28319
+angle_decal = 0.0
+center = 0
+symmetric = false
 bullet = "2"
 nbr = 30
 iterations = -1
 cooldown_spawn = 5.0
+cooldown_shoot = 0.0
+cooldown_next_spawn = 0.0
+cooldown_next_shoot = 0.0
+cooldown_layers = PackedVector2Array()
+cooldown_stasis = false
+pattern_angle = 0.0
+pattern_angle_target = NodePath("")
+pattern_angle_mouse = false
+wait_behavior = 0
+wait_tween_momentum = 0
+wait_tween_length = 0.0
+wait_tween_time = 0.0
+forced_angle = 0.0
+forced_target = NodePath("")
+forced_lookat_mouse = false
+forced_pattern_lookat = true
+bullet_list = Array[String]([])
+skip_step = 0
+skip_list = Array[PackedInt32Array]([])
+skip_in_list = true
 
 [sub_resource type="Curve2D" id="Curve2D_qwdmn"]
 
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_re667"]
 script = ExtResource("5_f3tc5")
 instance_id = "InstanceExample"
+fixed_rotation = true
+angle = 0.0
 groups = PackedStringArray()
+overwrite_groups = false
+trigger_container = ""
+trigger_wait_for_shot = true
 
 [sub_resource type="Curve" id="Curve_8bvm8"]
 
@@ -89,12 +140,38 @@ groups = PackedStringArray()
 [sub_resource type="PackedDataContainer" id="PackedDataContainer_gqvqb"]
 script = ExtResource("6_2khcu")
 instance_id = "BulletNode"
+overwrite_groups = false
+damage = 1.0
+speed = 100.0
 scale = 0.5
 angle = -0.5286
-custom_data = {}
+groups = PackedStringArray()
+death_after_time = 30.0
+death_outside_box = Rect2(0, 0, 0, 0)
+death_from_collision = true
+death_speed_under = 0.0
+death_culling_overwrite = 3
 spec_modulate = SubResource("Gradient_jx7uk")
+spec_modulate_loop = 0.0
+anim_more = Array[Resource("res://addons/BulletUpHell/Bullet/animStates.gd")]([])
+spec_trail_length = 0.0
+spec_trail_width = 0.0
+spec_trail_modulate = Color(1, 1, 1, 1)
+a_direction_equation = ""
+a_angular_equation = ""
+a_curve_movement = 0
+a_speed_multi_iterations = 0
+a_speed_multi_scale = 0.0
 a_speed_multiplier = SubResource("Curve_8bvm8")
+spec_bounces = 0
+spec_no_collision = false
+spec_rotating_speed = 0.0
+spec_only_spin_sprite = true
+scale_multi_iterations = 0
 scale_multiplier = SubResource("Curve_2uh4i")
+scale_multi_scale = 1.0
+trigger_container = ""
+trigger_wait_for_shot = true
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -143,60 +220,64 @@ r_scale_multi_curve_choice = []
 r_scale_multi_iter_variation = Vector3(0, 0, 0)
 r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
-[node name="Node2D" type="Node2D" unique_id=722016825]
+[node name="Node2D" type="Node2D"]
 script = ExtResource("1_y1qmf")
 
-[node name="InstanceLister" type="Node" parent="." unique_id=1067134427]
+[node name="InstanceLister" type="Node" parent="."]
 script = ExtResource("8_cv4tu")
 
-[node name="InstanceExample" type="Sprite2D" parent="InstanceLister" unique_id=908735127]
+[node name="InstanceExample" type="Sprite2D" parent="InstanceLister"]
+texture = ExtResource("9_o8nap")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="InstanceLister/InstanceExample" unique_id=805117975]
-libraries/ = SubResource("AnimationLibrary_b0f8f")
-autoplay = &"Despawn"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="InstanceLister/InstanceExample"]
+libraries = {
+"": SubResource("AnimationLibrary_b0f8f")
+}
+autoplay = "Despawn"
 
-[node name="BulletNode" type="Area2D" parent="InstanceLister" unique_id=1522270524]
+[node name="BulletNode" type="Area2D" parent="InstanceLister"]
 position = Vector2(181, -237)
 script = ExtResource("10_ld65i")
 ID = "BulletNode"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InstanceLister/BulletNode" unique_id=2105993878]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstanceLister/BulletNode"]
 shape = SubResource("CircleShape2D_byy2k")
 
-[node name="Icon" type="Sprite2D" parent="InstanceLister/BulletNode" unique_id=968009756]
+[node name="Icon" type="Sprite2D" parent="InstanceLister/BulletNode"]
 position = Vector2(-1, 3)
+texture = ExtResource("9_o8nap")
 
-[node name="Patterns" type="Node2D" parent="." unique_id=2142140936]
+[node name="Patterns" type="Node2D" parent="."]
 
-[node name="SpawnPattern" type="Path2D" parent="Patterns" unique_id=618739475]
+[node name="SpawnPattern" type="Path2D" parent="Patterns"]
 curve = SubResource("Curve2D_dvw8h")
 script = ExtResource("2_hxj8a")
 id = "one"
 pattern = SubResource("NavigationPolygon_1ifpe")
 
-[node name="SpawnPattern2" type="Path2D" parent="Patterns" unique_id=1672074623]
+[node name="SpawnPattern2" type="Path2D" parent="Patterns"]
 curve = SubResource("Curve2D_dvw8h")
 script = ExtResource("2_hxj8a")
 id = "two"
 pattern = SubResource("NavigationPolygon_agnmt")
 
-[node name="BulletProps" type="Node2D" parent="." unique_id=1549171139]
+[node name="BulletProps" type="Node2D" parent="."]
 
-[node name="BulletPattern" type="Path2D" parent="BulletProps" unique_id=653990124]
+[node name="BulletPattern" type="Path2D" parent="BulletProps"]
 curve = SubResource("Curve2D_qwdmn")
 script = ExtResource("4_g86m3")
 id = "1"
 props = SubResource("PackedDataContainer_re667")
 
-[node name="BulletPattern2" type="Path2D" parent="BulletProps" unique_id=1496585949]
+[node name="BulletPattern2" type="Path2D" parent="BulletProps"]
 curve = SubResource("Curve2D_qwdmn")
 script = ExtResource("4_g86m3")
 id = "2"
 props = SubResource("PackedDataContainer_gqvqb")
 
-[node name="SpawnPoints" type="Node2D" parent="." unique_id=799265443]
+[node name="SpawnPoints" type="Node2D" parent="."]
 
-[node name="SpawnPoint" type="Node2D" parent="SpawnPoints" unique_id=225156927]
+[node name="SpawnPoint" type="Node2D" parent="SpawnPoints"]
 position = Vector2(133, 257)
 script = ExtResource("4_03jl0")
 auto_pattern_id = "one"
@@ -208,7 +289,7 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="SpawnPoint2" type="Node2D" parent="SpawnPoints" unique_id=1602679415]
+[node name="SpawnPoint2" type="Node2D" parent="SpawnPoints"]
 position = Vector2(117, 473)
 script = ExtResource("4_03jl0")
 auto_pattern_id = "two"
@@ -220,7 +301,7 @@ r_start_time_variation = Vector3(0, 0, 0)
 r_start_distance_choice = ""
 r_start_distance_variation = Vector3(0, 0, 0)
 
-[node name="Tuto" type="Label" parent="." unique_id=2106456852]
+[node name="Tuto" type="Label" parent="."]
 offset_left = 21.0
 offset_top = 14.0
 offset_right = 1007.0
@@ -237,14 +318,14 @@ ObjectProps will just make the node spawn and then the plugin won't care about i
 BulletNodeProps will only spawn BulletNode nodes. Once they spawn, they act like default bullets, following the properties you gave them with the BulletNodeProps."
 autowrap_mode = 2
 
-[node name="Walls" type="StaticBody2D" parent="." unique_id=366873808]
+[node name="Walls" type="StaticBody2D" parent="."]
 collision_layer = 16
 collision_mask = 32
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Walls" unique_id=776337415]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Walls"]
 polygon = PackedVector2Array(1024, -8, 1024, 600, 0, 600, 0, 0, -56, 0, -48, 656, 1072, 640, 1056, -64, 0, -64, 8, 0)
 
-[node name="FPS" type="Label" parent="." unique_id=1026025587]
+[node name="FPS" type="Label" parent="."]
 visible = false
 offset_right = 40.0
 offset_bottom = 23.0

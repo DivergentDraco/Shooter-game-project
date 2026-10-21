@@ -7,6 +7,7 @@ class_name TriggerContainer
 @export var triggers:Array[Trigger] = [null]
 @export var patterns:Array[Resource] = [null]
 @export var pool_amount:int = 50
+@export var show_id_warning:bool = true
 
 var commands:Array = []
 
@@ -18,9 +19,9 @@ func _ready():
 			i.node_collide = get_node(i.target_to_collide)
 		elif i.resource_name == "TrigPos" and i.target:
 			i.node_target = get_node(i.target)
-		Spawning.new_trigger(id+"/"+str(triggers.find(i)), i)
-	for j:int in patterns.size(): Spawning.new_pattern(id+"/"+str(j), patterns[j])
-	Spawning.new_container(self)
+		Spawning.new_trigger(id+"/"+str(triggers.find(i)), i, !show_id_warning)
+	for j:int in patterns.size(): Spawning.new_pattern(id+"/"+str(j), patterns[j], !show_id_warning)
+	Spawning.new_container(self, !show_id_warning)
 	
 	if advanced_controls == "": advanced_controls = "0=0\n>q"
 	commands = advanced_controls.split("\n", false)

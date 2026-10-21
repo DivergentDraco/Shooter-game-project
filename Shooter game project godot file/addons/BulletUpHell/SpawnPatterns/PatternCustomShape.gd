@@ -11,7 +11,7 @@ var pos:Array = []
 @export var center_pos:Vector2
 @export_range(0, 9999, 1, "suffix:th bullet") var center:int = 0
 
-@export_subgroup("Shooting")
+#@export_group("Shooting")
 @export var symmetric:bool = false
 @export var symmetry_type = Spawning.SYMTYPE.Line
 
