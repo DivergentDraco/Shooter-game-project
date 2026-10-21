@@ -961,7 +961,13 @@ func handle_temp_pattern(pattern, id, decr:int=1):
 
 func _plan_spawning(pattern:Pattern, bullets:Array[Dictionary]):
 	var to_shoot: Array[Dictionary] = bullets.duplicate()
+	
 
+
+	if to_shoot.size() > 1:
+		var first_bullet: Dictionary = to_shoot.pop_front()
+		to_shoot.append(first_bullet)
+	
 	var symmetric: bool = pattern.get("symmetric") == true
 	if pattern.cooldown_next_spawn == 0:
 		_spawn(bullets)
@@ -988,7 +994,7 @@ func _plan_spawning(pattern:Pattern, bullets:Array[Dictionary]):
 					SYMTYPE.Line: _plan_queue([b], abs(pattern.center-idx)*pattern.cooldown_next_spawn)
 					SYMTYPE.ClosedShape:
 						_plan_queue([b], min(idx-pattern.center,to_shoot.size()-(idx-pattern.center))*pattern.cooldown_next_spawn)
-			else: _plan_queue([b], idx*pattern.cooldown_next_spawn)
+			else: _plan_queue([b], (idx + 1) * pattern.cooldown_next_spawn)
 
 		if pattern.cooldown_stasis: return
 		if pattern.cooldown_next_shoot == 0 and pattern.cooldown_shoot > 0:
@@ -1000,7 +1006,7 @@ func _plan_spawning(pattern:Pattern, bullets:Array[Dictionary]):
 					match pattern.symmetry_type:
 						SYMTYPE.Line: _plan_queue([b], pattern.cooldown_shoot+(abs(pattern.center-idx))*pattern.cooldown_next_shoot)
 						SYMTYPE.ClosedShape: _plan_queue([b], pattern.cooldown_shoot+(min(idx-pattern.center,to_shoot.size()-(idx-pattern.center)))*pattern.cooldown_next_shoot)
-				else: _plan_queue([b], idx*pattern.cooldown_next_spawn)
+				else: _plan_queue([b], (idx + 1) * pattern.cooldown_next_spawn)
 		elif pattern.cooldown_shoot == 0:
 			for b:Dictionary in to_shoot:
 				idx = to_shoot.find(b)

@@ -9,6 +9,7 @@ signal died
 	"spawnpoint_1" : $SpawnPoint,
 	"spawnpoint_2" : $SpawnPoint2,
 	"spawnpoint_3" : $SpawnPoint3,
+	"spawnpoint_4" : $SpawnPoint4,
 }
 
 var hp = 5
@@ -60,6 +61,7 @@ func hit(damage: int = 1) -> void:
 		return
 
 	hp -= damage
+	
 
 	if hp > 0:
 		hit_flash_anim_player.play("hit_flash")
@@ -67,11 +69,12 @@ func hit(damage: int = 1) -> void:
 
 	# Prevent repeated deaths
 	is_dying = true
+	explode_line()
 
 	set_collision_layer_value(2, false)
 	set_physics_process(false)
 	set_deferred("monitorable", false)
-
+	
 	$AnimatedSprite2D.play("explode")
 	$ExplodeSFX.play()
 
@@ -95,6 +98,18 @@ func hit(damage: int = 1) -> void:
 	queue_free()
 
 var has_entered_screen := false
+
+func explode_line() -> void:
+	var point = spawn_points["spawnpoint_4"]
+
+	if not is_instance_valid(point):
+		return
+
+	print("Explosion point: ", point.name)
+	print("Pattern ID: ", point.auto_pattern_id)
+	print("Active: ", point.active)
+
+	point.spawn()
 
 
 func _on_visible_on_screen_notifier_2d_screen_entered():

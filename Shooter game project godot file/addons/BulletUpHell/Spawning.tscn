@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://nfl6cx8spgrn" path="res://Galactic Beast Stage/Sprites and Animations/bullet103.png" id="7_ekyys"]
 [ext_resource type="Script" uid="uid://c7npuw27soxd" path="res://addons/BulletUpHell/Drawer.gd" id="8_pebki"]
 [ext_resource type="Texture2D" uid="uid://brlv4gpbj8on" path="res://Galactic Beast Stage/Sprites and Animations/laser.png" id="11_nuj4b"]
+[ext_resource type="Texture2D" uid="uid://c62dhhffu3s8o" path="res://Galactic Beast Stage/Sprites and Animations/explosion1.png" id="11_ostyn"]
 [ext_resource type="Texture2D" uid="uid://cq7iflkbejwof" path="res://Galactic Beast Stage/Sprites and Animations/playerbullet .png" id="12_6f7cb"]
 [ext_resource type="AudioStream" uid="uid://cv3lpvaio0ole" path="res://Galactic Beast Stage/SFX/laserShoot (1).wav" id="14_ostyn"]
 
@@ -133,6 +134,26 @@ region = Rect2(168, 0, 24, 24)
 atlas = ExtResource("7_78yhu")
 region = Rect2(144, 0, 24, 24)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwx80"]
+atlas = ExtResource("11_ostyn")
+region = Rect2(0, 0, 39, 42)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msasm"]
+atlas = ExtResource("11_ostyn")
+region = Rect2(39, 0, 39, 42)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e33h6"]
+atlas = ExtResource("11_ostyn")
+region = Rect2(78, 0, 39, 42)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g30a3"]
+atlas = ExtResource("11_ostyn")
+region = Rect2(117, 0, 39, 42)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7t2qf"]
+atlas = ExtResource("11_ostyn")
+region = Rect2(156, 0, 39, 42)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_uyu8o"]
 atlas = ExtResource("11_nuj4b")
 region = Rect2(0, 0, 11, 11)
@@ -249,6 +270,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": null
+}],
+"loop": 1,
+"name": &"NoRot",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_nuj4b")
 }, {
 "duration": 1.0,
@@ -267,16 +296,28 @@ animations = [{
 "texture": SubResource("AtlasTexture_lhd0s")
 }],
 "loop": 0,
-"name": &"Expl",
+"name": &"explosion1",
 "speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": null
+"texture": SubResource("AtlasTexture_gwx80")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msasm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e33h6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g30a3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7t2qf")
 }],
-"loop": 1,
-"name": &"NoRot",
-"speed": 5.0
+"loop": 0,
+"name": &"explosion2",
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -336,7 +377,9 @@ collision_mask = 3
 [node name="ShapeManager" type="AnimatedSprite2D" parent="." unique_id=1141792189]
 texture_filter = 3
 sprite_frames = SubResource("1")
-animation = &"player_bullet"
+animation = &"explosion2"
+frame = 4
+frame_progress = 1.0
 
 [node name="0" type="CollisionShape2D" parent="ShapeManager" unique_id=442034720]
 visible = false

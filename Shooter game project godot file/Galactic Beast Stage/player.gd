@@ -95,10 +95,6 @@ func shoot() -> void:
 	for point_name in spawn_points:
 		var point = spawn_points[point_name]
 
-		print("SpawnPoint: ", point_name)
-		print("Node: ", point)
-		print("Active: ", point.active)
-
 		point.active = true
 		point.spawn()
 		

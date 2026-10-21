@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="8_bg5js"]
 [ext_resource type="Script" uid="uid://bnjpl1xed5t3d" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="9_s3v4y"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="10_lebh2"]
-[ext_resource type="Script" uid="uid://de2qipi4dxv0s" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomPoints.gd" id="10_wl7ht"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fsoc7"]
 atlas = ExtResource("4_1casx")
@@ -43,8 +42,8 @@ radius = 1.0
 
 [sub_resource type="Resource" id="Resource_x4mgr"]
 script = ExtResource("6_i6ryb")
-ID = "Expl"
-texture = "Expl"
+ID = "explosion1"
+texture = "explosion1"
 collision = "2"
 SFX = "0"
 tex_scale = 0.5
@@ -124,25 +123,10 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 resource_name = "PatternOne"
 script = ExtResource("9_s3v4y")
 bullet = "playerfront"
-nbr = 10
 cooldown_spawn = 0.0
-cooldown_next_spawn = 0.06
 forced_angle = -1.5707963267948966
-target_pattern = "alpha"
-target_delay = 1.2
 skip_amount = 0
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
-
-[sub_resource type="Curve2D" id="Curve2D_i6ryb"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 38, -111, 0, 0, 0, 0, 35.53192, -142.26443, 0, 0, 0, 0, 36, -173, 0, 0, 0, 0, 33.154144, -201.19379, 0, 0, 0, 0, 33, -228, 0, 0, 0, 0, 35, -265, 0, 0, 0, 0, 36, -300, 0, 0, 0, 0, 33.22763, -332.61288, 0, 0, 0, 0, 35, -362, 0, 0, 0, 0, 33.22763, -390.59973)
-}
-point_count = 10
-
-[sub_resource type="Resource" id="Resource_wy4ev"]
-resource_name = "PatternCustomPoints"
-script = ExtResource("10_wl7ht")
-metadata/_custom_type_script = "uid://de2qipi4dxv0s"
 
 [node name="Player" type="CharacterBody2D" unique_id=392784107 groups=["players"]]
 z_index = 1
@@ -194,13 +178,6 @@ curve = SubResource("Curve2D_caake")
 script = ExtResource("8_bg5js")
 id = "playerfront"
 pattern = SubResource("Resource_0iwtj")
-metadata/_custom_type_script = "uid://bbhosph2wnb4s"
-
-[node name="SpawnPattern2" type="Path2D" parent="." unique_id=6713539]
-curve = SubResource("Curve2D_i6ryb")
-script = ExtResource("8_bg5js")
-id = "alpha"
-pattern = SubResource("Resource_wy4ev")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
 [node name="SpawnPoint1" type="Node2D" parent="." unique_id=563147925]

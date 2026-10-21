@@ -160,7 +160,7 @@ script = ExtResource("1_5upk7")
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_und7y")
 sprite_frames = SubResource("SpriteFrames_24mv6")
-animation = &"explode"
+animation = &"new_animation"
 autoplay = "new_animation"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=901943968]

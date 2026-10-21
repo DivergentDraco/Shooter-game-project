@@ -1,8 +1,13 @@
 res://Alpha Stage/default_bus_layout.tres
-res://addons/BulletUpHell/ExampleScenes/Example2_Pattern_Properties.tscn
+res://Galactic Beast Stage/player.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
 res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/orange.gdshader
-res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd
-res://Galactic Beast Stage/player.tscn
 res://addons/BulletUpHell/BuHSpawner.gd
+res://Galactic Beast Stage/player.gd
+res://Galactic Beast Stage/Enemy/Zoomer/zoomer.tscn
+res://Galactic Beast Stage/Enemy/Rusher/rusher.tscn
+res://Galactic Beast Stage/Enemy/Rusher/rusher.gd
+res://addons/BulletUpHell/Spawning.tscn
+res://addons/BulletUpHell/customFunctions.gd
+res://Galactic Beast Stage/main.tscn

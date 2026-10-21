@@ -25,25 +25,22 @@ func bullet_collide_body(
 	B: Dictionary
 ) -> bool:
 
-	if B.get("player_hit_processed", false):
-		return false
-
 	if not body.is_in_group("enemies"):
 		return false
 
 	if not B["props"].get("groups", []).has("player_bullets"):
 		return false
 
-	B["player_hit_processed"] = true
+	if B.get("hit_processed", false):
+		return false
 
-	var damage: int = int(B["props"]["damage"])
+	B["hit_processed"] = true
 
 	if body.has_method("hit"):
-		body.hit(damage)
-	elif body.has_method("explode"):
-		body.explode()
+		body.hit(int(B["props"]["damage"]))
 
 	return true
+
 
 func bullet_collide_area(
 	area_rid: RID,

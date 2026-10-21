@@ -1,4 +1,5 @@
 SpawnPattern
+Node2D
 SpawnPoint
 BulletPattern
 Area2D
@@ -11,4 +12,3 @@ InstanceLister
 LaserBeam
 BulletNode
 Sprite2D
-Polygon2D
