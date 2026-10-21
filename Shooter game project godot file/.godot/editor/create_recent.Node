@@ -1,9 +1,9 @@
+SpawnPattern
+SpawnPoint
 BulletPattern
 Area2D
 CollisionShape2D
 AudioStreamPlayer
-SpawnPattern
-SpawnPoint
 CharacterBody2D
 Marker2D
 Timer

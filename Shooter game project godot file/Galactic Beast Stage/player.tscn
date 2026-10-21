@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="8_bg5js"]
 [ext_resource type="Script" uid="uid://bnjpl1xed5t3d" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="9_s3v4y"]
 [ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="10_lebh2"]
+[ext_resource type="Script" uid="uid://de2qipi4dxv0s" path="res://addons/BulletUpHell/SpawnPatterns/PatternCustomPoints.gd" id="10_wl7ht"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fsoc7"]
 atlas = ExtResource("4_1casx")
@@ -64,75 +65,11 @@ script = ExtResource("7_ynbhj")
 speed = 1200.0
 groups = PackedStringArray("player_bullets")
 custom_data = {}
-death_after_time = 1.0
 no_rotation = true
 anim_idle = SubResource("Resource_irq8t")
 anim_delete = SubResource("Resource_x4mgr")
 a_speed_multiplier = SubResource("Curve_o40rg")
 scale_multiplier = SubResource("Curve_q7cad")
-homing_type = 0
-homing_target = NodePath("")
-homing_steer = 0.0
-homing_time_start = 0.0
-homing_duration = 999.0
-homing_detection_dist = 0.0
-homing_start_signal = ""
-homing_range = Vector2(9999, 20)
-homing_imprecision = Vector2(0, 0)
-r_randomisation_chances = 1.0
-r_speed_choice = PackedFloat32Array()
-r_speed_variation = Vector3(0, 0, 0)
-r_scale_choice = PackedFloat32Array()
-r_scale_variation = Vector3(0, 0, 0)
-r_angle_choice = PackedFloat32Array()
-r_angle_variation = Vector3(0, 0, 0)
-r_group_choice = []
-r_bounce_choice = PackedInt32Array()
-r_bounce_variation = Vector3(0, 0, 0)
-r_no_coll_chances = 0.0
-r_modulate_variation = Vector3(0, 0, 0)
-r_trail_length_variation = Vector3(0, 0, 0)
-r_trail_color_variation = Vector3(0, 0, 0)
-r_rotating_variation = Vector3(0, 0, 0)
-r_death_after_choice = PackedFloat32Array()
-r_death_after_variation = Vector3(0, 0, 0)
-r_death_outside_chances = 0.0
-r_dir_equation_choice = PackedStringArray()
-r_curve_choice = []
-r_speed_multi_curve_choice = []
-r_speed_multi_iter_variation = Vector3(0, 0, 0)
-r_speed_multi_scale_variation = Vector3(0, 0, 0)
-r_trigger_choice = PackedStringArray()
-r_wait_for_shot_chances = 0.0
-r_homing_target_choice = []
-r_special_target_choice = PackedStringArray()
-r_group_target_choice = PackedStringArray()
-r_pos_target_choice = PackedVector2Array()
-r_steer_choice = PackedFloat32Array()
-r_steer_variation = Vector3(0, 0, 0)
-r_homing_delay_choice = PackedFloat32Array()
-r_homing_delay_variation = Vector3(0, 0, 0)
-r_homing_dur_choice = PackedFloat32Array()
-r_homing_dur_variation = Vector3(0, 0, 0)
-r_scale_multi_curve_choice = []
-r_scale_multi_iter_variation = Vector3(0, 0, 0)
-r_scale_multi_scale_variation = Vector3(0, 0, 0)
-
-[sub_resource type="Curve2D" id="Curve2D_x4mgr"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -37, 8, 0, 0, 0, 0, -36, -30, 0, 0, 0, 0, -35, -66, 0, 0, 0, 0, -35, -112, 0, 0, 0, 0, -34, -160, 0, 0, 0, 0, -37, -222)
-}
-point_count = 6
-
-[sub_resource type="Curve" id="Curve_wl7ht"]
-
-[sub_resource type="Curve" id="Curve_i6ryb"]
-
-[sub_resource type="Resource" id="Resource_ynbhj"]
-script = ExtResource("7_ynbhj")
-custom_data = {}
-a_speed_multiplier = SubResource("Curve_wl7ht")
-scale_multiplier = SubResource("Curve_i6ryb")
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -187,11 +124,25 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 resource_name = "PatternOne"
 script = ExtResource("9_s3v4y")
 bullet = "playerfront"
+nbr = 10
+cooldown_spawn = 0.0
+cooldown_next_spawn = 0.06
 forced_angle = -1.5707963267948966
 target_pattern = "alpha"
-target_delay = 41.66
+target_delay = 1.2
 skip_amount = 0
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
+
+[sub_resource type="Curve2D" id="Curve2D_i6ryb"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 38, -111, 0, 0, 0, 0, 35.53192, -142.26443, 0, 0, 0, 0, 36, -173, 0, 0, 0, 0, 33.154144, -201.19379, 0, 0, 0, 0, 33, -228, 0, 0, 0, 0, 35, -265, 0, 0, 0, 0, 36, -300, 0, 0, 0, 0, 33.22763, -332.61288, 0, 0, 0, 0, 35, -362, 0, 0, 0, 0, 33.22763, -390.59973)
+}
+point_count = 10
+
+[sub_resource type="Resource" id="Resource_wy4ev"]
+resource_name = "PatternCustomPoints"
+script = ExtResource("10_wl7ht")
+metadata/_custom_type_script = "uid://de2qipi4dxv0s"
 
 [node name="Player" type="CharacterBody2D" unique_id=392784107 groups=["players"]]
 z_index = 1
@@ -237,20 +188,19 @@ id = "playerfront"
 props = SubResource("Resource_ostj6")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
-[node name="BulletPattern2" type="Path2D" parent="." unique_id=1521267299]
-position = Vector2(8, -8)
-curve = SubResource("Curve2D_x4mgr")
-script = ExtResource("5_x4mgr")
-id = "alpha"
-props = SubResource("Resource_ynbhj")
-metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
-
 [node name="SpawnPattern" type="Path2D" parent="." unique_id=575831145]
 position = Vector2(8, -8)
 curve = SubResource("Curve2D_caake")
 script = ExtResource("8_bg5js")
 id = "playerfront"
 pattern = SubResource("Resource_0iwtj")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="SpawnPattern2" type="Path2D" parent="." unique_id=6713539]
+curve = SubResource("Curve2D_i6ryb")
+script = ExtResource("8_bg5js")
+id = "alpha"
+pattern = SubResource("Resource_wy4ev")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
 
 [node name="SpawnPoint1" type="Node2D" parent="." unique_id=563147925]

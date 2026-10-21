@@ -5,3 +5,4 @@ res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/orange.gdshader
 res://addons/BulletUpHell/ExampleScenes/ExampleScene.gd
 res://Galactic Beast Stage/player.tscn
+res://addons/BulletUpHell/BuHSpawner.gd
