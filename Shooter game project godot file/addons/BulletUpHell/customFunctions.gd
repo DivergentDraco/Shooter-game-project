@@ -15,30 +15,73 @@ func laser_collide(col_pos:Vector2, collider:Node, normal:Vector2, full_length:f
 	
 	return true
 
-func bullet_collide_body(body_rid:RID,body:Node,body_shape_index:int,local_shape_index:int,shared_area:Area2D, B:Dictionary) -> bool:
-	## you can use B["props"]["damage"] to get the bullet's damage
-	## you can use B["RID"] to get the bullet's RID
-	## you can use B["props"]["<your custom data name>"] to get the bullet's custom data
-	
-	
-	
-	## add a return false condition to prevent the bullet from colliding in certain cases
+
+func bullet_collide_body(
+	body_rid: RID,
+	body: Node,
+	body_shape_index: int,
+	local_shape_index: int,
+	shared_area: Area2D,
+	B: Dictionary
+) -> bool:
+
+	if B.get("player_hit_processed", false):
+		return false
+
+	if not body.is_in_group("enemies"):
+		return false
+
+	if not B["props"].get("groups", []).has("player_bullets"):
+		return false
+
+	B["player_hit_processed"] = true
+
+	var damage: int = int(B["props"]["damage"])
+
+	if body.has_method("hit"):
+		body.hit(damage)
+	elif body.has_method("explode"):
+		body.explode()
+
 	return true
 
+func bullet_collide_area(
+	area_rid: RID,
+	area: Area2D,
+	area_shape_index: int,
+	local_shape_index: int,
+	shared_area: Area2D
+) -> bool:
 
-func bullet_collide_area(area_rid:RID,area:Area2D,area_shape_index:int,local_shape_index:int,shared_area:Area2D) -> bool:
-	############## uncomment if you want to use the standard behavior below ##############
-	## you can use B["props"]["damage"] to get the bullet's damage
-	## you can use B["RID"] to get the bullet's RID
-	## you can use B["props"]["<your custom data name>"] to get the bullet's custom data
-	#var B:Dictionary = shared_area.get_meta("Bullets")[local_shape_index] if shared_area.get_parent() == $SharedAreas
-	#				else poolBullets[shared_area]
-	
-	############## emit signal
-#	Spawning.bullet_collided_area.emit(area,area_shape_index,B,local_shape_index,shared_area)
-	
-	############## uncomment to manage trigger collisions with area collisions
-#	if B["trig_types"].has("TrigCol"):
-#		B["trig_collider"] = area
-#		B["trig_container"].checkTriggers(B)
+	var bullets: Dictionary = shared_area.get_meta("Bullets", {})
+
+	if not bullets.has(local_shape_index):
+		return false
+
+	var B: Dictionary = bullets[local_shape_index]
+
+	return damage_enemy(area, B)
+
+
+func damage_enemy(target: Node, B: Dictionary) -> bool:
+	if not is_instance_valid(target):
+		return false
+
+	if not target.is_in_group("enemies"):
+		return false
+
+	var props: Dictionary = B["props"]
+
+	if not props.get("groups", []).has("player_bullets"):
+		return false
+
+	var damage: int = int(props.get("damage", 1))
+
+	if target.has_method("hit"):
+		target.hit(damage)
+	elif target.has_method("explode"):
+		target.explode()
+	else:
+		return false
+
 	return true

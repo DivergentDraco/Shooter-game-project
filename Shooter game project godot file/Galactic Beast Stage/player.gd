@@ -4,7 +4,7 @@ extends CharacterBody2D
 signal shield_changed()
 signal died()
 #set variables
-@export var speed = 160
+@export var player_speed = 160
 @export var cooldown = 0.06
 @export var max_shield = 1
 const BULLET_SCENE = preload("res://Galactic Beast Stage/bullet.tscn")
@@ -28,15 +28,12 @@ var bullet_mode = 0
 var laser_side: int = 1
 
 func _ready() -> void:
-	setup_player_bullet()
-	
 	array.resize(10)
 	start()
 
 func start():
 	show()
 	set_process(true)
-	$Node2D1/GunCooldown.wait_time = cooldown
 	
 func _physics_process(_delta):
 	# Move key
@@ -54,14 +51,14 @@ func _physics_process(_delta):
 
 	# Shift key
 	if Input.is_action_pressed("SHIFT"):
-		speed = 75
+		player_speed = 75
 		shiftind.visible = true
 	else:
-		speed = 300
+		player_speed = 300
 		shiftind.visible = false
 
 	# Calculate speed and movement
-	velocity = input * speed
+	velocity = input * player_speed
 	move_and_slide()
 
 	#Store positions into arrays
@@ -89,65 +86,66 @@ func _on_gun_cooldown_timeout() -> void:
 	if Input.is_action_pressed("Z"):
 		shoot()
 
-@onready var bullet_points = [
-	$BulletPoint1,
-	$BulletPoint2
-]
+@onready var spawn_points = {
+	"spawnpoint_1": $SpawnPoint1,
+	"spawnpoint_2": %SpawnPoint2
+}
 
-@export var min_bullet_speed: float = 300.0
-@export var max_bullet_speed: float = 1000.0
-@export var speed_increase: float = 50.0
-
-var shot_count: int = 0
-var bullet_ids: Array[String] = []
-
-
-func setup_player_bullet() -> void:
-	bullet_ids.clear()
-
-	var speed: float = min_bullet_speed
-
-	while speed <= max_bullet_speed:
-		var bullet_id = "player_bullet_" + str(bullet_ids.size())
-		bullet_ids.append(bullet_id)
-
-		var props = Spawning.generate_new_bulletprops()
-		props.speed = speed
-		props.scale = 1.0
-		props.damage = 1.0
-
-		Spawning.new_bullet(
-			bullet_id,
-			Spawning.sanitize_bulletprops(props, bullet_id, self)
-		)
-
-		var p = PatternOne.new()
-		p.nbr = 1
-		p.bullet = bullet_id
-
-		Spawning.new_pattern(
-			bullet_id,
-			Spawning.sanitize_pattern(p, null)
-		)
-
-		speed += speed_increase
-	
 func shoot() -> void:
-	var index = mini(shot_count, bullet_ids.size() - 1)
-	var bullet_id = bullet_ids[index]
+	for point_name in spawn_points:
+		var point = spawn_points[point_name]
 
-	for point in bullet_points:
-		var spawn_data: Dictionary = {
-			"position": point.global_position,
-			"rotation": deg_to_rad(-90.0),
-			"parent": self
-		}
+		print("SpawnPoint: ", point_name)
+		print("Node: ", point)
+		print("Active: ", point.active)
 
-		Spawning.spawn(spawn_data, bullet_id, "0")
+		point.active = true
+		point.spawn()
+		
+func _on_player_bullet_hit(target: Node2D) -> void:
+	if not target.is_in_group("enemies"):
+		return
 
-	shot_count += 1
+	if target.has_method("hit"):
+		target.hit(1)
+	elif target.has_method("explode"):
+		target.explode()
 
-	$Node2D1/AudioStreamPlayer.play()
+#func setup_player_bullet() -> void:
+	#var p = PatternOne.new()
+	#p.nbr = 1
+	#p.bullet = "player_bullet"
+#
+	#Spawning.new_pattern(
+		#"player_bullet",
+		#Spawning.sanitize_pattern(p, null)
+	#)
+#
+	#var props = Spawning.generate_new_bulletprops()
+#
+	#props.speed = 1000.0
+	#props.scale = 1.0
+	#props.damage = 1.0
+	#props.spec_no_collision = false
+#
+	#Spawning.new_bullet(
+		#"player_bullet",
+		#Spawning.sanitize_bulletprops(props, "player_bullet", self)
+	#)
+	#
+#func shoot() -> void:
+	#for point in bullet_points:
+		#var spawn_data: Dictionary = {
+			#"position": point.global_position,
+			#"rotation": deg_to_rad(-90.0),
+			#"parent": self
+		#}
+#
+		#Spawning.spawn(spawn_data, "player_bullet", "0")
+#
+	#$Node2D1/AudioStreamPlayer.play()
+	
+	
 	
 #func shoot() -> void:
 	#can_shoot = false

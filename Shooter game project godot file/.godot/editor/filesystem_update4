@@ -3,3 +3,9 @@ res://Galactic Beast Stage/player.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
 res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/orange.gdshader
+res://Galactic Beast Stage/player.gd
+res://addons/BulletUpHell/Spawning.tscn
+res://addons/BulletUpHell/customFunctions.gd
+res://Galactic Beast Stage/Enemy/Fairy Enemy/fairy_enemy.tscn
+res://Alpha Stage/hitflash effect/shadermaterial.tres
+res://addons/BulletUpHell/BuHSpawner.gd
