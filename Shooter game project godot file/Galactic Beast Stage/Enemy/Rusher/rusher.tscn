@@ -243,10 +243,10 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_sfkyh")
 
-[node name="SpawnPoint4" type="Node2D" parent="." unique_id=1476000449]
+[node name="ExplosionPoint" type="Node2D" parent="." unique_id=1476000449]
 script = ExtResource("7_a5vth")
 active = false
-auto_pattern_id = "explosion1"
+auto_pattern_id = "explosionpatternline"
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""

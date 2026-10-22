@@ -37,6 +37,7 @@ signal died
 @onready var hit_flash_anim_player = $HitFlashAnimationPlayer
 @onready var spawn_points = {
 	"spawnpoint_1" : %SpawnPoint,
+	"explosion_point" : $ExplosionPoint,
 }
 
 @export var hp = 20
@@ -227,6 +228,7 @@ func hit(damage: int = 1) -> void:
 
 	# Prevent repeated deaths
 	is_dying = true
+	explode()
 
 	set_collision_layer_value(2, false)
 	set_physics_process(false)
@@ -256,6 +258,13 @@ func hit(damage: int = 1) -> void:
 
 var has_entered_screen := false
 
+func explode() -> void:
+	var point = spawn_points["explosion_point"]
+
+	if not is_instance_valid(point):
+		return
+
+	point.spawn()
 
 func _on_visible_on_screen_notifier_2d_screen_entered():
 	has_entered_screen = true

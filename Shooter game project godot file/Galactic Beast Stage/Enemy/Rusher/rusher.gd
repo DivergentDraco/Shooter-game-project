@@ -9,7 +9,7 @@ signal died
 	"spawnpoint_1" : $SpawnPoint,
 	"spawnpoint_2" : $SpawnPoint2,
 	"spawnpoint_3" : $SpawnPoint3,
-	"spawnpoint_4" : $SpawnPoint4,
+	"explosion_point" : $ExplosionPoint,
 }
 
 var hp = 5
@@ -69,7 +69,7 @@ func hit(damage: int = 1) -> void:
 
 	# Prevent repeated deaths
 	is_dying = true
-	explode_line()
+	explode()
 
 	set_collision_layer_value(2, false)
 	set_physics_process(false)
@@ -99,15 +99,11 @@ func hit(damage: int = 1) -> void:
 
 var has_entered_screen := false
 
-func explode_line() -> void:
-	var point = spawn_points["spawnpoint_4"]
+func explode() -> void:
+	var point = spawn_points["explosion_point"]
 
 	if not is_instance_valid(point):
 		return
-
-	print("Explosion point: ", point.name)
-	print("Pattern ID: ", point.auto_pattern_id)
-	print("Active: ", point.active)
 
 	point.spawn()
 
