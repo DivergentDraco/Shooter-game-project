@@ -17,7 +17,7 @@ var stage_started := false
 
 var wave_order = [
 	#"wave_4",
-	#"wave_15",
+	"wave_15",
 	#"wave_12",
 	
 	"wave_1",

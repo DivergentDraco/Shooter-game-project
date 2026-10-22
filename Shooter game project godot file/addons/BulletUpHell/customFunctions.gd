@@ -25,19 +25,17 @@ func bullet_collide_body(
 	B: Dictionary
 ) -> bool:
 
+	# Allow screen boundaries to trigger bouncing
 	if not body.is_in_group("enemies"):
-		return false
+		return true
 
+	# Only player bullets damage enemies
 	if not B["props"].get("groups", []).has("player_bullets"):
-		return false
+		return true
 
-	if B.get("hit_processed", false):
-		return false
-
-	B["hit_processed"] = true
-
+	# Damage enemy
 	if body.has_method("hit"):
-		body.hit(int(B["props"]["damage"]))
+		body.hit(int(B["props"].get("damage", 1)))
 
 	return true
 

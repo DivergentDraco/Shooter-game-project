@@ -46,6 +46,7 @@ signal died
 @onready var hit_flash_anim_player = $HitFlashAnimationPlayer
 @onready var spawn_points = {
 	"spawnpoint_1" : %SpawnPoint,
+	"explosion_point" : $ExplosionPoint,
 }
 
 signal hp_changed(current_hp: int, max_hp: int)
@@ -268,13 +269,18 @@ func die() -> void:
 
 	died.emit(5)
 
+	spawn_random_explosion()
 
+	# Wait for explosion sequence to finish
+	await explode()
 
-	# Repeated small explosions
-	for i in range(explosion_count):
-		spawn_random_explosion()
-		await get_tree().create_timer(explosion_interval).timeout
+	
 
+	## Repeated small explosions
+	#for i in range(explosion_count):
+		#spawn_random_explosion()
+		#await get_tree().create_timer(explosion_interval).timeout
+#
 	# Final large explosion
 	sprite.visible = false
 	$GPUParticles2D.queue_free()
@@ -294,8 +300,6 @@ func die() -> void:
 	get_tree().create_timer(debris.lifetime + 0.5).timeout.connect(
 		debris.queue_free
 	)
-
-	# Remove boss, but keep debris and explosions
 	queue_free()
 	
 func spawn_random_explosion() -> void:
@@ -314,6 +318,15 @@ func spawn_random_explosion() -> void:
 	
 var has_entered_screen := false
 
+func explode() -> void:
+	var point = spawn_points["explosion_point"]
+
+	if not is_instance_valid(point):
+		return
+
+	point.spawn()
+	await get_tree().create_timer(2.0).timeout
+	
 func stop_all_spawnpoints() -> void:
 	for point in spawn_points.values():
 		point.active = false
@@ -321,8 +334,7 @@ func stop_all_spawnpoints() -> void:
 
 		if point.process_id > 0:
 			Spawning.process_kill(point.process_id)
-
-
+	
 
 @onready var afterimage_timer: Timer = $AfterimageTimer
 
