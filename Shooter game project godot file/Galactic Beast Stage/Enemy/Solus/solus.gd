@@ -15,8 +15,8 @@ var original_position: Vector2
 var next_state: BossState
 
 @export var state: BossState = BossState.ENTER
-@export var move_speed = 100
-@export var min_speed = 0
+@export var move_speed: float = 100.0
+@export var min_speed: float = 0.0
 var attack_center: Vector2
 var state_time := 0.0
 
@@ -46,25 +46,28 @@ signal died
 @onready var hit_flash_anim_player = $HitFlashAnimationPlayer
 @onready var spawn_points = {
 	"spawnpoint_1" : %SpawnPoint,
+	"spawnpoint_2" : %SpawnPoint2,
 	"explosion_point" : $ExplosionPoint,
 }
 
 signal hp_changed(current_hp: int, max_hp: int)
 
-@export var max_hp: int = 300
-var hp: int = 300
+@export var phase_1_hp: int = 200
+@export var phase_2_hp: int = 150
+@export var phase_3_hp: int = 250
+
+var hp: int = 200
+var max_hp: int = 200
 
 func _ready() -> void:
 	afterimage_timer.timeout.connect(create_afterimage)
 	warning.start()
-	
-	#normal_scale = scale
-	#normal_modulate = modulate
-#
-	#scale = normal_scale * 0.5
-	#modulate = Color(0.107, 0.107, 0.107, 1.0)
-#
-	set_collision_layer_value(2, false)
+
+	set_collision_layer_value(4, false)
+
+	for point in spawn_points.values():
+		if is_instance_valid(point):
+			point.active = false
 
 func _physics_process(delta: float) -> void:
 	move_speed = clamp(move_speed, min_speed, 1000)
@@ -88,40 +91,46 @@ func _physics_process(delta: float) -> void:
 
 		BossState.DEAD:
 			velocity = Vector2.ZERO
+			die()
 			
 		BossState.RETURN:
 			return_state(delta)
 
 	move_and_slide()
+	
+func refill_hp(amount: int) -> void:
+	max_hp = amount
+	hp = max_hp
+	hp_changed.emit(hp, max_hp)
 
 func change_state(new_state: BossState) -> void:
 	print("Changing state: ", state, " -> ", new_state)
 	
 	state = new_state
 	state_time = 0.0
-	
-	for point in spawn_points.values():
-		point.active = false
 		
 	match state:
 		BossState.ATTACK_1:
+			refill_hp(phase_1_hp)
 			for point_name in ["spawnpoint_1"]:
 				var point = spawn_points[point_name]
 				point.active = true
 				point.spawn()
 
 		BossState.ATTACK_2:
-			var point = spawn_points["spawnpoint_1"]
+			refill_hp(phase_2_hp)
+			var point = spawn_points["spawnpoint_2"]
 			point.active = true
 			point.spawn()
 
 		BossState.ATTACK_3:
+			refill_hp(phase_3_hp)
 			var point = spawn_points["spawnpoint_1"]
-			point.active = true
+			#point.active = true
 			point.spawn()
 
 func intro_state(_delta: float) -> void:
-	set_collision_layer_value(2, false)
+	set_collision_layer_value(4, false)
 	
 	velocity = Vector2(0.0, -intro_speed)
 
@@ -135,7 +144,7 @@ func intro_state(_delta: float) -> void:
 		change_state(BossState.ENTER)
 			
 func enter_state(_delta: float) -> void:
-	set_collision_layer_value(2, false)
+	set_collision_layer_value(4, false)
 
 	var target_y := 60.0
 	var distance: float = target_y - global_position.y
@@ -156,48 +165,74 @@ func enter_state(_delta: float) -> void:
 		velocity = Vector2.ZERO
 
 		original_position = global_position
+		center_point = original_position
 
-		change_state(BossState.ATTACK_1)
-		set_collision_layer_value(2, true)
+		change_state(BossState.ATTACK_2)
+		set_collision_layer_value(4, true)
 
-func return_state(_delta: float) -> void:
+var is_waiting: bool = false
+
+func return_state(delta: float) -> void:
+	if is_waiting:
+		velocity = Vector2.ZERO
+		return
+
 	var distance: float = global_position.distance_to(original_position)
 
-	if distance < 2.0:
+	if distance <= 2.0:
 		global_position = original_position
 		velocity = Vector2.ZERO
+
+		is_waiting = true
+
+		if not is_inside_tree() or state != BossState.RETURN:
+			return
+
+		is_waiting = false
 		change_state(next_state)
 		return
 
-	var return_speed: float = clampf(distance * 3.0, 30.0, move_speed)
-
+	var return_speed: float = minf(move_speed, distance / delta)
 	velocity = global_position.direction_to(original_position) * return_speed
 
+
 func attack_1(_delta: float) -> void:
-	velocity.x = cos(state_time * 2.0) * 60
-	velocity.y = cos(state_time * 3) * 20.0
-	
-	if state_time >= 30.0 or hp <= 200:
+	velocity.x = cos(state_time * 2.0) * 60.0
+	velocity.y = cos(state_time * 3.0) * 20.0
+
+	if state_time >= 30.0 or hp <= 0:
+		Spawning.process_kill(1)
+		Spawning.clear_all_bullets()
 		next_state = BossState.ATTACK_2
 		change_state(BossState.RETURN)
 
+
 func attack_2(delta: float) -> void:
 	angle += speed * delta
-	
-	var offset = Vector2(cos(angle), sin(angle)) * radius
-	
-	velocity = center_point + offset
 
-	if state_time >= 5.0 or hp <= 100:
+	var offset = Vector2(
+		cos(angle) * 150,
+		sin(angle) * 20
+	)
+
+	var target_position = center_point + offset
+	velocity = (target_position - global_position) * 5.0
+
+	if state_time >= 30.0 or hp <= 0:
+		Spawning.process_kill(2)
+		Spawning.clear_all_bullets()
 		next_state = BossState.ATTACK_3
 		change_state(BossState.RETURN)
-		
+
+
 func attack_3(_delta: float) -> void:
 	velocity.x = cos(state_time * 2.0) * 150.0
 	velocity.y = 0.0
 
-	if state_time >= 6.0:
-		next_state = BossState.ATTACK_1
+	if state_time >= 30.0 or hp <= 0:
+		Spawning.process_kill(1)
+		Spawning.clear_all_bullets()
+		next_state = BossState.DEAD
 		change_state(BossState.RETURN)
 		
 func set_movement_pattern(new_pattern):
@@ -236,20 +271,16 @@ func set_spawnpoint(index: int) -> void:
 		3:
 			spawnpoint_3.active = true
 
-var is_dying := false
-
 func hit(damage: int = 1) -> void:
-	if is_dying:
+	if state == BossState.DEAD or state == BossState.RETURN:
 		return
 
-	hp -= damage
+	hp = max(0, hp - damage)
 	hp_changed.emit(hp, max_hp)
 
 	if hp > 0:
 		hit_flash_anim_player.play("hit_flash")
-	else:
-		is_dying = true
-		die()
+		return
 		
 const EXPLOSION_SCENE = preload("res://Galactic Beast Stage/Explosion/explosion.tscn")
 
@@ -258,13 +289,13 @@ const EXPLOSION_SCENE = preload("res://Galactic Beast Stage/Explosion/explosion.
 @export var explosion_area: Vector2 = Vector2(200, 120)
 
 func die() -> void:
-	if state == BossState.DEAD:
-		return
+	#if state == BossState.DEAD:
+		#return
 
 	change_state(BossState.DEAD)
 	stop_all_spawnpoints()
 
-	set_collision_layer_value(2, false)
+	set_collision_layer_value(4, false)
 	Spawning.clear_all_bullets()
 
 	died.emit(5)
@@ -328,13 +359,16 @@ func explode() -> void:
 	await get_tree().create_timer(2.0).timeout
 	
 func stop_all_spawnpoints() -> void:
-	for point in spawn_points.values():
-		point.active = false
-		point.set_physics_process(false)
+	for point_name in spawn_points:
+		if point_name == "explosion_point":
+			continue
 
-		if point.process_id > 0:
-			Spawning.process_kill(point.process_id)
-	
+		var point = spawn_points[point_name]
+
+		if not is_instance_valid(point):
+			continue
+		point.active = false
+
 
 @onready var afterimage_timer: Timer = $AfterimageTimer
 

@@ -129,7 +129,8 @@ skip_amount = 0
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
 
 [node name="Player" type="CharacterBody2D" unique_id=392784107 groups=["players"]]
-z_index = 1
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_1casx")
 
 [node name="Node2D1" type="Node2D" parent="." unique_id=251011976]

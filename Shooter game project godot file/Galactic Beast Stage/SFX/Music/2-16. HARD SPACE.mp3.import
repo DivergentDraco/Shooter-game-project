@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dnc55bkp45apk"
+path="res://.godot/imported/2-16. HARD SPACE.mp3-57c1df41cfd4bbfacd34c5bcbe67aeee.mp3str"
+
+[deps]
+
+source_file="res://Galactic Beast Stage/SFX/Music/2-16. HARD SPACE.mp3"
+dest_files=["res://.godot/imported/2-16. HARD SPACE.mp3-57c1df41cfd4bbfacd34c5bcbe67aeee.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -197,18 +197,6 @@ scale_max = 5.83
 scale_curve = SubResource("CurveTexture_g2f12")
 color_ramp = SubResource("GradientTexture1D_ljxd0")
 
-[sub_resource type="Curve2D" id="Curve2D_78gyi"]
-
-[sub_resource type="Resource" id="Resource_2geha"]
-resource_name = "PatternCircle"
-script = ExtResource("10_ljxd0")
-angle_total = 2.443460952792061
-angle_decal = 0.25645868028804675
-bullet = "solusbounce"
-nbr = 5
-cooldown_next_spawn = 0.1
-metadata/_custom_type_script = "uid://dg81fho0rhp37"
-
 [sub_resource type="Curve2D" id="Curve2D_awhbd"]
 
 [sub_resource type="Curve" id="Curve_ljxd0"]
@@ -219,6 +207,8 @@ ID = "103"
 texture = "103"
 collision = "2"
 metadata/_custom_type_script = "uid://ch2ah4ngy7del"
+
+[sub_resource type="Curve" id="Curve_g2f12"]
 
 [sub_resource type="Resource" id="Resource_h3w14"]
 script = ExtResource("13_fqslw")
@@ -233,6 +223,7 @@ spec_trail_smooth = 0.019
 a_speed_multiplier = SubResource("Curve_ljxd0")
 spec_bounces = 5
 spec_only_spin_sprite = false
+scale_multiplier = SubResource("Curve_g2f12")
 homing_type = 0
 homing_target = NodePath("")
 homing_steer = 0.0
@@ -281,8 +272,196 @@ r_scale_multi_curve_choice = []
 r_scale_multi_iter_variation = Vector3(0, 0, 0)
 r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
+[sub_resource type="Curve2D" id="Curve2D_78gyi"]
+
+[sub_resource type="Resource" id="Resource_2geha"]
+resource_name = "PatternCircle"
+script = ExtResource("10_ljxd0")
+angle_total = 2.443460952792061
+angle_decal = 0.25645868028804675
+bullet = "solusbounce"
+nbr = 5
+cooldown_next_spawn = 0.1
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_hx1a2"]
+
+[sub_resource type="Curve" id="Curve_1mn85"]
+_limits = [-400.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1e-05, 0), 0.0, 0.0, 0, 0, Vector2(0.18534483, 0), 0.0, 0.0, 0, 0, Vector2(1, -400), -1248.188, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Resource" id="Resource_0iwtj"]
+script = ExtResource("12_1mn85")
+ID = "solus1"
+texture = "101"
+collision = "2"
+SFX = "2"
+metadata/_custom_type_script = "uid://ch2ah4ngy7del"
+
+[sub_resource type="Curve" id="Curve_fqslw"]
+
+[sub_resource type="Resource" id="Resource_78gyi"]
+script = ExtResource("13_fqslw")
+speed = -300.0
+custom_data = {}
+death_after_time = 2.0
+anim_idle = SubResource("Resource_0iwtj")
+a_speed_multi_iterations = 1
+a_speed_multi_scale = 1.0
+a_speed_multiplier = SubResource("Curve_1mn85")
+scale_multiplier = SubResource("Curve_fqslw")
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_2geha"]
+
+[sub_resource type="Resource" id="Resource_irq8t"]
+resource_name = "PatternCircle"
+script = ExtResource("10_ljxd0")
+radius = 30.0
+bullet = "solushighspeed"
+nbr = 30
+iterations = 12
+cooldown_spawn = 0.16
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_ljxd0"]
+
+[sub_resource type="Curve" id="Curve_78gyi"]
+_limits = [0.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 200), 0.0, 0.0, 0, 0, Vector2(0.116379306, 200), 0.0, 0.0, 0, 0, Vector2(0.51293105, 98.94738), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Resource" id="Resource_hx1a2"]
+script = ExtResource("12_1mn85")
+ID = "solus1"
+texture = "101"
+collision = "2"
+SFX = "2"
+metadata/_custom_type_script = "uid://ch2ah4ngy7del"
+
+[sub_resource type="Curve" id="Curve_2geha"]
+
+[sub_resource type="Resource" id="Resource_83chg"]
+script = ExtResource("13_fqslw")
+speed = 200.0
+custom_data = {}
+death_after_time = 5.0
+anim_idle = SubResource("Resource_hx1a2")
+a_speed_multi_iterations = 1
+a_speed_multi_scale = 1.0
+a_speed_multiplier = SubResource("Curve_78gyi")
+scale_multiplier = SubResource("Curve_2geha")
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://cr0vqp1rajcpp"
+
+[sub_resource type="Curve2D" id="Curve2D_0ndnb"]
+
+[sub_resource type="Resource" id="Resource_22ber"]
+resource_name = "PatternCircle"
+script = ExtResource("10_ljxd0")
+bullet = "soluspellets"
+nbr = 30
+iterations = 50
+cooldown_spawn = 0.3
+cooldown_shoot = 0.1
+cooldown_next_spawn = 0.02
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
 [node name="Solus" type="CharacterBody2D" unique_id=1618497452 groups=["enemies"]]
-collision_layer = 2
+collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_lq0kv")
 
@@ -343,14 +522,10 @@ process_material = SubResource("ParticleProcessMaterial_0iwtj")
 wait_time = 0.2
 autostart = true
 
-[node name="SpawnPoint" type="Node2D" parent="." unique_id=139625187]
-unique_name_in_owner = true
+[node name="ExplosionPoint" type="Node2D" parent="." unique_id=1509182939]
 script = ExtResource("7_ljxd0")
 active = false
-auto_pattern_id = "solusbounce"
-shared_area_name = "2"
-pool_amount = 300
-auto_start_after_time = 0.5
+auto_pattern_id = "explosionarea2"
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""
@@ -362,24 +537,75 @@ metadata/_custom_type_script = "uid://btd0n20blj8nd"
 
 [node name="Node" type="Node" parent="." unique_id=1212351411]
 
-[node name="SpawnPattern" type="Path2D" parent="Node" unique_id=2073046288]
-curve = SubResource("Curve2D_78gyi")
-script = ExtResource("9_hx1a2")
-id = "solusbounce"
-pattern = SubResource("Resource_2geha")
-metadata/_custom_type_script = "uid://bbhosph2wnb4s"
-
-[node name="BulletPattern" type="Path2D" parent="Node" unique_id=2002715380]
+[node name="BulletPatternSolusBounce" type="Path2D" parent="Node" unique_id=2002715380]
 curve = SubResource("Curve2D_awhbd")
 script = ExtResource("11_g2f12")
 id = "solusbounce"
 props = SubResource("Resource_h3w14")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
-[node name="ExplosionPoint" type="Node2D" parent="." unique_id=1509182939]
+[node name="SpawnPatternSolusBounce" type="Path2D" parent="Node" unique_id=2073046288]
+curve = SubResource("Curve2D_78gyi")
+script = ExtResource("9_hx1a2")
+id = "solusbounce"
+pattern = SubResource("Resource_2geha")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="BulletPattern" type="Path2D" parent="Node" unique_id=395609846]
+curve = SubResource("Curve2D_hx1a2")
+script = ExtResource("11_g2f12")
+id = "solushighspeed"
+props = SubResource("Resource_78gyi")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="SpawnPattern" type="Path2D" parent="Node" unique_id=1943178105]
+curve = SubResource("Curve2D_2geha")
+script = ExtResource("9_hx1a2")
+id = "soluscircle"
+pattern = SubResource("Resource_irq8t")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="BulletPattern2" type="Path2D" parent="Node" unique_id=1586148278]
+curve = SubResource("Curve2D_ljxd0")
+script = ExtResource("11_g2f12")
+id = "soluspellets"
+props = SubResource("Resource_83chg")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="SpawnPattern2" type="Path2D" parent="Node" unique_id=360357190]
+curve = SubResource("Curve2D_0ndnb")
+script = ExtResource("9_hx1a2")
+id = "solus2"
+pattern = SubResource("Resource_22ber")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="SpawnPoint" type="Node2D" parent="." unique_id=139625187]
+unique_name_in_owner = true
 script = ExtResource("7_ljxd0")
 active = false
-auto_pattern_id = "explosionarea2"
+auto_pattern_id = "solusbounce"
+shared_area_name = "2"
+process_id = 1
+pool_amount = 2000
+patterns_multi = PackedStringArray("solusbounce", "311", "soluscircle")
+patterns_loops = 5
+auto_start_after_time = 0.5
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://btd0n20blj8nd"
+
+[node name="SpawnPoint2" type="Node2D" parent="." unique_id=1986319239]
+unique_name_in_owner = true
+script = ExtResource("7_ljxd0")
+auto_pattern_id = "solus2"
+process_id = 2
+rotating_speed = 50.0
+pool_amount = 700
 r_active_chances = 1.0
 r_rotating_variation = Vector3(0, 0, 0)
 r_pattern_choice = ""
