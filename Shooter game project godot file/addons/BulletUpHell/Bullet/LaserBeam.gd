@@ -118,7 +118,8 @@ func init():
 		spawn_parent = get_node(spawn_target)
 	elif spawn_parent == null: spawn_parent = self
 	init_shapes()
-	laser_built.connect(set_can_update)
+	if not laser_built.is_connected(set_can_update):
+		laser_built.connect(set_can_update)
 	reset_cast()
 	was_enabled = true
 

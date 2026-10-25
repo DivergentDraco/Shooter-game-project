@@ -1,0 +1,563 @@
+[gd_scene format=3 uid="uid://g13iq7yev00l"]
+
+[ext_resource type="Script" uid="uid://bb7dkxfyra611" path="res://Galactic Beast Stage/Enemy/Big Laser/big_laser.gd" id="1_airov"]
+[ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://Alpha Stage/hitflash effect/hitflash.tres" id="1_i57ar"]
+[ext_resource type="Texture2D" uid="uid://btkwtqdktgbb1" path="res://Alpha Stage/Sprites and Animations/explode.png" id="2_airov"]
+[ext_resource type="Texture2D" uid="uid://bfqncvyerli3j" path="res://Galactic Beast Stage/Sprites and Animations/biglaser.png" id="3_20i44"]
+[ext_resource type="AudioStream" uid="uid://bw06bb0c5676k" path="res://Alpha Stage/SFX/explosion (1).wav" id="4_30bjh"]
+[ext_resource type="Script" uid="uid://cldlybau7lm6g" path="res://Alpha Stage/movement_pattern.gd" id="5_b4djd"]
+[ext_resource type="Script" uid="uid://bbhosph2wnb4s" path="res://addons/BulletUpHell/Nodes/BuHPattern.gd" id="6_sonjr"]
+[ext_resource type="Script" uid="uid://dg81fho0rhp37" path="res://addons/BulletUpHell/SpawnPatterns/PatternCircle.gd" id="7_hgdph"]
+[ext_resource type="Script" uid="uid://bnjpl1xed5t3d" path="res://addons/BulletUpHell/SpawnPatterns/PatternOne.gd" id="8_j131x"]
+[ext_resource type="Script" uid="uid://dcgggjlg7ts6s" path="res://addons/BulletUpHell/Nodes/BuHBulletProperties.gd" id="9_kj7yp"]
+[ext_resource type="Script" uid="uid://ch2ah4ngy7del" path="res://addons/BulletUpHell/Bullet/animStates.gd" id="10_u36e2"]
+[ext_resource type="Script" uid="uid://cr0vqp1rajcpp" path="res://addons/BulletUpHell/Bullet/BulletProps.gd" id="11_0lqvw"]
+[ext_resource type="Script" uid="uid://cuf26gljyyrfx" path="res://addons/BulletUpHell/Nodes/BuHInstanceLister.gd" id="12_f2v6o"]
+[ext_resource type="Script" uid="uid://78se6gf424dm" path="res://addons/BulletUpHell/Nodes/BuHBulletNode.gd" id="13_sha60"]
+[ext_resource type="Script" uid="uid://6kh2g57rj04f" path="res://addons/BulletUpHell/Bullet/LaserBeam.gd" id="14_hqf1a"]
+[ext_resource type="Texture2D" uid="uid://be7cdvuql3rli" path="res://Galactic Beast Stage/Sprites and Animations/las.png" id="15_65xqr"]
+[ext_resource type="Script" uid="uid://0kp73jebt5ha" path="res://addons/BulletUpHell/Bullet/BulletNodeProps.gd" id="16_5von5"]
+[ext_resource type="Script" uid="uid://btd0n20blj8nd" path="res://addons/BulletUpHell/Nodes/BuHSpawnPoint.gd" id="17_r44rl"]
+[ext_resource type="AudioStream" uid="uid://c3n3h2v2oah6v" path="res://Alpha Stage/SFX/sound.wav" id="18_iqgk7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cexse"]
+resource_local_to_scene = true
+shader = ExtResource("1_i57ar")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dyl67"]
+atlas = ExtResource("2_airov")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eo4f4"]
+atlas = ExtResource("2_airov")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nqumi"]
+atlas = ExtResource("2_airov")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pspt2"]
+atlas = ExtResource("2_airov")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nlscp"]
+atlas = ExtResource("2_airov")
+region = Rect2(96, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgpul"]
+atlas = ExtResource("2_airov")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u66gf"]
+atlas = ExtResource("2_airov")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3tff"]
+atlas = ExtResource("2_airov")
+region = Rect2(168, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1yox"]
+atlas = ExtResource("3_20i44")
+region = Rect2(0, 0, 262, 381)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ey3p5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dyl67")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eo4f4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nqumi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pspt2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nlscp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jgpul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u66gf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3tff")
+}],
+"loop": 0,
+"name": &"explode",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1yox")
+}],
+"loop": 1,
+"name": &"new_animation",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m48rq"]
+size = Vector2(48, 361)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bhunq"]
+radius = 70.34913
+
+[sub_resource type="Animation" id="Animation_jemjn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_iryfb"]
+resource_name = "hit_flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eumcu"]
+_data = {
+&"RESET": SubResource("Animation_jemjn"),
+&"hit_flash": SubResource("Animation_iryfb")
+}
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3vc5u"]
+lifetime_randomness = 0.26
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 0)
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+
+[sub_resource type="Curve2D" id="Curve2D_i57ar"]
+
+[sub_resource type="Resource" id="Resource_airov"]
+resource_name = "PatternCircle"
+script = ExtResource("7_hgdph")
+angle_total = 2.6179938779914944
+angle_decal = 0.29670597283903605
+center = 3
+bullet = "301"
+nbr = 6
+iterations = -1
+cooldown_spawn = 0.3
+metadata/_custom_type_script = "uid://dg81fho0rhp37"
+
+[sub_resource type="Curve2D" id="Curve2D_20i44"]
+
+[sub_resource type="Resource" id="Resource_30bjh"]
+resource_name = "PatternOne"
+script = ExtResource("8_j131x")
+bullet = "302"
+iterations = -1
+metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
+
+[sub_resource type="Curve2D" id="Curve2D_b4djd"]
+
+[sub_resource type="Curve" id="Curve_airov"]
+
+[sub_resource type="Resource" id="Resource_20i44"]
+script = ExtResource("10_u36e2")
+ID = "101"
+texture = "101"
+collision = "0"
+metadata/_custom_type_script = "uid://ch2ah4ngy7del"
+
+[sub_resource type="Curve" id="Curve_30bjh"]
+
+[sub_resource type="Resource" id="Resource_hgdph"]
+script = ExtResource("11_0lqvw")
+speed = 200.0
+scale = 1.5
+custom_data = {}
+no_rotation = true
+anim_idle = SubResource("Resource_20i44")
+a_speed_multiplier = SubResource("Curve_airov")
+scale_multiplier = SubResource("Curve_30bjh")
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.1
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_j131x"]
+
+[sub_resource type="Curve" id="Curve_b4djd"]
+_limits = [0.0, 201.44, 0.0, 1.0]
+_data = [Vector2(0, 41.1102), 0.0, 0.0, 0, 0, Vector2(0.6810345, 201.44), 314.04196, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_sonjr"]
+script = ExtResource("10_u36e2")
+ID = "102"
+texture = "102"
+collision = "1"
+metadata/_custom_type_script = "uid://ch2ah4ngy7del"
+
+[sub_resource type="Resource" id="Resource_kj7yp"]
+script = ExtResource("11_0lqvw")
+speed = 2.0
+custom_data = {}
+no_rotation = true
+anim_idle = SubResource("Resource_sonjr")
+a_speed_multi_iterations = 1
+a_speed_multi_scale = 2.0
+a_speed_multiplier = SubResource("Curve_b4djd")
+scale_multiplier = SubResource("Curve_30bjh")
+homing_type = 3
+homing_group = "players"
+homing_select_in_group = 0
+homing_steer = 0.1
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u36e2"]
+
+[sub_resource type="Curve2D" id="Curve2D_0lqvw"]
+
+[sub_resource type="Curve" id="Curve_j131x"]
+
+[sub_resource type="Resource" id="Resource_f2v6o"]
+script = ExtResource("16_5von5")
+instance_id = "laser"
+speed = 0.0
+custom_data = {}
+spec_only_spin_sprite = false
+scale_multiplier = SubResource("Curve_j131x")
+homing_type = 0
+homing_target = NodePath("")
+homing_steer = 0.0
+homing_time_start = 0.0
+homing_duration = 999.0
+homing_detection_dist = 0.0
+homing_start_signal = ""
+homing_range = Vector2(9999, 20)
+homing_imprecision = Vector2(0, 0)
+r_randomisation_chances = 1.0
+r_speed_choice = PackedFloat32Array()
+r_speed_variation = Vector3(0, 0, 0)
+r_scale_choice = PackedFloat32Array()
+r_scale_variation = Vector3(0, 0, 0)
+r_angle_choice = PackedFloat32Array()
+r_angle_variation = Vector3(0, 0, 0)
+r_group_choice = []
+r_bounce_choice = PackedInt32Array()
+r_bounce_variation = Vector3(0, 0, 0)
+r_no_coll_chances = 0.0
+r_modulate_variation = Vector3(0, 0, 0)
+r_trail_length_variation = Vector3(0, 0, 0)
+r_trail_color_variation = Vector3(0, 0, 0)
+r_rotating_variation = Vector3(0, 0, 0)
+r_death_after_choice = PackedFloat32Array()
+r_death_after_variation = Vector3(0, 0, 0)
+r_death_outside_chances = 0.0
+r_dir_equation_choice = PackedStringArray()
+r_curve_choice = []
+r_speed_multi_curve_choice = []
+r_speed_multi_iter_variation = Vector3(0, 0, 0)
+r_speed_multi_scale_variation = Vector3(0, 0, 0)
+r_trigger_choice = PackedStringArray()
+r_wait_for_shot_chances = 0.0
+r_homing_target_choice = []
+r_special_target_choice = PackedStringArray()
+r_group_target_choice = PackedStringArray()
+r_pos_target_choice = PackedVector2Array()
+r_steer_choice = PackedFloat32Array()
+r_steer_variation = Vector3(0, 0, 0)
+r_homing_delay_choice = PackedFloat32Array()
+r_homing_delay_variation = Vector3(0, 0, 0)
+r_homing_dur_choice = PackedFloat32Array()
+r_homing_dur_variation = Vector3(0, 0, 0)
+r_scale_multi_curve_choice = []
+r_scale_multi_iter_variation = Vector3(0, 0, 0)
+r_scale_multi_scale_variation = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://0kp73jebt5ha"
+
+[sub_resource type="Curve2D" id="Curve2D_sha60"]
+
+[sub_resource type="Resource" id="Resource_hqf1a"]
+resource_name = "PatternOne"
+script = ExtResource("8_j131x")
+bullet = "laser"
+forced_angle = 1.5707963267948966
+metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
+
+[node name="BigLaser" type="CharacterBody2D" unique_id=1347402671 groups=["enemies"]]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_airov")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1296540576]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_cexse")
+sprite_frames = SubResource("SpriteFrames_ey3p5")
+animation = &"new_animation"
+autoplay = "new_animation"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=459570387]
+unique_name_in_owner = true
+position = Vector2(0, -8.5)
+shape = SubResource("RectangleShape2D_m48rq")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1859696515]
+unique_name_in_owner = true
+position = Vector2(0, -68)
+shape = SubResource("CircleShape2D_bhunq")
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="." unique_id=1855448672]
+unique_name_in_owner = true
+root_node = NodePath("../AnimatedSprite2D")
+libraries/ = SubResource("AnimationLibrary_eumcu")
+
+[node name="MoveTimer" type="Timer" parent="." unique_id=948994897]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=1542141157]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="ExplodeSFX" type="AudioStreamPlayer" parent="." unique_id=99786045]
+unique_name_in_owner = true
+stream = ExtResource("4_30bjh")
+volume_db = -12.329
+max_polyphony = 10
+bus = &"SFX"
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1808179160]
+unique_name_in_owner = true
+rect = Rect2(-131, -191, 262, 382)
+
+[node name="MovementPattern" type="Node" parent="." unique_id=1185979146]
+unique_name_in_owner = true
+script = ExtResource("5_b4djd")
+
+[node name="SpawnPoint1" type="Node2D" parent="." unique_id=1183681198]
+unique_name_in_owner = true
+position = Vector2(0, -59)
+script = ExtResource("17_r44rl")
+auto_pattern_id = "6"
+pool_amount = 200
+auto_start_on_cam = false
+r_active_chances = 1.0
+r_rotating_variation = Vector3(0, 0, 0)
+r_pattern_choice = ""
+r_start_time_choice = ""
+r_start_time_variation = Vector3(0, 0, 0)
+r_start_distance_choice = ""
+r_start_distance_variation = Vector3(0, 0, 0)
+metadata/_custom_type_script = "uid://btd0n20blj8nd"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1617943566]
+stream = ExtResource("18_iqgk7")
+volume_db = 5.719
+autoplay = true
+bus = &"SFX"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=323084176]
+texture_filter = 1
+emitting = false
+amount = 80
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_3vc5u")
+
+[node name="BulletPatterns" type="Node" parent="." unique_id=264543724]
+
+[node name="SpawnPattern" type="Path2D" parent="BulletPatterns" unique_id=1661620892]
+position = Vector2(16, 40)
+curve = SubResource("Curve2D_i57ar")
+script = ExtResource("6_sonjr")
+id = "301"
+pattern = SubResource("Resource_airov")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="SpawnPattern2" type="Path2D" parent="BulletPatterns" unique_id=1066441536]
+position = Vector2(16, 40)
+curve = SubResource("Curve2D_20i44")
+script = ExtResource("6_sonjr")
+id = "302"
+pattern = SubResource("Resource_30bjh")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="BulletPattern1" type="Path2D" parent="BulletPatterns" unique_id=965821967]
+curve = SubResource("Curve2D_b4djd")
+script = ExtResource("9_kj7yp")
+id = "301"
+props = SubResource("Resource_hgdph")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="BulletPattern2" type="Path2D" parent="BulletPatterns" unique_id=1963302115]
+unique_name_in_owner = true
+position = Vector2(1.0867062, 3.0649166)
+scale = Vector2(0.98843926, 0.9870131)
+curve = SubResource("Curve2D_j131x")
+script = ExtResource("9_kj7yp")
+id = "302"
+props = SubResource("Resource_kj7yp")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="InstanceLister" type="Node" parent="BulletPatterns" unique_id=78955358]
+unique_name_in_owner = true
+script = ExtResource("12_f2v6o")
+metadata/_custom_type_script = "uid://cuf26gljyyrfx"
+
+[node name="BulletNode" type="Area2D" parent="BulletPatterns/InstanceLister" unique_id=820610914]
+unique_name_in_owner = true
+position = Vector2(0, 88)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("13_sha60")
+ID = "laser"
+metadata/_custom_type_script = "uid://78se6gf424dm"
+
+[node name="LaserBeam" type="Area2D" parent="BulletPatterns/InstanceLister/BulletNode" unique_id=1548199001]
+unique_name_in_owner = true
+script = ExtResource("14_hqf1a")
+laser_length = 2000.0
+laser_width = 100.0
+stay_duration = 1.0
+speed = 3000.0
+expand_on = 1
+delay_collide = 0.7
+collide_with = 0
+texture = ExtResource("15_65xqr")
+texture_mode = 1
+metadata/_custom_type_script = "uid://6kh2g57rj04f"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BulletPatterns/InstanceLister/BulletNode" unique_id=824899144]
+shape = SubResource("CircleShape2D_u36e2")
+
+[node name="BulletPattern" type="Path2D" parent="BulletPatterns" unique_id=1324906233]
+unique_name_in_owner = true
+position = Vector2(0, 88)
+curve = SubResource("Curve2D_0lqvw")
+script = ExtResource("9_kj7yp")
+id = "laser"
+props = SubResource("Resource_f2v6o")
+metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
+
+[node name="SpawnPattern3" type="Path2D" parent="BulletPatterns" unique_id=687226390]
+unique_name_in_owner = true
+position = Vector2(0, 88)
+curve = SubResource("Curve2D_sha60")
+script = ExtResource("6_sonjr")
+id = "laser"
+pattern = SubResource("Resource_hqf1a")
+metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

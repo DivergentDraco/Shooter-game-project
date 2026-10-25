@@ -30,7 +30,6 @@
 [ext_resource type="Shader" uid="uid://bygrohdgh7s1c" path="res://Alpha Stage/hitflash effect/hitflash.tres" id="24_dfrm0"]
 [ext_resource type="PackedScene" uid="uid://dhxltfpmxiqep" path="res://Alpha Stage/bullet_pattern1.tscn" id="25_n20e7"]
 [ext_resource type="Script" uid="uid://dlo1uko5up6lv" path="res://Alpha Stage/Enemy/Fairy Enemy/fairy_enemy.gd" id="26_fwd3s"]
-[ext_resource type="AudioStream" uid="uid://7scpmwuoomcs" path="res://Galactic Beast Stage/SFX/Music/04. It May Be Greenish.mp3" id="27_6je4j"]
 [ext_resource type="Texture2D" uid="uid://dn1edfs6n7tjr" path="res://Outsourced asset/Mini Pixel Pack 3/Effects/Explosion (16 x 16).png" id="27_goxsn"]
 [ext_resource type="AudioStream" uid="uid://dnc55bkp45apk" path="res://Galactic Beast Stage/SFX/Music/2-16. HARD SPACE.mp3" id="28_6je4j"]
 [ext_resource type="Texture2D" uid="uid://dmcmw483kyqlv" path="res://Alpha Stage/Sprites and Animations/fairy_idle.png" id="28_ep414"]
@@ -2617,7 +2616,7 @@ noise = SubResource("FastNoiseLite_uf0tv")
 [node name="EnemyAnchor" type="Node2D" parent="." unique_id=825868698]
 
 [node name="StageMusic" type="AudioStreamPlayer2D" parent="." unique_id=1292603623]
-stream = ExtResource("27_6je4j")
+stream = ExtResource("28_6je4j")
 volume_db = 10.978
 
 [node name="StageMusic2" type="AudioStreamPlayer2D" parent="." unique_id=2056361001]

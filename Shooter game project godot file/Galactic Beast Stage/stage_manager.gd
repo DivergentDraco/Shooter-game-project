@@ -16,8 +16,9 @@ var stage_started := false
 @onready var music2 = %StageMusic2
 
 var wave_order = [
+	"wave_16",
 	#"wave_4",
-	"wave_15",
+	#"wave_15",
 	#"wave_12",
 	
 	"wave_1",
@@ -33,7 +34,7 @@ var wave_order = [
 	"wave_6",
 	
 	"wave_4",
-	"wave_3",
+	#"wave_3",
 	"wave_7",
 	"wave_13",
 	"wave_14",
@@ -130,6 +131,7 @@ const ZOOMER = preload("res://Galactic Beast Stage/Enemy/Zoomer/zoomer.tscn")
 const BIG_ZAM = preload("res://Galactic Beast Stage/Enemy/Big Zam/big_zam.tscn")
 const RUSHER = preload("res://Galactic Beast Stage/Enemy/Rusher/rusher.tscn")
 const EYE_THING = preload("res://Galactic Beast Stage/Enemy/Eye Thing/eye_thing.tscn")
+const BIG_LASER = preload("res://Galactic Beast Stage/Enemy/Big Laser/big_laser.tscn")
 const SOLUS = preload("res://Galactic Beast Stage/Enemy/Solus/solus.tscn")
 
 var waves = {
@@ -1278,6 +1280,30 @@ var waves = {
 		"delay":0.0,
 		}
 	],
+	
+	"wave_16": [
+		{"enemy": BIG_LASER, 
+		"pos": Vector2(160, -400), 
+		"delay":0.0,
+		},
+		{"enemy": BIG_LASER, 
+		"pos": Vector2(300, -400), 
+		"delay":5,
+		},
+		{"enemy": BIG_LASER, 
+		"pos": Vector2(100, -400), 
+		"delay":10,
+		},
+		{"enemy": BIG_LASER, 
+		"pos": Vector2(260, -400), 
+		"delay":15,
+		},
+		{"enemy": BIG_LASER, 
+		"pos": Vector2(120, -400), 
+		"delay":20,
+		},
+	],
+	
 }
 func spawn_wave(wave_name: String) -> void:
 	if not waves.has(wave_name):

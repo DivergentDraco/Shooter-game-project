@@ -1,7 +1,10 @@
-res://Galactic Beast Stage/Enemy/Solus/solus.tscn
+res://Alpha Stage/default_bus_layout.tres
 res://Alpha Stage/hitflash effect/hitflash.tres
 res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/orange.gdshader
+res://Galactic Beast Stage/Enemy/Big Laser/big_laser.tscn
+res://Galactic Beast Stage/Enemy/Big Laser/big_laser.gd
+res://Galactic Beast Stage/stage_manager.gd
+res://addons/BulletUpHell/Bullet/LaserBeam.gd
+res://addons/BulletUpHell/BuHSpawner.gd
 res://Galactic Beast Stage/main.tscn
-res://Galactic Beast Stage/Enemy/Solus/solus.gd
-res://addons/BulletUpHell/Spawning.tscn
