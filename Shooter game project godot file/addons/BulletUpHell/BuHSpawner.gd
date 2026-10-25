@@ -713,7 +713,7 @@ func set_spawn_data(queued_instance:Dictionary, bullet_props:Dictionary, pattern
 		"PatternCircle":
 			angle = get_spawn_angle_circle(pattern.angle_total, pattern.angle_decal, pattern.nbr-int(pattern.angle_total < 2*PI), i)
 			queued_instance["spawn_pos"] = get_spawn_pos_circle(angle, forced_angle, pattern.radius, pattern.perspective)
-			queued_instance["rotation"] = angle + bullet_props.angle + ori_angle
+			queued_instance["rotation"] = angle + bullet_props.angle + forced_angle
 		"PatternLine":
 			queued_instance["spawn_pos"] = get_spawn_pos_line(pattern.offset, pattern.center, forced_angle, pattern.nbr, i)
 			queued_instance["rotation"] = bullet_props.angle + pattern.pattern_angle + ori_angle

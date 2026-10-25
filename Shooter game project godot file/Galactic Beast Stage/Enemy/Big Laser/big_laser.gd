@@ -55,14 +55,13 @@ signal hp_changed(current_hp: int, max_hp: int)
 @export var max_hp: int = 100
 var hp: int = 100
 
-var laser_process_id: int = -1
+var laser_process_id: int
 
 func _ready() -> void:
-	var point = $SpawnPoint1
+	laser_process_id = get_instance_id()
 
-	point.process_id = -1
-	point.active = false
-
+	$SpawnPoint1.process_id = laser_process_id
+	$SpawnPoint1.active = false
 	hp = max_hp
 	set_collision_layer_value(4, false)
 	
@@ -93,11 +92,19 @@ func change_state(new_state: BossState) -> void:
 			var point = spawn_points["spawnpoint_1"]
 			point.active = true
 			point.spawn()
+			
+			%LaserBeam.enabled = true
+			$AudioStreamPlayer2D.playing = true
 
 		BossState.DEAD:
-			$SpawnPoint1.active = false
+			var point = spawn_points["spawnpoint_1"]
+			point.active = false
+			
+			Spawning.process_kill(laser_process_id)
 			
 func enter_state(_delta: float) -> void:
+	velocity.y = 0
+	await get_tree().create_timer(1).timeout
 	change_state(BossState.ATTACK_1)
 	set_collision_layer_value(4, true)
 	
@@ -133,7 +140,7 @@ func hit(damage: int = 1) -> void:
 func die() -> void:
 	if state == BossState.DEAD:
 		return
-
+	
 	change_state(BossState.DEAD)
 
 	set_collision_layer_value(4, false)

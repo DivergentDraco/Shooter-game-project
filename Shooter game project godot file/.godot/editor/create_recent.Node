@@ -1,3 +1,5 @@
+LaserBeam
+AnimatedSprite2D
 InstanceLister
 Node
 CharacterBody2D
@@ -11,4 +13,3 @@ Area2D
 Node2D
 CollisionShape2D
 Marker2D
-Timer

@@ -118,7 +118,6 @@ metadata/_custom_type_script = "uid://vjjy0ftkr4pf"
 script = ExtResource("6_lpve2")
 ID = "explosion2"
 texture = "explosion2"
-SFX = "3"
 metadata/_custom_type_script = "uid://ch2ah4ngy7del"
 
 [sub_resource type="Curve" id="Curve_ny4vs"]
@@ -586,12 +585,14 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 [sub_resource type="Resource" id="Resource_p0wm2"]
 resource_name = "PatternCircle"
 script = ExtResource("4_wukgx")
+angle_total = 1.1741178944016255
+angle_decal = 5.689773361501515
 center = 3
 bullet = "311"
-nbr = 7
+nbr = 5
 iterations = 10
 cooldown_spawn = 0.5
-cooldown_next_spawn = 0.2
+pattern_angle_target = NodePath("../../Player")
 forced_pattern_lookat = false
 metadata/_custom_type_script = "uid://dg81fho0rhp37"
 
