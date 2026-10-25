@@ -129,6 +129,11 @@ func change_state(new_state: BossState) -> void:
 			var point = spawn_points["spawnpoint_3"]
 			#point.active = true
 			point.spawn()
+			
+		BossState.RETURN:
+			return_start_position = global_position
+			return_elapsed = 0.0
+			is_waiting = false
 
 func intro_state(_delta: float) -> void:
 	set_collision_layer_value(4, false)
@@ -173,28 +178,29 @@ func enter_state(_delta: float) -> void:
 
 var is_waiting: bool = false
 
+@export var return_duration: float = 1.0
+
+var return_start_position: Vector2
+var return_elapsed: float = 0.0
+var is_waiting_state: bool = false
+
 func return_state(delta: float) -> void:
 	if is_waiting:
 		velocity = Vector2.ZERO
 		return
 
-	var distance: float = global_position.distance_to(original_position)
+	return_elapsed += delta
 
-	if distance <= 2.0:
+	var t: float = clampf(return_elapsed / return_duration, 0.0, 1.0)
+
+	global_position = return_start_position.lerp(original_position, t)
+	velocity = Vector2.ZERO
+
+	if t >= 1.0:
 		global_position = original_position
-		velocity = Vector2.ZERO
 
 		is_waiting = true
-
-		if not is_inside_tree() or state != BossState.RETURN:
-			return
-
-		is_waiting = false
 		change_state(next_state)
-		return
-
-	var return_speed: float = minf(move_speed, distance / delta)
-	velocity = global_position.direction_to(original_position) * return_speed
 
 
 func attack_1(_delta: float) -> void:
