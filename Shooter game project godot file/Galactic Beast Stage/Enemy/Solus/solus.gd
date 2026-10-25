@@ -47,17 +47,18 @@ signal died
 @onready var spawn_points = {
 	"spawnpoint_1" : %SpawnPoint,
 	"spawnpoint_2" : %SpawnPoint2,
+	"spawnpoint_3" : %SpawnPoint3,
 	"explosion_point" : $ExplosionPoint,
 }
 
 signal hp_changed(current_hp: int, max_hp: int)
 
-@export var phase_1_hp: int = 200
+@export var phase_1_hp: int = 350
 @export var phase_2_hp: int = 150
 @export var phase_3_hp: int = 250
 
 var hp: int = 200
-var max_hp: int = 200
+var max_hp: int = 350
 
 func _ready() -> void:
 	afterimage_timer.timeout.connect(create_afterimage)
@@ -125,7 +126,7 @@ func change_state(new_state: BossState) -> void:
 
 		BossState.ATTACK_3:
 			refill_hp(phase_3_hp)
-			var point = spawn_points["spawnpoint_1"]
+			var point = spawn_points["spawnpoint_3"]
 			#point.active = true
 			point.spawn()
 
@@ -167,7 +168,7 @@ func enter_state(_delta: float) -> void:
 		original_position = global_position
 		center_point = original_position
 
-		change_state(BossState.ATTACK_2)
+		change_state(BossState.ATTACK_1)
 		set_collision_layer_value(4, true)
 
 var is_waiting: bool = false
@@ -230,7 +231,7 @@ func attack_3(_delta: float) -> void:
 	velocity.y = 0.0
 
 	if state_time >= 30.0 or hp <= 0:
-		Spawning.process_kill(1)
+		Spawning.process_kill(3)
 		Spawning.clear_all_bullets()
 		next_state = BossState.DEAD
 		change_state(BossState.RETURN)

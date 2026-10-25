@@ -2283,7 +2283,7 @@ _bundled = {
 }
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_bhunq"]
-distance = -493.0
+distance = -503.0
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_riqys"]
 normal = Vector2(1, 0)
@@ -2630,7 +2630,7 @@ resources = [PackedStringArray("EnemyScene1", "EnemyScene2", "EnemyScene3", "Ene
 
 [node name="Node2D" type="Node2D" parent="." unique_id=280983599]
 
-[node name="Area2D" type="StaticBody2D" parent="." unique_id=1069769959]
+[node name="Area2D" type="StaticBody2D" parent="." unique_id=1069769959 groups=["bounds"]]
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=989674579]

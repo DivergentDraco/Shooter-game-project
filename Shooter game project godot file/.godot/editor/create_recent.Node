@@ -1,6 +1,7 @@
+TriggerContainer
+SpawnPoint
 SpawnPattern
 BulletPattern
-SpawnPoint
 BulletNode
 AudioStreamPlayer
 Area2D
