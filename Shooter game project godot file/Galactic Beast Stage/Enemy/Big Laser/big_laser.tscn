@@ -327,6 +327,8 @@ r_scale_multi_scale_variation = Vector3(0, 0, 0)
 
 [sub_resource type="Curve2D" id="Curve2D_0lqvw"]
 
+[sub_resource type="Curve" id="Curve_i57ar"]
+
 [sub_resource type="Curve" id="Curve_j131x"]
 
 [sub_resource type="Resource" id="Resource_f2v6o"]
@@ -334,6 +336,7 @@ script = ExtResource("16_5von5")
 instance_id = "laser"
 speed = 0.0
 custom_data = {}
+a_speed_multiplier = SubResource("Curve_i57ar")
 spec_only_spin_sprite = false
 scale_multiplier = SubResource("Curve_j131x")
 homing_type = 0
@@ -448,7 +451,7 @@ script = ExtResource("5_b4djd")
 unique_name_in_owner = true
 position = Vector2(0, -59)
 script = ExtResource("17_r44rl")
-auto_pattern_id = "6"
+auto_pattern_id = "301"
 pool_amount = 200
 auto_start_on_cam = false
 r_active_chances = 1.0
@@ -510,8 +513,7 @@ id = "302"
 props = SubResource("Resource_kj7yp")
 metadata/_custom_type_script = "uid://dcgggjlg7ts6s"
 
-[node name="InstanceLister" type="Node" parent="BulletPatterns" unique_id=78955358]
-unique_name_in_owner = true
+[node name="InstanceLister" type="Node" parent="BulletPatterns" unique_id=1602635351]
 script = ExtResource("12_f2v6o")
 metadata/_custom_type_script = "uid://cuf26gljyyrfx"
 
@@ -523,20 +525,6 @@ collision_mask = 0
 script = ExtResource("13_sha60")
 ID = "laser"
 metadata/_custom_type_script = "uid://78se6gf424dm"
-
-[node name="LaserBeam" type="Area2D" parent="BulletPatterns/InstanceLister/BulletNode" unique_id=1548199001]
-unique_name_in_owner = true
-script = ExtResource("14_hqf1a")
-laser_length = 2000.0
-laser_width = 100.0
-stay_duration = 1.0
-speed = 3000.0
-expand_on = 1
-delay_collide = 0.7
-collide_with = 0
-texture = ExtResource("15_65xqr")
-texture_mode = 1
-metadata/_custom_type_script = "uid://6kh2g57rj04f"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BulletPatterns/InstanceLister/BulletNode" unique_id=824899144]
 shape = SubResource("CircleShape2D_u36e2")
@@ -558,6 +546,22 @@ script = ExtResource("6_sonjr")
 id = "laser"
 pattern = SubResource("Resource_hqf1a")
 metadata/_custom_type_script = "uid://bbhosph2wnb4s"
+
+[node name="LaserBeam" type="Area2D" parent="." unique_id=1548199001]
+unique_name_in_owner = true
+position = Vector2(0, 88)
+rotation = 1.5707964
+script = ExtResource("14_hqf1a")
+laser_length = 2000.0
+laser_width = 100.0
+stay_duration = 1.0
+speed = 3000.0
+expand_on = 1
+delay_collide = 0.7
+collide_with = 0
+texture = ExtResource("15_65xqr")
+texture_mode = 1
+metadata/_custom_type_script = "uid://6kh2g57rj04f"
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
