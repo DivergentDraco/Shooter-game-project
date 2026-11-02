@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://20tjc1ajnitm"
+path="res://.godot/imported/solus_encounter1.dialogue-9856b2d15990e2c72214a123aa658601.tres"
+
+[deps]
+
+source_file="res://Galactic Beast Stage/Dialogue/solus_encounter1.dialogue"
+dest_files=["res://.godot/imported/solus_encounter1.dialogue-9856b2d15990e2c72214a123aa658601.tres"]
+
+[params]
+
+defaults=true

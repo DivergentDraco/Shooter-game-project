@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bh4x1eg5lvxwp"]
+
+[ext_resource type="Script" uid="uid://currfvbdilr1y" path="res://Galactic Beast Stage/Characters/base_portrait.gd" id="1_ykgiv"]
+[ext_resource type="Texture2D" uid="uid://cr0nyyebur04p" path="res://Galactic Beast Stage/Characters/Trappist/Trappist.png" id="2_8ud28"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_irq8t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8ud28")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Portrait" type="Node2D" unique_id=2126950536]
+script = ExtResource("1_ykgiv")
+
+[node name="Anchor" type="Marker2D" parent="." unique_id=1833669851]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Anchor" unique_id=1903218926]
+scale = Vector2(0.12767857, 0.12767857)
+sprite_frames = SubResource("SpriteFrames_irq8t")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Anchor" unique_id=1652656780]
+unique_name_in_owner = true
+root_node = NodePath("../AnimatedSprite2D")

@@ -3,9 +3,13 @@ res://Galactic Beast Stage/Enemy/Big Laser/big_laser.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
 res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/orange.gdshader
-res://Galactic Beast Stage/main.tscn
+res://Galactic Beast Stage/dialogue_box.tscn
+res://Galactic Beast Stage/dialogue_box.gd
+res://Galactic Beast Stage/Characters/portrait.tscn
+res://Galactic Beast Stage/Characters/base_portrait.gd
+res://addons/dialogue_manager/dialogue_resource.gd
+res://Galactic Beast Stage/Characters/Solus/portrait.tscn
+res://Galactic Beast Stage/Characters/Trappist/portrait.tscn
+res://Galactic Beast Stage/Enemy/Solus/solus.gd
 res://Galactic Beast Stage/stage_manager.gd
-res://Galactic Beast Stage/Enemy/Big Laser/big_laser.gd
-res://addons/BulletUpHell/BuHSpawner.gd
-res://Galactic Beast Stage/Enemy/Big Zam/big_zam.tscn
-res://Galactic Beast Stage/Enemy/Big Zam/big_zam.gd
+res://Galactic Beast Stage/main.tscn

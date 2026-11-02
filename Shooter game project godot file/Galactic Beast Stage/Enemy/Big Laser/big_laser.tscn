@@ -447,8 +447,6 @@ z_index = -1
 position = Vector2(56, -112)
 sprite_frames = SubResource("SpriteFrames_bhunq")
 autoplay = "default"
-frame = 1
-frame_progress = 0.6178296
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=459570387]
 unique_name_in_owner = true

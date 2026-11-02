@@ -1,0 +1,11 @@
+~ start
+$> add_character("Solus", SLOT_RIGHT)
+$> add_character("Trappist", SLOT_LEFT)
+Solus: [speed=0.5]Halt, Pilot!
+Trappist: [speed=0.5]!!!
+Solus: [speed=0.7]I don't know what brings you here, [wait=0.4]but I can not allow you to go further.
+Solus: [speed=0.7]Surrender yourself to my fleet, [wait=0.4]or I shall bring you the wrath of the sun.
+Trappist: [speed=0.5]No.
+Solus: [speed=0.4]...
+Solus: [speed=0.7]SO BE IT!!!
+=> END
