@@ -7,6 +7,7 @@ enum BossState {
 	ATTACK_1,
 	ATTACK_2,
 	ATTACK_3,
+	ATTACK_4,
 	DEAD,
 	RETURN,
 }
@@ -48,6 +49,7 @@ signal died
 	"spawnpoint_1" : %SpawnPoint,
 	"spawnpoint_2" : %SpawnPoint2,
 	"spawnpoint_3" : %SpawnPoint3,
+	"spawnpoint_4" : $Rotor/SpawnPoint4,
 	"explosion_point" : $ExplosionPoint,
 }
 
@@ -56,6 +58,7 @@ signal hp_changed(current_hp: int, max_hp: int)
 @export var phase_1_hp: int = 350
 @export var phase_2_hp: int = 150
 @export var phase_3_hp: int = 250
+@export var phase_4_hp: int = 800
 
 var hp: int = 200
 var max_hp: int = 350
@@ -89,6 +92,9 @@ func _physics_process(delta: float) -> void:
 
 		BossState.ATTACK_3:
 			attack_3(delta)
+		
+		BossState.ATTACK_4:
+			attack_4(delta)
 
 		BossState.DEAD:
 			velocity = Vector2.ZERO
@@ -127,6 +133,16 @@ func change_state(new_state: BossState) -> void:
 		BossState.ATTACK_3:
 			refill_hp(phase_3_hp)
 			var point = spawn_points["spawnpoint_3"]
+			#point.active = true
+			point.spawn()
+			
+		BossState.ATTACK_4:
+			holding = false
+			hold_time = 0.0
+			set_next_destination()
+			
+			refill_hp(phase_4_hp)
+			var point = spawn_points["spawnpoint_4"]
 			#point.active = true
 			point.spawn()
 			
@@ -239,6 +255,60 @@ func attack_3(_delta: float) -> void:
 	if state_time >= 30.0 or hp <= 0:
 		Spawning.process_kill(3)
 		Spawning.clear_all_bullets()
+		next_state = BossState.ATTACK_4
+		change_state(BossState.RETURN)
+
+
+
+var destination : Vector2
+var holding := false
+var hold_time : float = 0
+
+@export var move_distance: float = 30.0
+@export var move_speed_slow: float = 100
+@export var hold_duration: float = 3.0
+
+@export var min_bounds := Vector2(30.0, 40.0)
+@export var max_bounds := Vector2(300.0, 100.0)
+
+func set_next_destination() -> void:
+	var offset := Vector2(
+		randf_range(-move_distance, move_distance),
+		randf_range(-move_distance, move_distance)
+	)
+
+	destination = global_position + offset
+
+	# Keep boss inside arena bounds.
+	destination = destination.clamp(min_bounds, max_bounds)
+		
+func attack_4(delta: float) -> void:
+	velocity = Vector2.ZERO
+
+	if holding:
+		hold_time += delta
+
+		if hold_time >= hold_duration:
+			hold_time = 0.0
+			holding = false
+			set_next_destination()
+
+		return
+
+	# Move slowly toward nearby destination.
+	global_position = global_position.lerp(
+		destination,
+		2.0 * delta
+	)
+
+	if global_position.distance_to(destination) < 1.0:
+		global_position = destination
+		holding = true
+		hold_time = 0.0
+
+	if state_time >= 30.0 or hp <= 0:
+		Spawning.process_kill(4)
+		Spawning.clear_all_bullets()
 		next_state = BossState.DEAD
 		change_state(BossState.RETURN)
 		
@@ -269,6 +339,7 @@ func set_spawnpoint(index: int) -> void:
 	var spawnpoint_1 = get_node("SpawnPoint")
 	var spawnpoint_2 = get_node("SpawnPoint2")
 	var spawnpoint_3 = get_node("SpawnPoint3")
+	var spawnpoint_4 = get_node("SpawnPoint4")
 
 	match index:
 		1:
