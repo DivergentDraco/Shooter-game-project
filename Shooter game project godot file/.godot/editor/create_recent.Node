@@ -1,7 +1,7 @@
 BulletPattern
 SpawnPattern
-CollisionShape2D
 CharacterBody2D
+CollisionShape2D
 SpawnPoint
 Rotor
 AudioStreamPlayer2D

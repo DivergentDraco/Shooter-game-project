@@ -16,9 +16,9 @@ var stage_started := false
 @onready var music2 = %StageMusic2
 
 var wave_order = [
-	#"wave_17",
+	"wave_18",
 	#"wave_4",
-	"wave_15",
+	#"wave_15",
 	#"wave_12",
 	
 	"wave_1",
@@ -32,6 +32,8 @@ var wave_order = [
 	"wave_9",
 	"wave_10",
 	"wave_13",
+	
+	"wave_17",
 	
 	"wave_6",
 	
@@ -134,6 +136,7 @@ const BIG_ZAM = preload("res://Galactic Beast Stage/Enemy/Big Zam/big_zam.tscn")
 const RUSHER = preload("res://Galactic Beast Stage/Enemy/Rusher/rusher.tscn")
 const EYE_THING = preload("res://Galactic Beast Stage/Enemy/Eye Thing/eye_thing.tscn")
 const FORWARD_GUY = preload("res://Galactic Beast Stage/Enemy/Forward Guy/forward_guy.tscn")
+const STANDBY_UNIT = preload("res://Galactic Beast Stage/Enemy/Standby Unit/standby_unit.tscn")
 const BIG_LASER = preload("res://Galactic Beast Stage/Enemy/Big Laser/big_laser.tscn")
 const SOLUS = preload("res://Galactic Beast Stage/Enemy/Solus/solus.tscn")
 
@@ -1457,6 +1460,12 @@ var waves = {
 		{"enemy": FORWARD_GUY, 
 		"pos": Vector2(40, -50), 
 		"delay":2,
+		},
+	],
+		"wave_18": [
+		{"enemy": STANDBY_UNIT, 
+		"pos": Vector2(0, 20), 
+		"delay":0.0,
 		},
 	],
 	

@@ -204,7 +204,6 @@ r_start_distance_variation = Vector3(0, 0, 0)
 metadata/_custom_type_script = "uid://btd0n20blj8nd"
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=2009379030]
-visible = false
 texture_filter = 1
 emitting = false
 amount = 10
@@ -214,7 +213,6 @@ explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_ku64p")
 
 [node name="ExplosionPoint" type="Node2D" parent="." unique_id=1340422680]
-visible = false
 script = ExtResource("6_apj8o")
 auto_pattern_id = "explosionarea"
 r_active_chances = 1.0

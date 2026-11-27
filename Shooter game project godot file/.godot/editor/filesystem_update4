@@ -1,9 +1,10 @@
 res://Alpha Stage/default_bus_layout.tres
-res://Galactic Beast Stage/Enemy/Forward Guy/forward_guy.tscn
+res://Galactic Beast Stage/Enemy/Solus/solus.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
 res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/orange.gdshader
-res://Galactic Beast Stage/Enemy/Solus/solus.gd
 res://Galactic Beast Stage/stage_manager.gd
-res://Galactic Beast Stage/player.gd
-res://Galactic Beast Stage/player.tscn
+res://Galactic Beast Stage/main.tscn
+res://Galactic Beast Stage/Enemy/Forward Guy/forward_guy.tscn
+res://Galactic Beast Stage/Enemy/Standby Unit/standby_unit.gd
+res://Galactic Beast Stage/Enemy/Standby Unit/standby_unit.tscn

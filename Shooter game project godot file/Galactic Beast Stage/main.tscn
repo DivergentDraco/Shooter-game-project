@@ -2670,6 +2670,7 @@ autoscroll = Vector2(0, 125)
 repeat_times = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D3" unique_id=1996956423]
+modulate = Color(1, 1, 1, 0.20784314)
 z_index = -7
 position = Vector2(155.3125, 200.72)
 scale = Vector2(1.3255, 1.3254999)
@@ -2681,6 +2682,7 @@ autoscroll = Vector2(0, 400)
 repeat_times = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="Parallax2D4" unique_id=907871015]
+modulate = Color(1, 1, 1, 0.5411765)
 z_index = -7
 position = Vector2(154.31252, 199.44002)
 scale = Vector2(1.3175001, 1.3175001)
