@@ -1,7 +1,10 @@
-res://Galactic Beast Stage/dialogue_box.tscn
+res://Galactic Beast Stage/Enemy/Solus/solus.tscn
 res://Alpha Stage/hitflash effect/hitflash.tres
 res://Galactic Beast Stage/slant bg.gdshader
 res://Galactic Beast Stage/orange.gdshader
-res://Galactic Beast Stage/Enemy/Solus/solus.gd
-res://Galactic Beast Stage/Enemy/Solus/solus.tscn
+res://Galactic Beast Stage/Enemy/Forward Backward Guy/forward_backward_guy.tscn
+res://Galactic Beast Stage/Enemy/Forward Backward Guy/forward_backward_guy.gd
+res://Galactic Beast Stage/Enemy/Forward Guy/forward_guy.tscn
+res://Galactic Beast Stage/Enemy/Forward Guy/forward_guy.gd
 res://Galactic Beast Stage/stage_manager.gd
+res://Galactic Beast Stage/main.tscn

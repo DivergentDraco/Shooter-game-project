@@ -576,6 +576,8 @@ metadata/_custom_type_script = "uid://dg81fho0rhp37"
 
 [sub_resource type="Curve2D" id="Curve2D_fqslw"]
 
+[sub_resource type="Curve" id="Curve_m0b7l"]
+
 [sub_resource type="Resource" id="Resource_0ndnb"]
 script = ExtResource("12_1mn85")
 ID = "solus1"
@@ -591,6 +593,7 @@ script = ExtResource("13_fqslw")
 speed = 150.0
 custom_data = {}
 anim_idle = SubResource("Resource_0ndnb")
+a_speed_multiplier = SubResource("Curve_m0b7l")
 scale_multiplier = SubResource("Curve_22ber")
 homing_type = 0
 homing_target = NodePath("")
@@ -723,6 +726,8 @@ iterations = 100
 cooldown_spawn = 0.0
 metadata/_custom_type_script = "uid://bnjpl1xed5t3d"
 
+[sub_resource type="Curve" id="Curve_gs6cv"]
+
 [sub_resource type="Resource" id="Resource_sgwuh"]
 script = ExtResource("13_fqslw")
 speed = 300.0
@@ -730,6 +735,7 @@ custom_data = {}
 death_after_time = 5.0
 death_from_collision = false
 anim_idle = SubResource("Resource_hx1a2")
+a_speed_multiplier = SubResource("Curve_gs6cv")
 scale_multiplier = SubResource("Curve_2geha")
 homing_type = 0
 homing_target = NodePath("")

@@ -1,7 +1,9 @@
+BulletPattern
 SpawnPattern
+CollisionShape2D
+CharacterBody2D
 SpawnPoint
 Rotor
-BulletPattern
 AudioStreamPlayer2D
 AnimationPlayer
 AnimatedSprite2D
@@ -10,5 +12,3 @@ DialogueLabel
 RichTextLabel
 VBoxContainer
 MarginContainer
-Panel
-LaserBeam
