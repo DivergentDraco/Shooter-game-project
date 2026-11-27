@@ -58,7 +58,7 @@ signal hp_changed(current_hp: int, max_hp: int)
 @export var phase_1_hp: int = 350
 @export var phase_2_hp: int = 150
 @export var phase_3_hp: int = 250
-@export var phase_4_hp: int = 800
+@export var phase_4_hp: int = 400
 
 var hp: int = 200
 var max_hp: int = 350
@@ -370,7 +370,7 @@ func die() -> void:
 	#if state == BossState.DEAD:
 		#return
 
-	change_state(BossState.DEAD)
+	#change_state(BossState.DEAD)
 	stop_all_spawnpoints()
 
 	set_collision_layer_value(4, false)
